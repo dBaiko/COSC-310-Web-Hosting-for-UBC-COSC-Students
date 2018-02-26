@@ -27,10 +27,9 @@ CREATE TABLE Professor(
 CREATE TABLE Project(
 	projectId INT AUTO_INCREMENT PRIMARY KEY,
 	projectTitle VARCHAR(255),
-	desc LONGTEXT,
+	projDesc LONGTEXT,
 	demoUrl VARCHAR(255),
-	date DATETIME,
-	fileName VARCHAR(255)
+	date DATETIME
 );
 
 CREATE TABLE Files(
@@ -42,15 +41,13 @@ CREATE TABLE Files(
 	FOREIGN KEY(projectId) REFERENCES Project(projectId)
 );
 
-ALTER TABLE Project ADD CONSTRAINT fk_fileName FOREIGN KEY(fileName) REFERENCES Files(fileName);
-
 CREATE TABLE Published(
 	userName VARCHAR(30) NOT NULL,
 	studentNum VARCHAR(8) NOT NULL,
 	projectId INT NOT NULL,
 	responsibility VARCHAR(30),
-	PRIMARY KEY(userName, studentNum, projectId)
-	FOREIGN KEY(userName) REFERENCES User(userName),
-	FOREIGN KEY(studentNum) REGERENCES Student(studentNum)
-	FOREIGN KEY(projectId) REFERENCES(projectId) 
+	PRIMARY KEY(userName, studentNum, projectId),
+	FOREIGN KEY(userName, studentNum) REFERENCES Student(userName, studentNum),
+	FOREIGN KEY(projectId) REFERENCES Project(projectId)
 );
+
