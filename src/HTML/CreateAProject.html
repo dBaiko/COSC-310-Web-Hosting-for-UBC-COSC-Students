@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <title>CSPUB-Create A Project</title>
+<link rel="stylesheet" type="text/css" href="../CSS/Default.css">
+<link rel="stylesheet" type="text/css" href="../CSS/CreateAProject.css">
+<script type="text/javascript" src="../JS/CreateAProject.js"></script>
 </head>
 <body>
 <header>
@@ -11,9 +14,9 @@
 		<div class = "dropdown-content">
 			<ul>
 				<li> <a href = "home.html"> Home</a></li> 
-				<li> <a href = "Trending.html">Portfolio</a></li> 
-				<li> <a href = "Topics.html">Browse</a></li> 
-				<li> <a href = "Recommended.html">Create A Project</a></li>
+				<li> <a href = "Portfolio.html">Portfolio</a></li> 
+				<li> <a href = "Browse.html">Browse</a></li> 
+				<li> <a href = "CreateAProject.html">Create A Project</a></li>
 			</ul>
 		</div>
 	</div>
@@ -31,23 +34,32 @@
 				<legend> Create a Project </legend>
 					<p>
 						<label>Title: </label>
-						<input type = "text" name = "title" placeholder="Enter Project title"/>
+						<input type = "text" name = "title" placeholder="Enter Project title" class = "required"/>
 					</p>
 			
 						<label>Description: </label>
 						<div id="description" >
-							<textarea name="description" rows="15" cols ="80"></textarea>
+							<textarea name="description" rows="15" cols ="80" class = "required"></textarea>
 						</div>
 					<p>
 						<label>Number of Contributors:</label>
-							<input type="number" min="1" max="10" name="contributors" />
+							<input type="number" min="1" max="10" name="contributors" id = "numOfCont"/>
 					</p>
+					<div id = "contributors" class = "hidden">
 					<p>
 						<label>Contributors names:</label>
-						<input type = "text" name = "contributor1" placeholder="Contributor 1"/>
-						<input type = "text" name = "contributor2" placeholder="Contributor 2"/>
-						<input type = "text" name = "contributor3" placeholder="Contributor 3"/>
+						<input type = "text" name = "contributor" placeholder="Contributor 1" class = "hidden"/>
+						<input type = "text" name = "contributor" placeholder="Contributor 2" class = "hidden"/>
+						<input type = "text" name = "contributor" placeholder="Contributor 3" class = "hidden"/>
+						<input type = "text" name = "contributor" placeholder="Contributor 4" class = "hidden"/>
+						<input type = "text" name = "contributor" placeholder="Contributor 5" class = "hidden"/>
+						<input type = "text" name = "contributor" placeholder="Contributor 6" class = "hidden"/>
+						<input type = "text" name = "contributor" placeholder="Contributor 7" class = "hidden"/>
+						<input type = "text" name = "contributor" placeholder="Contributor 8" class = "hidden"/>
+						<input type = "text" name = "contributor" placeholder="Contributor 9" class = "hidden"/>
+						<input type = "text" name = "contributor" placeholder="Contributor 10" class = "hidden"/>
 					</p>
+					</div>
 					<p>
 						<label>Images: </label>
 						<button type="button">attach</button>
