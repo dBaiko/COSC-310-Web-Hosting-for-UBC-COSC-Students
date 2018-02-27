@@ -6,12 +6,14 @@
 	</head>
 	<body>
 	
-	<form method="post" action="test.php">
+	<form method="post" action="test.php" enctype="multipart/form-data">
 		<label>UserName:</label>
-		<input type="text" name="userName"/>
+		<input type="text" name="userName"/><br>
 		<label>Password:</label>
 		<input type="password" name="password"/>
-		<input type="submit" name="submit"/>
+		<label>File:</label>
+		<input name="file" type="file"/><br>
+		<input type="submit" name="submit"/><br>
 		
 	</form>
 	
