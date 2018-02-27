@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>CSPUB-Browse Projects</title>
+<title>CSPUB-Portfolio</title>
 </head>
 <body>
 <header>
@@ -11,9 +11,9 @@
 		<div class = "dropdown-content">
 			<ul>
 				<li> <a href = "home.html"> Home</a></li> 
-				<li> <a href = "Portfolio.html">Portfolio</a></li> 
-				<li> <a href = "Browse.html">Browse</a></li> 
-				<li> <a href = "CreateAProject.html">Create A Project</a></li>
+				<li> <a href = "Trending.html">Portfolio</a></li> 
+				<li> <a href = "Topics.html">Browse</a></li> 
+				<li> <a href = "Recommended.html">Create A Project</a></li>
 			</ul>
 		</div>
 	</div>
@@ -25,47 +25,31 @@
 	</div>
 </header>
 
-<div id="main">
-		<div id = "search">
-			<form method = "post" action = "http://www.randyconnolly.com/tests/process.php">
-				<input type = "text" name = "search" placeholder = "Search Projects" id = "searchbar"/> 
-			</form>		
-		</div>
-		<div id = "filters">
-			<div id = "time">
-				<p><a href = ""> Time</a> </p>
-				<ul>
-					<li> <a href =""> Any time</a> </li>
-					<li> <a href =""> Past Year</a> </li>
-					<li> <a href =""> Past Month</a> </li>
-					<li> <a href =""> Past Week</a> </li>
-					<li> <a href =""> Past 24 Hours</a> </li>
-				</ul>
-			</div>
-			<div id = "type">
-				<p><a href = ""> Project Type</a> </p>
-				<ul>
-					<li> <a href =""> All Projects </a> </li>
-					<li> <a href =""> COSC Projects </a> </li>
-					<li> <a href =""> Math Projects </a> </li>
-					<li> <a href =""> Engineering Projects</a> </li>
-					<li> <a href =""> Physics Projects</a> </li>
-				</ul>
-			</div>
-			<div id = "rating">
-				<p><a href = ""> Project Rating</a> </p>
-				<ul>
-					<li> <a href =""> 5 Stars </a> </li>
-					<li> <a href =""> 4 Stars </a> </li>
-					<li> <a href =""> 3 Stars </a> </li>
-					<li> <a href =""> 2 Stars</a> </li>
-					<li> <a href =""> 1 Stars</a> </li>
-				</ul>
-			</div>
-		</div>
-		<div id = "dummyProject">
-				<h2>Projects</h2>
-					<table class = "project">
+<div id = "main">
+	<img src = "../Images/SunsLogo.png" alt = "ProfileImage"/>
+	<h2> DBroomfield</h2>
+	<div id ="info">
+		<table>
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>User Type</th>
+					<th>School/Business</th>
+					<th>	Degree</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Darrien Broomfield</td>
+					<td>Student</td>
+					<td> UBC Okanagan</td>
+					<td> Math / COSC </td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div id = "projects">
+		<table class = "project">
 						<caption >COSC 310 Project</caption>
 						<thead>
 							<tr>
@@ -104,10 +88,9 @@
 							</tr>
 						</tfoot>	
 					</table>
-			</div>
+	</div>
+	
 </div>
-
-
 
 
 
