@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <title>CSPUB-Portfolio</title>
+<link rel="stylesheet" type="text/css" href="../CSS/Default.css">
+<link rel="stylesheet" type="text/css" href="../CSS/Portfolio.css">
 </head>
 <body>
 <header>
@@ -11,9 +13,9 @@
 		<div class = "dropdown-content">
 			<ul>
 				<li> <a href = "home.html"> Home</a></li> 
-				<li> <a href = "Trending.html">Portfolio</a></li> 
-				<li> <a href = "Topics.html">Browse</a></li> 
-				<li> <a href = "Recommended.html">Create A Project</a></li>
+				<li> <a href = "Portfolio.html">Portfolio</a></li> 
+				<li> <a href = "Browse.html">Browse</a></li> 
+				<li> <a href = "CreateAProject.html">Create A Project</a></li>
 			</ul>
 		</div>
 	</div>
@@ -26,30 +28,34 @@
 </header>
 
 <div id = "main">
-	<img src = "../Images/SunsLogo.png" alt = "ProfileImage"/>
-	<h2> DBroomfield</h2>
-	<div id ="info">
-		<table>
-			<thead>
-				<tr>
-					<th>Name</th>
-					<th>User Type</th>
-					<th>School/Business</th>
-					<th>	Degree</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>Darrien Broomfield</td>
-					<td>Student</td>
-					<td> UBC Okanagan</td>
-					<td> Math / COSC </td>
-				</tr>
-			</tbody>
-		</table>
+	<div id ="profileInfo">
+		<img src = "../Images/SunsLogo.png" alt = "ProfileImage" id = "profile"/>
+		<div>
+			<h2 id = "name"> DBroomfield</h2>
+				<table  id ="info">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>User Type</th>
+						<th>School/Business</th>
+						<th>	Degree</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Darrien Broomfield</td>
+						<td>Student</td>
+						<td> UBC Okanagan</td>
+						<td> Math / COSC </td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
+	<div id = "background">
+	<h2>Projects:</h2>
 	<div id = "projects">
-		<table class = "project">
+		<table id = "project">
 						<caption >COSC 310 Project</caption>
 						<thead>
 							<tr>
@@ -89,7 +95,7 @@
 						</tfoot>	
 					</table>
 	</div>
-	
+	</div>
 </div>
 
 

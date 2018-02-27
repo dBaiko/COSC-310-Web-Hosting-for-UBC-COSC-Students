@@ -1,0 +1,71 @@
+@charset "UTF-8";
+#web{
+	width: 300px;
+	height: 300px;
+	float: left;
+	padding: 1em 1em 0.1em 0em;
+}
+#profile{
+	width: 150px;
+	height: 150px;
+	padding: 1em;
+	float: left;
+}
+#profileInfo{
+	background-color: white;	
+	overflow: auto;
+	border: 3px solid black;
+}
+#main{
+	background-color: rgb(46, 108, 209);	
+	padding: 1em;
+}
+#info{
+	font-size: 80%;
+}
+#profileInfo td, #profileInfo th{
+	background-color: #F2F2F2;
+	text-align: center;
+	border-color: #F2F2F2;
+	border-style: outset;
+	border-width: thin;
+	padding: 0.5em 2em 0.5em 2em;
+}
+#filters{
+	display: inline;
+}
+
+#projects{
+	background-color:#F2F2F2;	
+	overflow: auto;
+	width: 75%;
+	padding: 1em 1em 0em 1em;
+	border: 1px solid Grey;
+}
+#project{
+	background-color: #F2F2F2;
+	overflow: auto;
+	padding: 1em 1em 0em 1em;
+	width: 100%;
+}
+h2{
+	font-size: 2.5em;
+	margin: 0.3em;
+}
+#background{
+	background-color: white;
+	padding: 1em;
+	border: 3px solid black;
+	border-top: 0px;
+}
+caption{
+	font-size: 2em;
+	text-align: left;
+}
+#project th{
+	text-align: left;
+}
+footer{
+	margin-top: 6em;
+}
+
