@@ -39,10 +39,18 @@
 	        $stmt = "SELECT file FROM Test";
 	        
 	        
+	        
+	        
+	        
 	        $res = $conn->query($stmt);
+	        
 	        while($result=mysqli_fetch_array($res)){;
-	           echo '<img src="data:image/png;base64,'.base64_encode($result['file']).'"/>';
+	        
+	        echo '<img src="data:image/png;base64,'.base64_encode($result['file']).'"/>';
+	        
 	        }
+	        
+	        
 
 	        
 	        
