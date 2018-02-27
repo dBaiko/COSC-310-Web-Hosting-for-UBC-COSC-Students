@@ -49,3 +49,6 @@ input[type="submit"]{
 footer{
 	margin-top: 11em;
 }
+input[name="copyright"] {
+	width: 20%;
+}
