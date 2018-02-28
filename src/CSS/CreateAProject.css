@@ -1,0 +1,54 @@
+@charset "UTF-8";
+#main{
+	background-color: rgb(46, 108, 209);	
+	padding: 1em;
+}
+#create{
+	background-color: white;
+	padding: 1em;
+	border: 3px solid black;
+}
+fieldset{
+	border: none;
+}
+legend{
+	font-size: 3em;
+	text-align: center;
+	font-weight: bold;
+}
+label{
+	font-size: 1.5em;
+}
+input[name="title"] {
+	width: 50%;
+	border: 1px solid black;
+}
+textarea[name="description"] {
+	width: 53.5%;
+	border: 1px solid black;
+}
+input[name="contributors"] {
+	border: 1px solid black;
+}
+input[type="text"]{
+	border: 1px solid black;
+}
+
+.hidden{
+	display: none;
+}
+input[type="submit"]{
+	font-size: 1em;
+}
+#center{
+	text-align: center;
+}
+.empty{
+	background-color: red;
+}
+footer{
+	margin-top: 11em;
+}
+input[name="copyright"] {
+	width: 20%;
+}

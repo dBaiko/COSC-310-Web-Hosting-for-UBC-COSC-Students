@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <title>CSPUB-Browse Projects</title>
+<link rel="stylesheet" type="text/css" href="../CSS/Default.css">
+<link rel="stylesheet" type="text/css" href="../CSS/Browse.css">
+<script type="text/javascript" src="../JS/Browse.js"></script>
 </head>
 <body>
 <header>
@@ -27,13 +30,16 @@
 
 <div id="main">
 		<div id = "search">
-			<form method = "post" action = "http://www.randyconnolly.com/tests/process.php">
-				<input type = "text" name = "search" placeholder = "Search Projects" id = "searchbar"/> 
+			<h2> Search</h2>
+			<form method = "post" action = "http://www.randyconnolly.com/tests/process.php" id = "searchbar">
+				<input type = "text" name = "search" placeholder = "Search Projects" id = "userSearch"/> 
 			</form>		
 		</div>
+		<div id = "background">
 		<div id = "filters">
 			<div id = "time">
 				<p><a href = ""> Time</a> </p>
+				<div class = "dropdown-content">
 				<ul>
 					<li> <a href =""> Any time</a> </li>
 					<li> <a href =""> Past Year</a> </li>
@@ -41,19 +47,23 @@
 					<li> <a href =""> Past Week</a> </li>
 					<li> <a href =""> Past 24 Hours</a> </li>
 				</ul>
+				</div>
 			</div>
 			<div id = "type">
 				<p><a href = ""> Project Type</a> </p>
+				<div class = "dropdown-content">
 				<ul>
 					<li> <a href =""> All Projects </a> </li>
-					<li> <a href =""> COSC Projects </a> </li>
+					<li> <a href =""> Cosc Projects </a> </li>
 					<li> <a href =""> Math Projects </a> </li>
 					<li> <a href =""> Engineering Projects</a> </li>
 					<li> <a href =""> Physics Projects</a> </li>
 				</ul>
+				</div>
 			</div>
 			<div id = "rating">
 				<p><a href = ""> Project Rating</a> </p>
+				<div class = "dropdown-content">
 				<ul>
 					<li> <a href =""> 5 Stars </a> </li>
 					<li> <a href =""> 4 Stars </a> </li>
@@ -61,11 +71,12 @@
 					<li> <a href =""> 2 Stars</a> </li>
 					<li> <a href =""> 1 Stars</a> </li>
 				</ul>
+				</div>
 			</div>
 		</div>
 		<div id = "dummyProject">
-				<h2>Projects</h2>
-					<table class = "project">
+				<h2>Projects:</h2>
+					<table id = "project">
 						<caption >COSC 310 Project</caption>
 						<thead>
 							<tr>
@@ -104,6 +115,7 @@
 							</tr>
 						</tfoot>	
 					</table>
+			</div>
 			</div>
 </div>
 
