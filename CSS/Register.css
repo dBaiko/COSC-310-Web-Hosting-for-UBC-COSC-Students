@@ -1,0 +1,40 @@
+@charset "UTF-8";
+section{
+	text-align: left;
+	color:rgb(46, 108, 209);
+}
+fieldset{
+	border: none;
+}
+
+.central{
+	text-align: center;
+	padding-top: 5em;
+	padding-bottom: 5em;
+}
+.right{
+	float:right;
+	padding:0.5em;
+}
+.info{
+	border-collapse: collapse;
+	margin:0em;
+	font-size: 15px;
+}
+.info1{
+	font-size: 15px;
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+	border: 2pt solid rgb(46, 108, 209);		
+	border-radius: 0.5em;
+}
+.button{
+	font-size: 15px;
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+	border: 2pt solid rgb(46, 108, 209);		
+	border-radius: 0.5em;
+	margin-top: 0.5em;
+	background-color: rgb(46, 108, 209);
+	color: white;
+}
