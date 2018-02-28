@@ -11,7 +11,8 @@
 	$servername = "localhost";
 	$username = "cswebhosting";
 	$password = "a9zEkajA";
-
+	
+	
 	
 	if(isset($_POST["submit"])){
 	    $check = getimagesize($_FILES["file"]["tmp_name"]);

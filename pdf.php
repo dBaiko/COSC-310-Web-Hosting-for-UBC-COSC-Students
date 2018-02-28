@@ -38,7 +38,7 @@ class BlobDemo {
     public function insertBlob($filePath, $mime) {
         $blob = fopen($filePath, 'rb');
 
-        $sql = "INSERT INTO TEST(fileName,file) VALUES(:mime,:data)";
+        $sql = "INSERT INTO Test(fileName,file) VALUES(:mime,:data)";
         $stmt = $this->pdo->prepare($sql);
 
         $stmt->bindParam(':mime', $mime);
@@ -100,9 +100,10 @@ if(isset($_POST['submit']))
       <?php 
       // to display the pdf from database
        $a = $blobObj->selectBlob(3);
-             header("Content-Type:" . $a['fileName']);
-             echo $a['file'];
+            # header("Content-Type:" . $a['fileName']);
+            # echo $a['file'];
       ?>
+     <object data="data:application/pdf;base64,<?php echo base64_encode($a['file']) ?>" type="application/pdf" style="height:200px;width:60%"></object>
     </p>
 </body>
 </html>
