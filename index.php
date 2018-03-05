@@ -13,11 +13,12 @@
 		<h1> Welcome to CSPub</h1>
 	</div>
 	<div id = "right">
-		<h2> Lets get Started</h2>
+		<h2> Let's get Started</h2>
+		
 		<h3>Already a user?</h3>
-		<button><a href= "SignIn.html">Sign In</a></button>
+		<button class = "button"><a href= "SignIn.html">Sign In</a></button>
 		<h3>New Member?</h3>
-		<button><a href= "Register.html">Register here</a></button>
+		<button class = "button"><a href= "Register.html">Register</a></button>
 	</div>
 </div>
 <footer>
