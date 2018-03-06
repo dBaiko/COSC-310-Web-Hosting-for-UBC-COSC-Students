@@ -36,22 +36,23 @@
 	<fieldset>
 		<div>
 		<p class = "info"> 
-			<input type = "text" name = "username" id="username" placeholder = "Username" class = "info1"/>
+			<input type = "text" name = "username" id="username" placeholder = "Username" class = "info1" maxLength="30" onChange="checkUserName()"/>
+		</p>
+		<p class="info" id="taken" style="color: red;"></p>
+		<p class = "info"> 
+			<input type = "text" name = "firstName" id="firstName" placeholder = "First Name" class = "info1" maxLength="30"/>
 		</p>
 		<p class = "info"> 
-			<input type = "text" name = "firstName" id="firstName" placeholder = "First Name" class = "info1"/>
-		</p>
-		<p class = "info"> 
-			<input type = "text" name = "lastName" id="lastName" placeholder = "Last Name" class = "info1"/>
+			<input type = "text" name = "lastName" id="lastName" placeholder = "Last Name" class = "info1" maxLength="30"/>
 		</p>
 		<p class = "info">
-			<input type = "email" name = "email" id="email" placeholder = "Email" class = "info1"/>
+			<input type = "email" name = "email" id="email" placeholder = "Email" class = "info1" maxLength="30"/>
 		</p>
 		<p class = "info">
-			<input type = "password" name = "password" id="pass" placeholder = "Password" class = "info1"/>
+			<input type = "password" name = "pass" id="pass" placeholder = "Password" class = "info1"/>
 		</p>
 		<p class = "info">
-			<input type = "password" name = "passwordsecond" id="passConf" placeholder = "Confirm Password" class = "info1"/>
+			<input type = "password" name = "passConf" id="passConf" placeholder = "Confirm Password" class = "info1"/>
 		</p>
 		<label>Are you a student or a professor? (Optional)</label><br>
 		<input type="radio" name="userType" value= "student" id="student" onchange="addtoForm()">Student
@@ -59,17 +60,17 @@
 		<span id="none"><input type="radio" name="userType" value= "none" onchange="addtoForm()">No</span><br>
 		<div id="studentForm">
 			<p class = "info"> 
-				<input type = "text" name = "studentNum" id="studentNum" placeholder = "Student Number" class = "info1" onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength="8"/>
+				<input type = "text" name = "studentNum" id="studentNum" placeholder = "Student Number" class = "info1"  onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength="8"/>
 			</p>
 			<p class = "info"> 
-			<input type="text" name="stuSchool" list="school" id="stuSchool" class="info1" placeholder="University"/>
+			<input type="text" name="stuSchool" list="school" id="stuSchool" class="info1" maxLength="255" placeholder="University"/>
 			<datalist id="school">
                   <option>University of Britsh Columbia - Okanagan</option>
                   <option>University of British Columbia - Vancouver</option>
                   <option>Okanagan College - Vernon</option>
                   <option>Okanagan College - Kelowna</option>
             </datalist><br>
-            <input type="text" name="major" id="major" list="major"  class="info1" placeholder="Major"/>
+            <input type="text" name="major" id="major" list="major"  class="info1" maxLength="30" placeholder="Major"/>
 			<datalist id="major">
                   <option>COSC</option>
             </datalist>
@@ -77,14 +78,14 @@
 		</div>
 		<div id="profForm">
 			<p class = "info"> 
-			<input type="text" name="profSchool" id="profSchool" list="school" class="info1" placeholder="University"/>
+			<input type="text" name="profSchool" id="profSchool" maxLength="255" list="school" class="info1" placeholder="University"/>
 			<datalist id="school">
                   <option>University of Britsh Columbia - Okanagan</option>
                   <option>University of British Columbia - Vancouver</option>
                   <option>Okanagan College - Vernon</option>
                   <option>Okanagan College - Kelowna</option>
             </datalist><br>
-            <input type="text" name="faculty" id="faculty" list="faculty"  class="info1" placeholder="Faculty"/>
+            <input type="text" name="faculty" id="faculty" list="faculty" maxLength="30" class="info1" placeholder="Faculty"/>
 			<datalist id="faculty">
                   <option>COSC</option>
             </datalist>
@@ -111,10 +112,41 @@
 
 
 <script type="text/javascript">
+var validUser = false;
 
 $("#none").hide();
 $("#studentForm").hide();
 $("#profForm").hide();
+
+function checkUserName(){
+	var user = $("#username").val();
+	$.ajax({
+		type: 'POST',
+		url: 'php/checkUser.php',
+		data: {'username': ''+user},
+		success: function(responce){
+			console.log(responce);
+			if(responce==0){
+				//username is valid
+				console.log("username valid");
+				$("#username").removeClass("error");
+				$("#taken").html("");
+				validUser = true;
+			}
+			else if (responce==1) {
+				//userName is alreader taken
+				$("#username").val("");
+				$("#username").addClass("error");
+				$("#taken").html("Username already taken");
+				validUser = false;
+			}
+			else if(responce==2){
+				//connection failed
+				console.log("connection failed");
+			}
+		}
+	});
+}
 
 function addtoForm(){
 	
@@ -199,7 +231,9 @@ $("#signUpForm").on("submit", function(e){
 			if($("#username").val() != null && $("#username").val() != "" && $("#firstName").val() != null && $("#firstName").val() != "" && $("#lastName").val() != null && $("#lastName").val() != ""){
 				if($("#student").is(":checked")){
 					if($("#stuSchool").val() != null && $("#stuSchool").val() != "" && $("#studentNum").val() != null && $("#studentNum").val() != "" && $("#major").val() != null && $("#major").val() != ""){
-						$("#signUpForm")[0].submit();
+						if(validUser == true){
+							$("#signUpForm")[0].submit();
+						}
 					}
 					else{
 						highlightText($("#username"));
@@ -215,7 +249,9 @@ $("#signUpForm").on("submit", function(e){
 				}
 				else if($("#prof").is(":checked")){
 					if($("#profSchool").val() != null && $("#profSchool").val() != "" && $("#faculty").val() != null && $("#faculty").val() != ""){
-						$("#signUpForm")[0].submit();
+						if(validUser == true){
+							$("#signUpForm")[0].submit();
+						}
 					}
 					else{
 						highlightText($("#username"));
@@ -229,7 +265,9 @@ $("#signUpForm").on("submit", function(e){
 					}
 				}
 				else{
-					$("#signUpForm")[0].submit();
+					if(validUser == true){
+						$("#signUpForm")[0].submit();
+					}
 				}
 			}
 			else{
@@ -271,7 +309,6 @@ $("#signUpForm").on("submit", function(e){
 	}
 	
 });
-
 </script>
 
 </html>
