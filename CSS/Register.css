@@ -27,6 +27,7 @@ fieldset{
 	padding-bottom: 0.5em;
 	border: 2pt solid rgb(46, 108, 209);		
 	border-radius: 0.5em;
+	text-align: center;
 }
 .button{
 	font-size: 15px;

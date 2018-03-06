@@ -63,12 +63,32 @@
 				<input type = "text" name = "studentNum" placeholder = "Student Number" class = "info1" onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength="8"/>
 			</p>
 			<p class = "info"> 
-			<datalist id="schools" name="schools">
+			<input type="text" name="school" list="school" class="info1" placeholder="University"/>
+			<datalist id="school">
                   <option>University of Britsh Columbia - Okanagan</option>
                   <option>University of British Columbia - Vancouver</option>
                   <option>Okanagan College - Vernon</option>
-                  <option>Vancouver</option>
-               </datalist>
+                  <option>Okanagan College - Kelowna</option>
+            </datalist><br>
+            <input type="text" name="major" list="major"  class="info1" placeholder="Major"/>
+			<datalist id="major">
+                  <option>COSC</option>
+            </datalist>
+			</p>
+		</div>
+		<div id="profForm">
+			<p class = "info"> 
+			<input type="text" name="school" list="school" class="info1" placeholder="University"/>
+			<datalist id="school">
+                  <option>University of Britsh Columbia - Okanagan</option>
+                  <option>University of British Columbia - Vancouver</option>
+                  <option>Okanagan College - Vernon</option>
+                  <option>Okanagan College - Kelowna</option>
+            </datalist><br>
+            <input type="text" name="faculty" list="faculty"  class="info1" placeholder="Faculty"/>
+			<datalist id="faculty">
+                  <option>COSC</option>
+            </datalist>
 			</p>
 		</div>
 		</div>
@@ -93,19 +113,27 @@
 <script type="text/javascript">
 
 $("#none").hide();
+$("#studentForm").hide();
+$("#profForm").hide();
 
 function addtoForm(){
 	
 	if($("#student").is(":checked")){
 		console.log("student");
 		$("#none").show();
+		$("#profForm").hide();
+		$("#studentForm").show();
 	}
 	else if($("#prof").is(":checked")){
 		console.log("prof");
 		$("#none").show();
+		$("#studentForm").hide();
+		$("#profForm").show();
 	}
 	else if($("#none input").is(":checked")){
 		console.log("none");
+		$("#studentForm").hide();
+		$("#profForm").hide();
 	}
 
 }
