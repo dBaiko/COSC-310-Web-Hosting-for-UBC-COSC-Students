@@ -32,7 +32,7 @@
 	<div>
 		<h2>The Ultimate Project Database</h2>
 	</div>
-	<div id = "form"><form id="signUpForm" method = "post" action = "">
+	<div id = "form"><form id="signUpForm" method = "post" action = "php/newUser.php">
 	<fieldset>
 		<div>
 		<p class = "info"> 
@@ -113,10 +113,14 @@
 
 <script type="text/javascript">
 var validUser = false;
+checkUserName();
+
 
 $("#none").hide();
 $("#studentForm").hide();
 $("#profForm").hide();
+
+addtoForm();
 
 function checkUserName(){
 	var user = $("#username").val();
@@ -149,7 +153,6 @@ function checkUserName(){
 }
 
 function addtoForm(){
-	
 	if($("#student").is(":checked")){
 		console.log("student");
 		$("#none").show();
@@ -224,6 +227,7 @@ $("#faculty").on("input", function(){
 });
 
 $("#signUpForm").on("submit", function(e){
+	console.log(validUser);
 	e.preventDefault();
 	$("#warning").html("");
 	if($("#pass").val() == $("#passConf").val() && $("#pass").val() != null && $("#pass").val() != "" && $("#passConf").val() != null && $("#passConf").val() != ""){
