@@ -8,7 +8,7 @@ body{
 	margin: 1em;
 }
 #create{
-	background-color: black;
+	border-color: black;
 	padding: 1em;
 	border: 3px solid black;
 }
@@ -51,7 +51,7 @@ input[type="submit"]{
 	background-color: red;
 }
 footer{
-	position: absolute;
+	position: relative;
 	bottom: 0;
 	width: 100%;
 	clear: both;
@@ -60,3 +60,41 @@ footer{
 input[name="copyright"] {
 	width: 20%;
 }
+
+.cont{
+	margin: 0.5em 0.25em 0.5em 0em;
+}
+
+#pics{
+	position: relative;
+}
+
+#pics div{
+	display: block;
+}
+
+#pics div input{
+	margin-top: 2em;
+}
+
+#pics div img{
+	margin-top: 2em;
+	display: block;
+}
+
+#pdfs{
+	position: relative;
+}
+
+
+
+#pdfs div input{
+	margin-top: 2em;
+	
+}
+
+#pdfs div object{
+	margin-top: 2em;
+	display: block;
+}
+
