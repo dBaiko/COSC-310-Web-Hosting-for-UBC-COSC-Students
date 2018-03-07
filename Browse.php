@@ -1,3 +1,8 @@
+<?php 
+session_start();
+$user = $_SESSION["user"];
+?>
+
 <!DOCTYPE html> 
 <html>
 <head>
@@ -9,25 +14,28 @@
 </head>
 <body>
 <header>
+<h1>CSPub</h1>
+<div class = "right">
 	<div class = "dropdown">
-		<p> <img src = "Images/Bars.png" class = "icons"/> </p>
+		<p id = "dropimg"> <img src = "Images/Bars.png" class = "icons"/> </p>
 		<div class = "dropdown-content">
-			<ul>
-				<li> <a href = "home.html"> Home</a></li> 
-				<li> <a href = "Portfolio.html">Portfolio</a></li> 
-				<li> <a href = "Browse.html">Browse</a></li> 
-				<li> <a href = "CreateAProject.html">Create A Project</a></li>
+			<ul>					
+				<li> <a href = "Portfolio.php">Portfolio</a></li> 
+				<li> <a href = "Browse.php">Browse</a></li> 
+				<li> <a href = "CreateAProject.php">Create A Project</a></li>
 			</ul>
 		</div>
 	</div>
-	<h1>CSPub</h1>
-	<div class = "right">
-		<a href = "home.html" ><img src = "Images/Home.png" alt = "Home" class = "icons"/></a>
-		<a href = "notfication.html" ><img src = "Images/Notification.png" alt = "Notifications"class = "icons"/></a>
-		<p class = "icons"><a href = "SignIn.html">Sign In</a></p>
+		<?php 
+		if($user!=null){
+		    echo "<p id = 'signIn'><a href = 'index.php'>Log Out</a></p>";
+		}
+		else{
+		    echo "<p id = 'signIn'><a href = 'SignIn.php'>Sign In</a></p>";
+		}
+		?>
 	</div>
 </header>
-
 <div id="main">
 		<div id = "search">
 			<h2> Search</h2>
@@ -76,12 +84,12 @@
 		</div>
 		<div id = "dummyProject">
 				<h2>Projects:</h2>
-					<table class = "project">
+					<table class = "project" id = "website">
 						<caption>How To Build An Awesome Website</caption>
 						<thead>
 							<tr>
 								<th>By: DBroomfield</th>
-								<th class ="textright">Jan 24, 2018</th>
+								<th class ="textright">Feb 24, 2018</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -116,7 +124,7 @@
 							</tr>
 						</tfoot>	
 					</table>
-					<table class = "project">
+					<table class = "project" id = "project">
 						<caption>Managing A Successful Project</caption>
 						<thead>
 							<tr>
@@ -158,12 +166,12 @@
 								</td>
 							</tr>
 						</tbody>
-						<table class = "project">
+						<table class = "project" id = "database">
 						<caption>Building An Efficient Database </caption>
 						<thead>
 							<tr>
 								<th>By: DillyJB</th>
-								<th class ="textright">Sep 15, 2017</th>
+								<th class ="textright">Sep 15, 2016</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -212,7 +220,7 @@
 						<tfoot>
 							<tr>
 								<td colspan="2">
-									<p id = "copyright"> Copyright &copy; 2017 Building An Efficient Database </p>
+									<p id = "copyright"> Copyright &copy; 2016 Building An Efficient Database </p>
 								</td>
 							</tr>
 						</tfoot>	
@@ -222,8 +230,7 @@
 </div>
 <footer>
 	<ul>
-		<li class = "footerlinks"> <a href = "home.html">Home</a>
-		<li class = "footerlinks"> <a href = "About.html">About</a> </li>
+		<li class = "footerlinks"> <a href = "Browse.php">Browse</a>
 	</ul>
 	<p> Copyright &copy; 2018 CSPub</p>
 </footer>

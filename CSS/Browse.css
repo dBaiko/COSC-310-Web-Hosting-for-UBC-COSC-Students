@@ -1,7 +1,11 @@
 @charset "UTF-8";
+body{
+	margin-top: 5em;
+}
 #main{
 	background-color: rgb(46, 108, 209);	
 	padding: 1em;
+	margin: 1em;
 }
 #searchbar{
 	text-align: center;
@@ -80,9 +84,6 @@ caption{
 	background-color: white;
 	padding: 1em;
 	border: 3px solid black;
-}
-footer{
-	margin-top: 4em;
 }
 .textright{
 	text-align: right;

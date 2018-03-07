@@ -1,4 +1,12 @@
 @charset "UTF-8";
+body{
+	margin-top: 5em;
+}
+#main{
+	background-color: rgb(46, 108, 209);	
+	padding: 1em;
+	margin: 1em;
+}
 #web{
 	width: 300px;
 	height: 300px;
@@ -15,10 +23,6 @@
 	background-color: white;	
 	overflow: auto;
 	border: 3px solid black;
-}
-#main{
-	background-color: rgb(46, 108, 209);	
-	padding: 1em;
 }
 #info{
 	font-size: 80%;
@@ -66,6 +70,10 @@ caption{
 	text-align: left;
 }
 footer{
-	margin-top: 6em;
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	clear: both;
+	margin-top: auto;
 }
 
