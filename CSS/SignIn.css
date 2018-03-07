@@ -12,10 +12,6 @@ fieldset{
 	padding-top: 5em;
 	padding-bottom: 5em;
 }
-.right{
-	float:right;
-	padding:0.5em;
-}
 .info{
 	border-collapse: collapse;
 	margin:0em;

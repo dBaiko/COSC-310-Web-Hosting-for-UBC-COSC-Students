@@ -1,3 +1,7 @@
+<?php 
+session_start();
+$user = $_SESSION["user"];
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,10 +28,10 @@
 	</div>
 		<?php 
 		if($user!=null){
-		    echo "<p class = 'icons'><a href = 'index.php'>Log Out</a></p>";
+		    echo "<p id = 'signIn'><a href = 'index.php'>Log Out</a></p>";
 		}
 		else{
-		    echo "<p class = 'icons'><a href = 'SignIn.php'>Sign In</a></p>";
+		    echo "<p id = 'signIn'><a href = 'SignIn.php'>Sign In</a></p>";
 		}
 		?>
 	</div>
