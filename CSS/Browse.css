@@ -39,7 +39,7 @@ caption{
 th{
 	text-align: left;
 }
-a{
+#main a{
 	color: black;
 }
 #time:hover .dropdown-content , #type:hover .dropdown-content, #rating:hover .dropdown-content{
