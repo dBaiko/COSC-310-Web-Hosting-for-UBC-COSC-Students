@@ -36,11 +36,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             }
             if($valid){
                 $servername = "localhost";
-                $username = "cswebhosting";
+                $db_user = "cswebhosting";
                 $db_pass = "a9zEkajA";
                 $db = "cswebhosting";
                 
-                $conn =  mysqli_connect($servername, $username, $db_pass, $db);
+                $conn =  mysqli_connect($servername, $db_user, $db_pass, $db);
                 
                 $confirm = false;
                 
