@@ -4,12 +4,14 @@
 	padding: 1em;
 }
 #create{
-	background-color: white;
+	background-color: black;
 	padding: 1em;
 	border: 3px solid black;
 }
 fieldset{
 	border: none;
+}
+
 }
 legend{
 	font-size: 3em;
@@ -47,7 +49,11 @@ input[type="submit"]{
 	background-color: red;
 }
 footer{
-	margin-top: 11em;
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	clear: both;
+	margin-top: auto;
 }
 input[name="copyright"] {
 	width: 20%;

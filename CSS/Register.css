@@ -27,6 +27,7 @@ fieldset{
 	padding-bottom: 0.5em;
 	border: 2pt solid rgb(46, 108, 209);		
 	border-radius: 0.5em;
+	text-align: center;
 }
 .button{
 	font-size: 15px;
@@ -37,4 +38,11 @@ fieldset{
 	margin-top: 0.5em;
 	background-color: rgb(46, 108, 209);
 	color: white;
+}
+footer{
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	clear: both;
+	margin-top: auto;
 }
