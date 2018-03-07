@@ -39,5 +39,9 @@ fieldset{
 	color: white;
 }
 footer{
-	margin-top: 23.2em;
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	clear: both;
+	margin-top: auto;
 }

@@ -40,5 +40,9 @@ fieldset{
 	color: white;
 }
 footer{
-	margin-top: 23.7em;
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	clear: both;
+	margin-top: auto;
 }
