@@ -66,6 +66,10 @@ caption{
 	text-align: left;
 }
 footer{
-	margin-top: 6em;
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	clear: both;
+	margin-top: auto;
 }
 
