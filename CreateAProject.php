@@ -11,22 +11,26 @@
 </head>
 <body>
 <header>
+<h1>CSPub</h1>
+<div class = "right">
 	<div class = "dropdown">
-		<p> <img src = "Images/Bars.png" class = "icons"/> </p>
+		<p id = "dropimg"> <img src = "Images/Bars.png" class = "icons"/> </p>
 		<div class = "dropdown-content">
-			<ul>
-				<li> <a href = "home.html"> Home</a></li> 
-				<li> <a href = "Portfolio.html">Portfolio</a></li> 
-				<li> <a href = "Browse.html">Browse</a></li> 
-				<li> <a href = "CreateAProject.html">Create A Project</a></li>
+			<ul>					
+				<li> <a href = "Portfolio.php">Portfolio</a></li> 
+				<li> <a href = "Browse.php">Browse</a></li> 
+				<li> <a href = "CreateAProject.php">Create A Project</a></li>
 			</ul>
 		</div>
 	</div>
-	<h1>CSPub</h1>
-	<div class = "right">
-		<a href = "home.html" ><img src = "Images/Home.png" alt = "Home" class = "icons"/></a>
-		<a href = "notfication.html" ><img src = "Images/Notification.png" alt = "Notifications"class = "icons"/></a>
-		<p class = "icons"><a href = "SignIn.html">Sign In</a></p>
+		<?php 
+		if($user!=null){
+		    echo "<p id = 'signIn'><a href = 'index.php'>Log Out</a></p>";
+		}
+		else{
+		    echo "<p id = 'signIn'><a href = 'SignIn.php'>Sign In</a></p>";
+		}
+		?>
 	</div>
 </header>
 
