@@ -19,7 +19,7 @@ if($sql = $conn->prepare($stm)){
     $row = mysqli_fetch_array($result);
     ?>
     <h1>Congratulations <?php echo $row["firstName"]?>! Your account has been created</h1>
-    <a href="SignIn.html">Proceed to login</a>
+    <a href="SignIn.php">Proceed to login</a>
     <?php
 } else {
     $error = $conn->errno . ' ' . $conn->error;
