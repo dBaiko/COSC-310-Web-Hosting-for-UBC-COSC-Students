@@ -1,3 +1,7 @@
+<?php 
+session_start();
+$user = $_SESSION["user"];
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,22 +16,26 @@
 </head>
 <body>
 <header>
+<h1>CSPub</h1>
+<div class = "right">
 	<div class = "dropdown">
-			<p> <img src = "Images/Bars.png" class = "icons"/> </p>
-			<div class = "dropdown-content">
-				<ul>
-					<li> <a href = "home.html"> Home</a></li> 
-					<li> <a href = "Portfolio.html">Portfolio</a></li> 
-					<li> <a href = "Browse.html">Browse</a></li> 
-					<li> <a href = "CreateAProject.html">Create A Project</a></li>
-				</ul>
-			</div>
+		<p id = "dropimg"> <img src = "Images/Bars.png" class = "icons"/> </p>
+		<div class = "dropdown-content">
+			<ul>					
+				<li> <a href = "Portfolio.php">Portfolio</a></li> 
+				<li> <a href = "Browse.php">Browse</a></li> 
+				<li> <a href = "CreateAProject.php">Create A Project</a></li>
+			</ul>
 		</div>
-	<h1>CSPub</h1>
-	<div class = "right">
-			<a href = "home.html" ><img src = "Images/Home.png" alt = "Home" class = "icons"/></a>
-			<a href = "notfication.html" ><img src = "Images/Notification.png" alt = "Notifications"class = "icons"/></a>
-			<p class = "icons"><a href = "SignIn.html">Sign In</a></p>
+	</div>
+		<?php 
+		if($user!=null){
+		    echo "<p class = 'icons'><a href = 'index.php'>Log Out</a></p>";
+		}
+		else{
+		    echo "<p class = 'icons'><a href = 'SignIn.php'>Sign In</a></p>";
+		}
+		?>
 	</div>
 </header>
 	<div id="main">
@@ -49,25 +57,24 @@
 		</div>
 		<input type = "submit" class = "button" value = "Sign In" id="sub">
 		<p>
-			<a href = "forgotuser.html">Forgot Username</a>
+			<a href = "">Forgot Username</a>
 		</p>
 		<p>
-			<a href = "forgotpass.html">Forgot Password</a>
+			<a href = "">Forgot Password</a>
 		</p>
 	</fieldset>
 	</form>	
 	</div>
 	<div>
-	<h3>WHAT? You are new to CSPub? <a href = "Register.html">Sign up</a> ASAP Then!</h3>
+	<h3>WHAT? You are new to CSPub? <a href = "Register.php">Sign up</a> ASAP Then!</h3>
 	</div>
 	</section>
 	</div>
 <footer>
-	<ul>	
-		<li class = "footerlinks"> <a href = "home.html">Home</a>
-		<li class = "footerlinks"> <a href = "About.html">About</a> </li>
+	<ul>
+		<li class = "footerlinks"> <a href = "Browse.php">Browse</a>
 	</ul>
-	<p> Copyright &copy; 2018 CSPub
+	<p> Copyright &copy; 2018 CSPub</p>
 </footer>
 </body>
 <script>

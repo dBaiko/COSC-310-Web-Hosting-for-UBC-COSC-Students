@@ -46,3 +46,18 @@ footer{
 	clear: both;
 	margin-top: auto;
 }
+.dropdown{
+	margin-right: 4em;
+}
+.right, .dropdown{
+	top: 0px;
+	height: 4em;
+	padding: 0em;
+}
+.dropdown-content{
+	margin: 0em;
+	padding: 0em;
+}
+#dropimg{
+	margin: 0em;
+}
