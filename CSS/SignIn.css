@@ -12,10 +12,6 @@ fieldset{
 	padding-top: 5em;
 	padding-bottom: 5em;
 }
-.right{
-	float:right;
-	padding:0.5em;
-}
 .info{
 	border-collapse: collapse;
 	margin:0em;
@@ -45,4 +41,19 @@ footer{
 	width: 100%;
 	clear: both;
 	margin-top: auto;
+}
+.dropdown{
+	margin-right: 4em;
+}
+.right, .dropdown{
+	top: 0px;
+	height: 4em;
+	padding: 0em;
+}
+.dropdown-content{
+	margin: 0em;
+	padding: 0em;
+}
+#dropimg{
+	margin: 0em;
 }

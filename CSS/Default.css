@@ -8,7 +8,6 @@ body{
 	margin-top: 4em;
 }
 header{
-	text-align: center;
 	top: 0px;
 	width: 100%;
 	position:fixed;
@@ -16,7 +15,6 @@ header{
 	margin-Bottom: 15em;
 	z-index: 1;
 	height: 4em;
-	margin-left: -0.5em;
 }
 footer{
 	background-color: rgb(46, 108, 209);
@@ -33,6 +31,7 @@ h1{
 	display: inline;	
 	color: white;
 	font-size: 3em;
+	margin-left: 0.3em;
 }
 a{
 	color:  white;
@@ -67,7 +66,6 @@ a{
 }
 .right{
 	float:right;
-	padding:0.5em;
 }
 .footerlinks{
 	display: inline;
@@ -79,4 +77,27 @@ footer p{
 }
 .error{
 	background-color:red;
+}
+.dropdown{
+	margin-right: 2.7em;
+	margin-top: 0.5em;
+}
+.right, .dropdown{
+	top: 0px;
+	height: 4em;
+	padding: 0em;
+}
+.dropdown-content{
+	margin: 0em;
+	padding: 0em;
+}
+#dropimg{
+	margin: 0em;
+}
+#signIn{
+	display: inline;
+	font-size: 1.3em;
+	height: 4em;
+	line-height: 2.5em;
+	margin-right: 0.3em;
 }
