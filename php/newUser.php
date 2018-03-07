@@ -4,27 +4,27 @@ ini_set('display_errors', 1);
 session_start();
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     $userName = $_POST["username"];
-    echo $userName . "<br>";
+    //echo $userName . "<br>";
     $firstName = $_POST["firstName"];
-    echo $firstName . "<br>";
+    //echo $firstName . "<br>";
     $lastName = $_POST["lastName"];
-    echo $lastName . "<br>";
+    //echo $lastName . "<br>";
     $password = $_POST["pass"];
-    echo $password . "<br>";
+    //echo $password . "<br>";
     $passConf = $_POST["passConf"];
-    echo $passConf . "<br>";
+    //echo $passConf . "<br>";
     $email = $_POST["email"];
-    echo $email . "<br>";
+   // echo $email . "<br>";
     $studentNum = $_POST["studentNum"];
-    echo $studentNum . "<br>";
+    //echo $studentNum . "<br>";
     $stuSchool = $_POST["stuSchool"];
-    echo $stuSchool . "<br>";
+    //echo $stuSchool . "<br>";
     $major = $_POST["major"];
-    echo $major . "<br>";
+    //echo $major . "<br>";
     $profSchool = $_POST["profSchool"];
-    echo $profSchool . "<br>";
+    //echo $profSchool . "<br>";
     $faculty = $_POST["faculty"];
-    echo $faculty . "<br>";
+    //echo $faculty . "<br>";
     
    
     if($userName != null && $userName != "" && $firstName != null && $firstName != "" && $lastName != null && $lastName != "" && $password != null && $password != "" && $passConf != null && $passConf != "" &&  $email != null  && $email != ""){                                              
@@ -82,6 +82,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
                     }
                     
                 }
+                else if($profSchool != null && $profSchool != "" && $faculty != null && $faculty != ""){
+                    //incert into prof table
+                    $profSchool = chop($profSchool);
+                    $faculty = chop($faculty);
+                    
+                    $stm = "INSERT INTO Professor (userName, faculty, school) VALUES (?,?,?)";
+                    if($sql = $conn->prepare($stm)){
+                        $sql->bind_param("sss", $userName, $faculty, $profSchool);
+                        $sql->execute();
+                    } else {
+                        $error = $conn->errno . ' ' . $conn->error;
+                        echo $error;
+                    }
+                    
+                }
+                
+                if($confirm == true){
+                    ?>
+                    <meta http-equiv="refresh" content="0; URL='../confirmNewUser.php'"/>
+                    <?php
+                }
                 
                 
                 
@@ -97,6 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             <meta http-equiv="refresh" content="0; URL='../Register.html'"/>
             <?php
         }
+        mysqli_close($conn);
     }
     else{
         ?>
