@@ -11,7 +11,7 @@ CREATE TABLE User(
 CREATE TABLE Student(
 	userName VARCHAR(30) NOT NULL,
 	studentNum VARCHAR(8) NOT NULL,
-	school VARCHAR(30),
+	school VARCHAR(255),
 	major VARCHAR(30),
 	PRIMARY KEY(userName,studentNum),
 	FOREIGN KEY(userName) REFERENCES User(userName)
@@ -20,7 +20,7 @@ CREATE TABLE Student(
 CREATE TABLE Professor(
 	userName VARCHAR(30) NOT NULL,
 	faculty VARCHAR(30) NOT NULL,
-	school VARCHAR(30),
+	school VARCHAR(255),
 	PRIMARY KEY(userName, faculty),
 	FOREIGN KEY(userName) REFERENCES User(userName)
 );
