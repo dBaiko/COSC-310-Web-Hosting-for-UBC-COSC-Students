@@ -31,7 +31,7 @@
 </header>
 
 <div id="main">
-		<form method = "post" action = "" id = "create" enctype="multipart/form-data">
+		<form method = "post" action = "php/newProject.php" id = "create" enctype="multipart/form-data">
 			<fieldset>
 				<legend> Create a Project </legend>
 					<p>
@@ -51,14 +51,16 @@
 					</p>
 					<div id = "pics">
 						<label>Images (PNG, JPG, JPEG):</label><br>
-						<span>
+						<div>
 						<input type="file" accept=".png, .jpg, .jpeg" onchange="addPicFile(this)" name="pics[]"/>
-						</span>
+						</div>
 					</div>
-					<p id="pdfs">
+					<div id="pdfs">
 						<label>Additional Documents (PDF only):</label>
+						<div>
 						<input type="file" accept=".pdf" onchange="addPdfFile(this)"/>
-					</p>
+						</div>
+					</div>
 					<p id="pdfPreview">
 					</p>
 					<p>
@@ -82,6 +84,60 @@
 </footer>
 </body>
 <script>
+numPdf = 0;
+
+function addPdfFile(e){
+	var file = e.files[0];
+	if(checkPdfFile(file) == true){
+		var reader = new FileReader();
+		
+		reader.onload = function(em){
+			if($(e).next().next().length){
+				console.log("what");
+				$(e).next().next().attr("data", em.target.result);
+			}
+			else{
+				$(e).parent().append("<button type=\"button\" onclick=\"removePdf(this)\">X</button><object data=\""+em.target.result+"\"type=\"application/pdf\" style=\"height:50%;width:30%\"></object>");
+				$("#pdfs").append("<div><input type=\"file\" accept=\".pdf\" onchange=\"addPdfFile(this)\" name=\"pics[]\"/></div>")
+			}
+			
+		}
+		
+		reader.readAsDataURL(file);
+	}
+	else{
+		$(e).val("");
+	}
+	numPdf++;
+	
+}
+
+function checkPdfFile(file){
+	if(!file)
+		return false;
+	var correct = false;
+	var name = file.name;
+	var type = name.split(".")[1];
+	if(type == "pdf"){
+		return true;
+	}
+	else{
+		alert("Please only choose PNG or JPG file type");
+		return false;
+	}
+	
+}
+
+
+function removePdf(e){
+	console.log("het");
+	$(e).prev().val("");
+	$(e).parent().remove();
+	numPdf--;
+}
+
+
+
 numPic = 0;
 
 function addPicFile(e){
@@ -90,13 +146,13 @@ function addPicFile(e){
 		var reader = new FileReader();
 		
 		reader.onload = function(em){
-			if($(e).next().length){
+			if($(e).next().next().length){
 				console.log("what");
-				$(e).next().attr("src", em.target.result);
+				$(e).next().next().attr("src", em.target.result);
 			}
 			else{
-				$(e).parent().append("<button type=\"button\" onclick=\"removePic(this)\">X</button><img src=\""+em.target.result+"\" style=\"width:30%;\"/>");
-				$("#pics").append("<span><input type=\"file\" accept=\".png, .jpg, .jpeg\" onchange=\"addPicFile(this)\" name=\"pics[]\"/></span>")
+				$(e).parent().append("<button type=\"button\" onclick=\"removePic(this)\">X</button><img src=\""+em.target.result+"\" style=\"width:30%;\" style=\"display:block;\"/>");
+				$("#pics").append("<div><input type=\"file\" accept=\".png, .jpg, .jpeg\" onchange=\"addPicFile(this)\" name=\"pics[]\"/></div>")
 			}
 			
 		}

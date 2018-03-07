@@ -67,13 +67,32 @@ input[name="copyright"] {
 	position: relative;
 }
 
-#pics span input{
-	margin-top: 2em;
-	position: absolute;
-	top: 0;
+#pics div{
+	display: block;
 }
 
-#pics img{
+#pics div input{
 	margin-top: 2em;
+}
+
+#pics div img{
+	margin-top: 2em;
+	display: block;
+}
+
+#pdfs{
+	position: relative;
+}
+
+
+
+#pdfs div input{
+	margin-top: 2em;
+	
+}
+
+#pdfs div object{
+	margin-top: 2em;
+	display: block;
 }
 
