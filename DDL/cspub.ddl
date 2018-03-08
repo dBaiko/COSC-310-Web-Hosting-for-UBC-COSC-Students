@@ -46,7 +46,6 @@ CREATE TABLE Published(
 	userName VARCHAR(30) NOT NULL,
 	studentNum VARCHAR(8) NOT NULL,
 	projectId INT NOT NULL,
-	responsibility VARCHAR(30),
 	PRIMARY KEY(userName, studentNum, projectId),
 	FOREIGN KEY(userName, studentNum) REFERENCES Student(userName, studentNum),
 	FOREIGN KEY(projectId) REFERENCES Project(projectId)
