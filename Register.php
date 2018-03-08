@@ -1,6 +1,8 @@
-<?php 
+<?php
 session_start();
-$user = $_SESSION["user"];
+if(isset($_SESSION['user'])){
+    $user = $_SESSION['user'];
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -12,20 +14,15 @@ $user = $_SESSION["user"];
 <!--<script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>-->
 <script src="Javascript/jquery-3.1.1.min.js"></script>
 </head>
-<configuration>
-    <system.web>
-    <webServices>
-        <protocols>
-            <add name="HttpPost"/>
-        </protocols>
-    </webServices>
-    </system.web>
-</configuration>
 <body>
 <header>
 <h1>CSPub</h1>
 <div class = "right">
-	<div class = "dropdown">
+		<?php 
+		if(isset($_SESSION["user"])){ 
+		    echo "<p id = 'signIn'><a href = 'php/logUserOut.php'>Log Out</a></p>";
+		    ?>
+		    <div class = "dropdown">
 		<p id = "dropimg"> <img src = "Images/Bars.png" class = "icons"/> </p>
 		<div class = "dropdown-content">
 			<ul>					
@@ -35,9 +32,7 @@ $user = $_SESSION["user"];
 			</ul>
 		</div>
 	</div>
-		<?php 
-		if($user!=null){
-		    echo "<p id = 'signIn'><a href = 'index.php'>Log Out</a></p>";
+		    <?php
 		}
 		else{
 		    echo "<p id = 'signIn'><a href = 'SignIn.php'>Sign In</a></p>";
