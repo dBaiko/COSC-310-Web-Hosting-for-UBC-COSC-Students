@@ -1,6 +1,8 @@
-<?php 
+<?php
 session_start();
-$user = "";
+if(isset($_SESSION['user'])){
+    $user = $_SESSION['user'];
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -17,19 +19,21 @@ $user = "";
 <header>
 <h1>CSPub</h1>
 <div class = "right">
-	<div class = "dropdown">
-		<p id = "dropimg"> <img src = "Images/Bars.png" class = "icons"/> </p>
-		<div class = "dropdown-content">
-			<ul>					
-				<li> <a href = "Portfolio.php">Portfolio</a></li> 
-				<li> <a href = "Browse.php">Browse</a></li> 
-				<li> <a href = "CreateAProject.php">Create A Project</a></li>
-			</ul>
-		</div>
-	</div>
 		<?php 
-		if($user!=null){
-		    echo "<p id = 'signIn'><a href = 'index.php'>Log Out</a></p>";
+		if(isset($_SESSION["user"])){ 
+		    echo "<p id = 'signIn'><a href = 'php/logUserOut.php'>Log Out</a></p>";
+		    ?>
+		    <div class = "dropdown">
+				<p id = "dropimg"> <img src = "Images/Bars.png" class = "icons"/> </p>
+				<div class = "dropdown-content">
+					<ul>					
+						<li> <a href = "Portfolio.php">Portfolio</a></li> 
+						<li> <a href = "Browse.php">Browse</a></li> 
+						<li> <a href = "CreateAProject.php">Create A Project</a></li>
+					</ul>
+				</div>
+			</div>
+		    <?php
 		}
 		else{
 		    echo "<p id = 'signIn'><a href = 'SignIn.php'>Sign In</a></p>";
