@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $type = "Other";
     }
     echo "<br>".$type;
-    if ($_POST['contributor'] != null) {
+    if (isset($_POST['contributor'])) {
         foreach ($_POST['contributor'] as $index => $value) {
             $contributors[] = $value;
         }
