@@ -360,7 +360,7 @@ $("#create").on("submit",function(e){
 
 </script>
 </html>    
-    <?php
+    <?php  
 }
 else{
     ?>

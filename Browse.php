@@ -19,7 +19,7 @@ if(isset($_SESSION['user'])){
 <h1>CSPub</h1>
 <div class = "right">
 		<?php 
-		if(isset($_SESSION["user"])){
+		if(isset($_SESSION["user"])){ 
 		    echo "<p id = 'signIn'><a href = 'php/logUserOut.php'>Log Out</a></p>";
 		    ?>
 		    <div class = "dropdown">
