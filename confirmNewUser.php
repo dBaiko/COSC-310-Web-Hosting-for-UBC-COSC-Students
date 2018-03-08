@@ -22,7 +22,9 @@ if($sql = $conn->prepare($stm)){
     <h1>Congratulations <?php echo $u?>! Your new account has been created.</h1>
 
     <a href="SignIn.php">Proceed to login</a>
+    
     <?php
+    unset($_SESSION['user']);
 } else {
     $error = $conn->errno . ' ' . $conn->error;
     echo $error;

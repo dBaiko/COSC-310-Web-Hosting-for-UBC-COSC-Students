@@ -5,7 +5,7 @@ if(isset($_SESSION['user'])){
 }
 ?>
 <?php 
-if(isset($_SESSION('user'))){
+if(isset($_SESSION['user'])){
     ?>
 <!DOCTYPE html>
 <html>
