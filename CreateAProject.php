@@ -73,8 +73,26 @@ $user = $_SESSION["user"];
 					<p id="pdfPreview">
 					</p>
 					<p>
-						<label>Project Links: </label>
+						<label>Project Links (GitHub, Youtube Demos etc.): </label>
 						<input type = "text" name = "link" placeholder="Project Links" />
+					</p>
+					<p>
+						<label>Project Type:</label>
+						<select name="projType">
+							<option>Web Development</option>
+							<option>Mobile Application</option>
+							<option>Data Science</option>
+							<option>Object Oriented Programs (Java, C# etc.)</option>
+							<option>Robotics/Arduino/Raspberry Pi</option>
+							<option>Biology Technology</option>
+							<option>Parallel Computing</option>
+							<option>Games</option>
+							<option>Virtual Reality</option>
+							<option>3D Modeling/Printing</option>
+							<option>Math/Optimization</option>
+							<option>Algorithm Development</option>
+							<option>Other</option>
+						</select>
 					</p>
 					
 					<p id = "center">
