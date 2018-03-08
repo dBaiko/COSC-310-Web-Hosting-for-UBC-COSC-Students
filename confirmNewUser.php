@@ -18,7 +18,9 @@ if($sql = $conn->prepare($stm)){
     $sql->bind_result($u);
     $sql->fetch();
     ?>
+
     <h1>Congratulations <?php echo $u?>! Your new account has been created.</h1>
+
     <a href="SignIn.php">Proceed to login</a>
     <?php
 } else {

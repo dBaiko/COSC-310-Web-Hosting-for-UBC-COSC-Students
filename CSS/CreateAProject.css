@@ -58,7 +58,7 @@ footer{
 	bottom: 0;
 	width: 100%;
 	clear: both;
-	margin-top: auto;
+	margin-top: 10.6em;
 }
 input[name="copyright"] {
 	width: 20%;
@@ -88,8 +88,6 @@ input[name="copyright"] {
 #pdfs{
 	position: relative;
 }
-
-
 
 #pdfs div input{
 	margin-top: 2em;

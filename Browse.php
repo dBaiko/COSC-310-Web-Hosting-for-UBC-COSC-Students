@@ -166,6 +166,14 @@ $user = $_SESSION["user"];
 								</td>
 							</tr>
 						</tbody>
+						<tfoot>
+							<tr>
+								<td colspan="2">
+									<p id = "copyright"> Copyright &copy; 2017  Managing A Successful Project</p>
+								</td>
+							</tr>
+						</tfoot>	
+						</table>
 						<table class = "project" id = "database">
 						<caption>Building An Efficient Database </caption>
 						<thead>
