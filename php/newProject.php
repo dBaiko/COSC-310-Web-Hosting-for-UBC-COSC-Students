@@ -10,6 +10,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $desc = $_POST["description"];
     echo "<br>" . $desc;
     $contributors = array();
+    $type = $_POST["projType"];
+    if($type == null || $type == ""){
+        $type = "Other";
+    }
+    echo "<br>".$type;
     if ($_POST['contributor'] != null) {
         foreach ($_POST['contributor'] as $index => $value) {
             $contributors[] = $value;
@@ -80,9 +85,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $title = chop($title);
     $desc = chop($desc);
     $link = chop($link);
-    $stm = "INSERT INTO Project (projectTitle, projDesc, demoUrl, date) VALUES (?,?,?, NOW())";
+    $stm = "INSERT INTO Project (projectTitle, projDesc, demoUrl, date, projType) VALUES (?,?,?, NOW(),?)";
     if ($sql = $conn->prepare($stm)) {
-        $sql->bind_param("sss", $title, $desc, $link);
+        $sql->bind_param("ssss", $title, $desc, $link, $type);
         $sql->execute();
         $id = mysqli_insert_id($conn);
         echo "<br>" . $id;

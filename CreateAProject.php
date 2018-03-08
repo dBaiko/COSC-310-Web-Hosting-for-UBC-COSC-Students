@@ -45,12 +45,12 @@ $user = $_SESSION["user"];
 				<legend> Create a Project </legend>
 					<p>
 						<label>Title: </label>
-						<input type = "text" name = "title" placeholder="Enter Project title" class = "required"/>
+						<input type = "text" name = "title" placeholder="Enter Project title" class = "required" id="title"/>
 					</p>
 			
 						<label>Description: </label>
 						<div id="description" >
-							<textarea name="description" rows="15" cols ="80" class = "required"></textarea>
+							<textarea name="description" rows="15" cols ="80" class = "required" id="desc"></textarea>
 						</div>
 					<p>
 						<label>Any other contributors?</label>
@@ -78,7 +78,8 @@ $user = $_SESSION["user"];
 					</p>
 					<p>
 						<label>Project Type:</label>
-						<select name="projType">
+						<select name="projType" class="required" id="type">
+							<option value="" disabled selected>Select your option</option>
 							<option>Web Development</option>
 							<option>Mobile Application</option>
 							<option>Data Science</option>
@@ -304,6 +305,52 @@ function checkUser(e){
 	});
 	
 }
+
+function highlightText(e) {
+	if (e.val() == "") {
+		e.addClass("empty");
+	} else {
+		e.removeClass("empty");
+	}
+}
+
+function highlightDrop(e) {
+	if (e.val() == "" || e.val() == null) {
+		e.addClass("empty");
+	} else {
+		e.removeClass("empty");
+	}
+}
+
+
+$("#title").on("input", function(){
+	highlightText($(this));
+});
+
+$("#desc").on("input", function(){
+	highlightText($(this));
+});
+
+
+$("#type").on("change", function(){
+	highlightDrop($(this));
+});
+
+$("#create").on("submit",function(e){
+	e.preventDefault();
+	if($("#title").val() != "" && $("#title").val() != "" && $("#desc").val() != null && $("#desc").val() != "" && $("#type").val() != null && $("#type").val() != ""){
+		console.log("true");
+		$("#create")[0].submit();
+	}
+	else{
+		console.log("false");
+		highlightText($("#title"));
+		highlightText($("#desc"));
+		highlightDrop($("#type"));
+	}	
+});
+
+
 
 </script>
 </html>
