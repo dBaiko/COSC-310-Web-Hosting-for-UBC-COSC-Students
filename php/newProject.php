@@ -22,68 +22,52 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $link = $_POST["link"];
     echo "<br>" . $link;
     
-    $picsFileNames = NULL;
-    $pdfsFileNames = NULL;
-    $picFileTypes = NULL;
-    $pdfsFileTypes = NULL;
-    $pdfFiles = NULL;
-    $picFiles = NULL;
+    $fileNames = array();
+    $fileTypes = array();
+    $files = array();
     
     if ($_FILES['pics']['name'] != null) {
-        $picsFileNames = array();
-        $picFileTypes = array();
-        $picFiles = array();
         foreach ($_FILES['pics']['name'] as $x => $value) {
-            $picsFileNames[] = $value;
-            $tmp = substr($value, strrpos($value, "."));
-            $picFileTypes[] = substr($tmp, 1);
+            if($value != null){
+                $fileNames[] = $value;
+                $tmp = substr($value, strrpos($value, "."));
+                $fileTypes[] = substr($tmp, 1);
+            }
+            
         }
-        
-        array_pop($picFileTypes);
-        array_pop($picsFileNames);
         foreach ($_FILES["pics"]["tmp_name"] as $x => $value) {
             if ($value != null) {
                 $content = file_get_contents($value);
-                $picFiles[] = $content;
+                $files[] = $content;
             }
         }
     }
     
     if ($_FILES['pdfs']['name'] != null) {
-        $pdfsFileNames = array();
-        $pdfsFileTypes = array();
-        $pdfFiles = array();
         foreach ($_FILES['pdfs']['name'] as $i => $value) {
-            $pdfsFileNames[] = $value;
-            $tmp = substr($value, strrpos($value, "."));
-            $pdfsFileTypes[] = substr($tmp, 1);
+            if($value != null){
+                $fileNames[] = $value;
+                $tmp = substr($value, strrpos($value, "."));
+                $fileTypes[] = substr($tmp, 1);
+            }
+            
         }
-        
-        array_pop($pdfsFileNames);
-        array_pop($pdfsFileTypes);
         foreach ($_FILES["pdfs"]["tmp_name"] as $x => $value) {
             if ($value != null) {
                 $content = file_get_contents($value);
-                $picFiles[] = $content;
+                $files[] = $content;
             }
         }
     }
     
-    foreach ($picsFileNames as $x => $value) {
-        echo "<br>Value= " . $value;
+    foreach ($fileNames as $x => $value) {
+        echo "<br>Key= ". $x ." Value= " . $value;
     }
     
-    foreach ($picFileTypes as $x => $value) {
-        echo "<br>Value= " . $value;
+    foreach ($fileTypes as $x => $value) {
+        echo "<br>Key= ". $x ." Value= " . $value;
     }
     
-    foreach ($pdfsFileNames as $x => $value) {
-        echo "<br>Value= " . $value;
-    }
-    
-    foreach ($pdfsFileTypes as $x => $value) {
-        echo "<br>Value= " . $value;
-    }
     
     $servername = "localhost";
     $db_user = "cswebhosting";
@@ -128,15 +112,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $sq->execute();
            $sq->close();
             if(!empty($contributors)){
-                echo "<br>HERE";
                 $sqlAdd = $conn->prepare($s);
                 $sqlAdd->bind_param("sss", $val, $stu, $id);
                 foreach ($contributors as $x => $val){
-                    echo "<br>HERE2";
                     $stu = "";
                     $stmGetStu = "SELECT studentNum FROM Student WHERE userName = ?";
                     if($sqlStu = $conn->prepare($stmGetStu)){
-                        echo "<br>HERE3";
                         $sqlStu->bind_param("s", $val);
                         $sqlStu->execute();
                         $sqlStu->bind_result($stu);
@@ -146,17 +127,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         $error = $conn->errno . ' ' . $conn->error;
                         echo $error;
                     }
-                    echo "<br>HERE4 ".$stu . " " . $val . " " . $id;
-                        $sqlAdd->bind_param("sss",$val,$stu,$id);
                         $sqlAdd->execute();
                        
                     
                 }
+                $sqlAdd->close();
             }
         }else{
             $error = $conn->errno . ' ' . $conn->error;
             echo $error;
         }
+        
+        $stmFiles = "INSERT INTO Files (projectId, fileName, file, fileType) VALUES (?,?,?,?);";
+        if($sqlFiles = $conn->prepare($stmFiles)){
+            $name = "";
+            $type = "";
+            $fileC = "";
+            $null = NULL;
+            $sqlFiles->bind_param("ssbs", $id,$name,$null,$type);
+            foreach ($files as $key => $fValue){
+                $name = $fileNames[$key];
+                $type = $fileTypes[$key];
+                $fileC = $fValue;
+                $sqlFiles->send_long_data(2,$fileC);
+                $sqlFiles->execute();
+            }
+        }
+        $sqlFiles->close();
+        $conn->close();
+        ?>
+         <meta http-equiv="refresh" content="0; URL='../confirmNewProject.php'"/>
+        <?php    
+    
     }
 
 
