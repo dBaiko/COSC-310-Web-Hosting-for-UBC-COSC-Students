@@ -24,14 +24,15 @@ else{
         $username = $_POST["username"];
         $username = mysqli_real_escape_string($link,$username);
         
-        $stm = "SELECT userName FROM User WHERE userName = ?";
-        if($sql = $link->prepare($stm)){
-            $sql->bind_param("s", $username);
-            $sql->execute();
-            $result = mysqli_stmt_get_result($sql);
+        $s = "SELECT userName FROM User WHERE userName = ?";
+        if($stm = $link->prepare($s)){
+            $stm->bind_param("s", $username);
+            $stm->execute();
+            $stm->bind_result($u);
             
-            $count = mysqli_num_rows($result);
-            if($count == 0){
+            $stm->fetch();
+            
+            if(!$u){
                 echo "0";
             }
             else{

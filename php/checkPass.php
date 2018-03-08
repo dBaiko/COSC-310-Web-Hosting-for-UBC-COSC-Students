@@ -28,12 +28,10 @@ else{
         if($sql = $link->prepare($stm)){
             $sql->bind_param("s", $username);
             $sql->execute();
-            $result = mysqli_stmt_get_result($sql);
+            $sql->bind_result($dbPass, $dbSalt);
             
-            $row = mysqli_fetch_array($result);
+            $sql->fetch();
             
-            $dbPass = $row['password'];
-            $dbSalt = $row['salt'];
             
             $pass = $_POST["pass"];
             
