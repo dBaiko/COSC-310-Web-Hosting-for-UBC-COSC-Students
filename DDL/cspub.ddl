@@ -31,7 +31,7 @@ CREATE TABLE Project(
 	projDesc LONGTEXT,
 	demoUrl VARCHAR(255),
 	date DATETIME,
-	type VARCHAR(50)
+	projType VARCHAR(50)
 );
 
 CREATE TABLE Files(
