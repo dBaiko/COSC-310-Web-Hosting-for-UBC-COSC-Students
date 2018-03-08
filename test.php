@@ -16,7 +16,7 @@
 	
 	if(isset($_POST["submit"])){
 	    $check = getimagesize($_FILES["file"]["tmp_name"]);
-	    if($check !== false){
+	    if(true){
 	        $image = $_FILES["file"]["tmp_name"];
 	        $imgContent = file_get_contents($image);
 	        
@@ -46,8 +46,7 @@
 	        $res = $conn->query($stmt);
 	        
 	        while($result=mysqli_fetch_array($res)){;
-	        
-	        echo '<img src="data:image/png;base64,'.base64_encode($result['file']).'"/>';
+	        echo '<object data="data:application/pdf;base64,'.base64_encode($result['file']).'" type="application/pdf" style="height:200px;width:60%"></object>';
 	        
 	        }
 	        

@@ -9,9 +9,18 @@ $user = $_SESSION["user"];
 <title>CSPub ~ Register</title>
 <link rel="stylesheet" type="text/css" href="CSS/Default.css">
 <link rel="stylesheet" type="text/css" href="CSS/Register.css">
-<script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+<!--<script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>-->
 <script src="Javascript/jquery-3.1.1.min.js"></script>
 </head>
+<configuration>
+    <system.web>
+    <webServices>
+        <protocols>
+            <add name="HttpPost"/>
+        </protocols>
+    </webServices>
+    </system.web>
+</configuration>
 <body>
 <header>
 <h1>CSPub</h1>
@@ -156,7 +165,7 @@ function checkUserName(){
 				console.log("connection failed");
 			}
 		}
-	});
+		});
 }
 
 function addtoForm(){

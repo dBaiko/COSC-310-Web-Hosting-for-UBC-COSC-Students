@@ -1,6 +1,6 @@
 <?php 
 session_start();
-$user = $_SESSION["user"];
+$user = "";
 ?>
 <!DOCTYPE html>
 <html>
@@ -9,7 +9,6 @@ $user = $_SESSION["user"];
 <title>CSPub ~ Sign In</title>
 <link rel="stylesheet" type="text/css" href="CSS/Default.css">
 <link rel="stylesheet" type="text/css" href="CSS/SignIn.css">
-<script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="Javascript/jquery-3.1.1.min.js"></script>
 <script type="text/javascript" src="Javascript/SignInPage.js"></script>
 
@@ -91,7 +90,9 @@ function checkUser(){
 		url: 'php/checkUser.php',
 		data: {'username': ''+user},
 		success: function(responce){
+			console.log(responce);
 			if(responce==0){
+				
 				//username does not extist
 				$("#warnUser").html("Username does not exist");
 				validUser = false;
