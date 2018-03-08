@@ -1,3 +1,8 @@
+<?php 
+session_start();
+$user = $_SESSION["user"];
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,11 +10,11 @@
 <title>CSPUB-Create A Project</title>
 <link rel="stylesheet" type="text/css" href="CSS/Default.css">
 <link rel="stylesheet" type="text/css" href="CSS/CreateAProject.css">
-<script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="Javascript/jquery-3.1.1.min.js"></script>
 <!--<script type="text/javascript" src="Javascript/CreateAProject.js"></script>-->
 </head>
 <body>
+<?php echo "<p id=\"u\" style=\"display:none;\">".$user."</p>";?>
 <header>
 <h1>CSPub</h1>
 <div class = "right">
@@ -62,14 +67,14 @@
 					<div id="pdfs">
 						<label>Additional Documents (PDF only):</label>
 						<div>
-						<input type="file" accept=".pdf" onchange="addPdfFile(this)"/>
+						<input type="file" accept=".pdf" onchange="addPdfFile(this)" name="pdfs[]"/>
 						</div>
 					</div>
 					<p id="pdfPreview">
 					</p>
 					<p>
 						<label>Project Links: </label>
-						<input type = "text" name = "link" placeholder="Project Links" name="pdfs[]"/>
+						<input type = "text" name = "link" placeholder="Project Links" />
 					</p>
 					
 					<p id = "center">
@@ -102,7 +107,7 @@ function addPdfFile(e){
 			}
 			else{
 				$(e).parent().append("<button type=\"button\" onclick=\"removePdf(this)\">X</button><object data=\""+em.target.result+"\"type=\"application/pdf\" style=\"height:50%;width:30%\"></object>");
-				$("#pdfs").append("<div><input type=\"file\" accept=\".pdf\" onchange=\"addPdfFile(this)\" name=\"pics[]\"/></div>")
+				$("#pdfs").append("<div><input type=\"file\" accept=\".pdf\" onchange=\"addPdfFile(this)\" name=\"pdfs[]\"/></div>")
 			}
 			
 		}
@@ -194,17 +199,13 @@ function checkPicFile(file){
 
 
 
-
-
-
-
-
-
 var numC = 0;
+var contrib = [];
 
 function addC(){
 	if($("#moreC").prop('checked')){
-		$("#contributors").append("<input type=\"text\" name=\"contributor[]\" class=\"cont\"/>");
+		$("#contributors").append("<input type=\"text\" name=\"contributor[]\" class=\"cont\" onchange=\"checkUser(this)\"/>");
+		$("#contributors").append("<span></span>")
 		$("#contributors").append("<button type=\"button\" onclick=\"removeContributor(this);\" class=\"cont\">X</button>");
 		$("#contributors").append("<button type=\"button\" onclick=\"addContributor();\" class=\"cont\">Add another</button>");
 		numC++;
@@ -216,7 +217,8 @@ function addC(){
 }
 
 function addContributor(){
-	$("#contributors").append("<input type=\"text\" name=\"contributor[]\" class=\"cont\"/>");
+	$("#contributors").append("<input type=\"text\" name=\"contributor[]\" class=\"cont\" onchange=\"checkUser(this)\"/>");
+	$("#contributors").append("<span></span>");
 	$("#contributors").append("<button type=\"button\" onclick=\"removeContributor(this);\" style=\"margin-right: 0.5em\">X</button>");
 	$("#contributors").append("<button type=\"button\" onclick=\"addContributor();\" style=\"margin-right: 0.5em\">Add another</button>");
 	numC++;
@@ -225,11 +227,64 @@ function addContributor(){
 function removeContributor(e){
 	$(e).next().remove();
 	$(e).prev().remove();
+	$(e).prev().remove();
 	$(e).remove();
 	numC--;
+	var index = contrib.indexOf($(e).val());
+	contrib.splice(index, 1);
 	if(numC == 0){
 		$("#moreC").prop("checked", false);
 	}
+}
+
+
+
+function checkUser(e){
+	var user = $(e).val();
+	$.ajax({
+		type: 'POST',
+		url: 'php/checkUser2.php',
+		data: {'username': ''+user},
+		success: function(responce){
+			console.log(responce);
+			if(responce==0){
+				
+				//username does not extist
+				$(e).next().html("Username does not exist or User is not a student");
+				$(e).val("");
+				validUser = false;
+			}
+			else if (responce==1) {
+				//userName exists
+				var foundUser = false;
+				if(contrib.includes(user)){
+					foundUser = true;	
+				}
+				if(user == $("#u").html()){
+					$(e).next().html("Cannot add yourself");
+					$(e).val("");
+					validUser = false;
+				}
+				else if(foundUser == true){
+					$(e).next().html("Cannot add the same user twice");
+					$(e).val("")
+					validUser = false;
+				}
+				else{
+					$(e).next().html("");
+					validUser = true;
+					contrib.push(user);
+				}	
+				
+				
+			}
+			else if(responce==2){
+				//connection failed
+				console.log("connection failed");
+			}
+		}
+	});
+	
 }
 
 </script>
