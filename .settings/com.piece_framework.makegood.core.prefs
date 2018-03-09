@@ -1,0 +1,6 @@
+eclipse.preferences.version=1
+phpunit_config_file=
+preload_script=/COSC310/vendor/phpunit/phpunit/tests/bootstrap.php
+test_file_pattern=
+test_folders=/COSC310/tests
+testing_framework=PHPUnit
