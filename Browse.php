@@ -1,6 +1,8 @@
 <?php 
 session_start();
-$user = $_SESSION["user"];
+if(isset($_SESSION['user'])){
+    $user = $_SESSION['user'];
+}
 ?>
 
 <!DOCTYPE html> 
@@ -16,19 +18,21 @@ $user = $_SESSION["user"];
 <header>
 <h1>CSPub</h1>
 <div class = "right">
-	<div class = "dropdown">
-		<p id = "dropimg"> <img src = "Images/Bars.png" class = "icons"/> </p>
-		<div class = "dropdown-content">
-			<ul>					
-				<li> <a href = "Portfolio.php">Portfolio</a></li> 
-				<li> <a href = "Browse.php">Browse</a></li> 
-				<li> <a href = "CreateAProject.php">Create A Project</a></li>
-			</ul>
-		</div>
-	</div>
 		<?php 
-		if($user!=null){
-		    echo "<p id = 'signIn'><a href = 'index.php'>Log Out</a></p>";
+		if(isset($_SESSION["user"])){ 
+		    echo "<p id = 'signIn'><a href = 'php/logUserOut.php'>Log Out</a></p>";
+		    ?>
+		    <div class = "dropdown">
+				<p id = "dropimg"> <img src = "Images/Bars.png" class = "icons"/> </p>
+				<div class = "dropdown-content">
+					<ul>					
+						<li> <a href = "Portfolio.php">Portfolio</a></li> 
+						<li> <a href = "Browse.php">Browse</a></li> 
+						<li> <a href = "CreateAProject.php">Create A Project</a></li>
+					</ul>
+				</div>
+			</div>
+		    <?php
 		}
 		else{
 		    echo "<p id = 'signIn'><a href = 'SignIn.php'>Sign In</a></p>";
@@ -166,6 +170,14 @@ $user = $_SESSION["user"];
 								</td>
 							</tr>
 						</tbody>
+						<tfoot>
+							<tr>
+								<td colspan="2">
+									<p id = "copyright"> Copyright &copy; 2017  Managing A Successful Project</p>
+								</td>
+							</tr>
+						</tfoot>	
+						</table>
 						<table class = "project" id = "database">
 						<caption>Building An Efficient Database </caption>
 						<thead>

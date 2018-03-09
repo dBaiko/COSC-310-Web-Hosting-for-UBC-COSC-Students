@@ -30,7 +30,8 @@ CREATE TABLE Project(
 	projectTitle VARCHAR(255),
 	projDesc LONGTEXT,
 	demoUrl VARCHAR(255),
-	date DATETIME
+	date DATETIME,
+	projType VARCHAR(50)
 );
 
 CREATE TABLE Files(
@@ -46,7 +47,6 @@ CREATE TABLE Published(
 	userName VARCHAR(30) NOT NULL,
 	studentNum VARCHAR(8) NOT NULL,
 	projectId INT NOT NULL,
-	responsibility VARCHAR(30),
 	PRIMARY KEY(userName, studentNum, projectId),
 	FOREIGN KEY(userName, studentNum) REFERENCES Student(userName, studentNum),
 	FOREIGN KEY(projectId) REFERENCES Project(projectId)

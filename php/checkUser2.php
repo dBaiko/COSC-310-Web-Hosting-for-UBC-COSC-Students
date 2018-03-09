@@ -24,7 +24,7 @@ else{
         $username = $_POST["username"];
         $username = mysqli_real_escape_string($link,$username);
         
-        $s = "SELECT userName FROM User WHERE userName = ?";
+        $s = "SELECT userName FROM Student WHERE userName = ?";
         if($stm = $link->prepare($s)){
             $stm->bind_param("s", $username);
             $stm->execute();
@@ -40,7 +40,7 @@ else{
             }
         }
         else{
-            $error = $conn->errno . ' ' . $conn->error;
+            $error = $link->errno . ' ' . $link->error;
             echo $error;
         }
         
