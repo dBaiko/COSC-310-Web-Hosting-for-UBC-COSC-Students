@@ -27,7 +27,6 @@ class userNameChecker{
     
     public function checkUser($user){ 
         $user = mysqli_real_escape_string($this->conn,$user);
-        $e = "";
         $s = "SELECT userName FROM User WHERE userName = ?";
         if($stm = $this->conn->prepare($s)){
             $stm->bind_param("s", $user);
@@ -37,18 +36,18 @@ class userNameChecker{
             $stm->fetch();
             
             if(!$u){
-                $e = "0";
+                $this->toEcho = "0";
             }
             else{
-                $e = "1";
+                $this->toEcho = "1";
             }
         }
         else{
             $error = $conn->errno . ' ' . $conn->error;
-            $e = $error;
+            $this->toEcho = $error;
         }
         mysqli_close($this->conn);
-        return $e;
+        return $this->toEcho;
     }
     
 }
@@ -57,11 +56,6 @@ $check = new userNameChecker();
 if(isset($_POST['username'])){
     echo $check->checkUser($_POST['username']);
 }
-
-
-
-
-
 
 
 ?>
