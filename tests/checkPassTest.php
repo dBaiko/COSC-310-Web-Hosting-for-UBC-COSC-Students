@@ -2,10 +2,10 @@
 
 use PHPUnit\Framework\TestCase;
 
-require_once __DIR__ . '/../php/checkUser.php';
+require_once __DIR__ . '/../php/checkPass.php';
 //require '../vendor/autoload.php';
 
-class checkUserTest extends TestCase
+class checkPassTest extends TestCase
 {
     
     private $db_host = 'localhost';
@@ -15,13 +15,13 @@ class checkUserTest extends TestCase
     private $db = null;
     private $conn = null;
     
-    protected $userChecker;
+    protected $passChecker;
     
     
-   
+    
     public function __construct() {
         parent::__construct();
-        $this->userChecker = new userNameChecker();
+        $this->passChecker = new passwordChecker();
     }
     
     
@@ -37,9 +37,13 @@ class checkUserTest extends TestCase
         $this->getConnection();
         $stm = "INSERT INTO User VALUES (?,?,?,?,?,?)";
         if($sql = $this->conn->prepare($stm)){
-            $userName = "testUserU";
+            $userName = "testUserP";
             $t = "test";
-            $sql->bind_param("ssssss", $userName, $t, $t, $t, $t, $t);
+            $testPass = "test123";
+            $testSalt = "12345";
+            $toHash = $testPass . $testSalt;
+            $hashed = hash('sha256', $toHash);
+            $sql->bind_param("ssssss", $userName, $t, $t, $t, $hashed, $testSalt);
             if($sql->execute()){
                 return true;
             }
@@ -56,21 +60,21 @@ class checkUserTest extends TestCase
         $this->getConnection();
         $stm = "DELETE FROM User WHERE userName = ?";
         if($sql = $this->conn->prepare($stm)){
-           $userName = "testUserU";
-           $sql->bind_param("s", $userName);
-           if($sql->execute()){
-               return true;
-           }
-           else{
-               return false;
-           }
+            $userName = "testUserP";
+            $sql->bind_param("s", $userName);
+            if($sql->execute()){
+                return true;
+            }
+            else{
+                return false;
+            }
         }
         else{
             return false;
         }
         return false;
     }
-     
+    
     public function testDatabaseConnection(){
         $this->getConnection();
         $this->assertNotNull($this->conn);
@@ -82,7 +86,7 @@ class checkUserTest extends TestCase
     public function testCheckUser(){
         $this->getConnection();
         $this->insertTestData();
-        $actual = $this->userChecker->checkUser("testUserU");
+        $actual = $this->passChecker->checkPass("testUserP","test123");
         $expected = "1";
         $this->assertEquals($expected, $actual);
     }
@@ -90,5 +94,5 @@ class checkUserTest extends TestCase
         $this->getConnection();
         $this->assertTrue($this->deleteTestData());
     }
-  
+    
 }
