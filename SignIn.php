@@ -96,7 +96,7 @@ function checkUser(){
 		success: function(responce){
 			console.log(responce);
 			if(responce==0){
-				
+				console.log(responce);
 				//username does not extist
 				$("#warnUser").html("Username does not exist");
 				validUser = false;
