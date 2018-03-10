@@ -1,56 +1,61 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-session_start();
-define('DB_NAME', 'cswebhosting');
-define('DB_USER', 'cswebhosting');
-define('DB_PASSWORD', 'a9zEkajA');
-define('DB_HOST', 'localhost');
-
-$link = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD);
-
-if(!$link){
-    die('Could not connect: ' .mysqli_error());
-    echo "2";
-}
-else{
-    $db = mysqli_select_db($link, DB_NAME);
+class userNameChecker{
+    private $db_host = 'localhost';
+    private $db_name = 'cswebhosting';
+    private $db_user = 'cswebhosting';
+    private $db_pass = 'a9zEkajA';
     
-    if(!$db){
-        die('Could not connect: ' .mysqli_connect_error());
-        echo "2";
+    private $conn = null;
+    private  $db = null;
+    
+    private $toEcho = "2";
+    
+    public function __construct() {
+        $this->conn = mysqli_connect($this->db_host, $this->db_user, $this->db_pass);
+        if(!$this->conn){
+            die('Could not connect: ' .mysqli_error());
+            $this->toEcho = "2";
+        }
+        else{
+            $this->db = mysqli_select_db($this->conn, $this->db_name);
+            if(!$this->db){
+                die('Could not connect: ' .mysqli_error());
+                $this->toEcho = "2";
+            }
+        }
     }
-    else{
-        $username = $_POST["username"];
-        $username = mysqli_real_escape_string($link,$username);
-        
+    
+    public function checkUser($user){ 
+        $user = mysqli_real_escape_string($this->conn,$user);
         $s = "SELECT userName FROM User WHERE userName = ?";
-        if($stm = $link->prepare($s)){
-            $stm->bind_param("s", $username);
+        if($stm = $this->conn->prepare($s)){
+            $stm->bind_param("s", $user);
             $stm->execute();
             $stm->bind_result($u);
             
             $stm->fetch();
             
             if(!$u){
-                echo "0";
+                $this->toEcho = "0";
             }
             else{
-                echo "1";
+                $this->toEcho = "1";
             }
         }
         else{
             $error = $conn->errno . ' ' . $conn->error;
-            echo $error;
+            $this->toEcho = $error;
         }
-        
-        
-        mysqli_close($link);
+        mysqli_close($this->conn);
+        return $this->toEcho;
     }
+    
 }
 
-
-
+$check = new userNameChecker();
+if(isset($_POST['username'])){
+    echo $check->checkUser($_POST['username']);
+}
 
 
 ?>
