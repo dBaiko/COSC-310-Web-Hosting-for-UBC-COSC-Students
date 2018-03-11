@@ -30,5 +30,4 @@ if($sql = $conn->prepare($stm)){
     echo $error;
 }
 
-
 ?>
