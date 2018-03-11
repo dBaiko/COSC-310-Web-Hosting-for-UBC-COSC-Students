@@ -88,10 +88,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stm = "INSERT INTO Project (projectTitle, projDesc, demoUrl, date, projType) VALUES (?,?,?, NOW(),?)";
     if ($sql = $conn->prepare($stm)) {
         $sql->bind_param("ssss", $title, $desc, $link, $type);
-        $sql->execute();
-        $id = mysqli_insert_id($conn);
-        echo "<br>" . $id;
-        $confirm = true;
+        if($sql->execute()){
+            $id = mysqli_insert_id($conn);
+            echo "<br>" . $id;
+            $confirm = true;
+        }else {
+            $error = $conn->errno . ' ' . $conn->error;
+            echo $error;
+        }
+        
     } else {
         $error = $conn->errno . ' ' . $conn->error;
         echo $error;
