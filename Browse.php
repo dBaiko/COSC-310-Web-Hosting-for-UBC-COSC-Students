@@ -18,7 +18,7 @@ class listContent
         echo "<table class=\"project\" id=\"website\">" . "<caption>" . $param1 . "</caption>" . "<thead>" . "<tr>" . "<th> By: " . $param2 . "</th>" . "<th class=\"textright\">" . $param3 . "</th>" . "</tr>" . "</thead>" . "<tbody>" . "<tr>" . "<td colspan=\"2\"><img src=\"Images/BuildingWebsite.jpg\"name=\"web\"class=\"images\" />" . "<p>" . $param4 . "</p></td>" . "</tr>" . "</tbody>" . "<tfoot>
     <tr>
     <td colspan=\"2\">
-    <p id=\"copyright\">Copyright &copy; ".$param1."</p>
+    <p id=\"copyright\">Copyright &copy; " . $param1 . "</p>
     </td>
     </tr>
     </tfoot>
@@ -83,6 +83,22 @@ class listContent
         $result = mysqli_query($conn, $sql);
         return $result;
     }
+
+    public function sortedQuery_search($search)
+    {
+        include 'php/all_projects.php';
+        if ($conn->connect_error) {
+            die("Connection failed:" . $conn->connect_error);
+        }
+        $sql = "SELECT Published.userName AS username, projectTitle, projDesc, Project.date AS date, file, projType
+                FROM Project LEFT JOIN Files ON Project.projectId = Files.projectId
+                     JOIN Published ON Project.projectId = Published.projectId
+                     JOIN User ON Published.userName = User.userName
+                     WHERE Project.projectTitle LIKE \"%$search%\"
+                     ORDER BY date DESC;";
+        $result = mysqli_query($conn, $sql);
+        return $result;
+    }
 }
 ?>
 
@@ -125,9 +141,7 @@ if (isset($_SESSION["user"])) {
 	<div id="main">
 		<div id="search">
 			<h2>Search</h2>
-			<form method="post"
-				action="http://www.randyconnolly.com/tests/process.php"
-				id="searchbar">
+			<form method="get" action="Browse.php" id="searchbar">
 				<input type="text" name="search" placeholder="Search Projects"
 					id="userSearch" />
 			</form>
@@ -152,7 +166,8 @@ if (isset($_SESSION["user"])) {
 							<option value="Data Science">Data Science</option>
 							<option value="Object Oriented Programs (Java, C# etc.)">Object
 								Oriented Programs (Java, C# etc.)</option>
-							<option value="Robotics/Arduino/Raspberry Pi">Robotics/Arduino/Raspberry Pi</option>
+							<option value="Robotics/Arduino/Raspberry Pi">Robotics/Arduino/Raspberry
+								Pi</option>
 							<option value="Biology Technology">Biology Technology</option>
 							<option value="Parallel Computing">Parallel Computing</option>
 							<option value="Games">Games</option>
@@ -168,7 +183,7 @@ if (isset($_SESSION["user"])) {
 			<div id="dummyProject">
 				<h2>Projects</h2>
 				<?php
-				
+    
     $contentGet = new listContent();
     if (isset($_GET["Times"])) {
         $time = $_GET["Times"];
@@ -182,8 +197,8 @@ if (isset($_SESSION["user"])) {
                 $contentGet->displayContent($row['projectTitle'], $row['username'], $row['date'], $row['projDesc']);
             }
         }
-        $conn->close();
-    } elseif (isset($_GET["Types"])) {
+    }
+    elseif (isset($_GET["Types"])) {
         $type = $_GET["Types"];
         $result = $contentGet->sortedQuery_types($type);
         $resultCheck = mysqli_num_rows($result);
@@ -194,7 +209,19 @@ if (isset($_SESSION["user"])) {
                 $contentGet->displayContent($row['projectTitle'], $row['username'], $row['date'], $row['projDesc']);
             }
         }
-        $conn->close();
+    }
+    
+    elseif (isset($_GET["search"])) {
+        $search = $_GET["search"];
+        $result = $contentGet->sortedQuery_search($search);
+        $resultCheck = mysqli_num_rows($result);
+        if ($resultCheck == 0) {
+            echo "<em>No projects available</em>";
+        } elseif ($resultCheck > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $contentGet->displayContent($row['projectTitle'], $row['username'], $row['date'], $row['projDesc']);
+            }
+        }
     } else
         $result = $contentGet->query_all();
     $resultCheck = mysqli_num_rows($result);
@@ -203,6 +230,7 @@ if (isset($_SESSION["user"])) {
             $contentGet->displayContent($row['projectTitle'], $row['username'], $row['date'], $row['projDesc']);
         }
     }
+    $conn->close();
     ?>
     		</div>
 		</div>
