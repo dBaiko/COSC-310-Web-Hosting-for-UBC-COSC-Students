@@ -9,16 +9,93 @@ include 'php/all_projects.php';
 ?>
 
 <?php
+
 class listContent
 {
+
+    public function displayContent($param1, $param2, $param3, $param4)
+    {
+        echo "<table class=\"project\" id=\"website\">" . "<caption>" . $param1 . "</caption>" . "<thead>" . "<tr>" . "<th> By: " . $param2 . "</th>" . "<th class=\"textright\">" . $param3 . "</th>" . "</tr>" . "</thead>" . "<tbody>" . "<tr>" . "<td colspan=\"2\"><img src=\"Images/BuildingWebsite.jpg\"name=\"web\"class=\"images\" />" . "<p>" . $param4 . "</p></td>" . "</tr>" . "</tbody>" . "<tfoot>
+    <tr>
+    <td colspan=\"2\">
+    <p id=\"copyright\">Copyright &copy; " . $param1 . "</p>
+    </td>
+    </tr>
+    </tfoot>
+    </table>";
+    }
+
     public function query_all()
     {
         include 'php/all_projects.php';
         if ($conn->connect_error) {
             die("Connection failed:" . $conn->connect_error);
         }
-        $sql = "SELECT Published.userName AS username, projectTitle, projDesc, Project.date AS date FROM Project, Published, User
-                WHERE Project.projectId = Published.projectId AND Published.userName = User.userName ORDER BY date DESC;";
+        $sql = "SELECT Published.userName AS username, projectTitle, projDesc, Project.date AS date, file 
+                     FROM Project LEFT JOIN Files ON Project.projectId = Files.projectId
+                     JOIN Published ON Project.projectId = Published.projectId
+                     JOIN User ON Published.userName = User.userName   
+                     ORDER BY date DESC;";
+        
+        $result = mysqli_query($conn, $sql);
+        return $result;
+    }
+
+    public function sortedQuery_time($time)
+    {
+        include 'php/all_projects.php';
+        if ($conn->connect_error) {
+            die("Connection failed:" . $conn->connect_error);
+        }
+        if ($time == "Newest") {
+            $sql = "SELECT Published.userName AS username, projectTitle, projDesc, Project.date AS date, file
+                       FROM Project LEFT JOIN Files ON Project.projectId = Files.projectId
+                     JOIN Published ON Project.projectId = Published.projectId
+                     JOIN User ON Published.userName = User.userName
+                     ORDER BY date DESC;";
+            $result = mysqli_query($conn, $sql);
+            return $result;
+        }
+        if ($time == "Oldest") {
+            $sql = "SELECT Published.userName AS username, projectTitle, projDesc, Project.date AS date, file
+                FROM Project LEFT JOIN Files ON Project.projectId = Files.projectId
+                     JOIN Published ON Project.projectId = Published.projectId
+                     JOIN User ON Published.userName = User.userName
+                     WHERE 1
+                     ORDER BY date ASC;";
+            $result = mysqli_query($conn, $sql);
+            return $result;
+        }
+    }
+
+    public function sortedQuery_types($type)
+    {
+        include 'php/all_projects.php';
+        if ($conn->connect_error) {
+            die("Connection failed:" . $conn->connect_error);
+        }
+        $sql = "SELECT Published.userName AS username, projectTitle, projDesc, Project.date AS date, file, projType
+                FROM Project LEFT JOIN Files ON Project.projectId = Files.projectId
+                     JOIN Published ON Project.projectId = Published.projectId
+                     JOIN User ON Published.userName = User.userName
+                     WHERE Project.projType = \"$type\"
+                     ORDER BY date DESC;";
+        $result = mysqli_query($conn, $sql);
+        return $result;
+    }
+
+    public function sortedQuery_search($search)
+    {
+        include 'php/all_projects.php';
+        if ($conn->connect_error) {
+            die("Connection failed:" . $conn->connect_error);
+        }
+        $sql = "SELECT Published.userName AS username, projectTitle, projDesc, Project.date AS date, file, projType
+                FROM Project LEFT JOIN Files ON Project.projectId = Files.projectId
+                     JOIN Published ON Project.projectId = Published.projectId
+                     JOIN User ON Published.userName = User.userName
+                     WHERE Project.projectTitle LIKE \"%$search%\"
+                     ORDER BY date DESC;";
         $result = mysqli_query($conn, $sql);
         return $result;
     }
@@ -64,9 +141,7 @@ if (isset($_SESSION["user"])) {
 	<div id="main">
 		<div id="search">
 			<h2>Search</h2>
-			<form method="post"
-				action="http://www.randyconnolly.com/tests/process.php"
-				id="searchbar">
+			<form method="get" action="Browse.php" id="searchbar">
 				<input type="text" name="search" placeholder="Search Projects"
 					id="userSearch" />
 			</form>
@@ -74,90 +149,89 @@ if (isset($_SESSION["user"])) {
 		<div id="background">
 			<div id="filters">
 				<div id="time">
-					<p>
-						<a href=""> Time</a>
-					</p>
-					<div class="dropdown-content">
-						<ul>
-							<li><a href=""> Any time</a></li>
-							<li><a href=""> Past Year</a></li>
-							<li><a href=""> Past Month</a></li>
-							<li><a href=""> Past Week</a></li>
-							<li><a href=""> Past 24 Hours</a></li>
-						</ul>
-					</div>
+					<form method="get" action="Browse.php" name="sort_Time">
+						<select name="Times" onchange='this.form.submit()'>
+							<option disabled selected>Filter projects by time</option>
+							<option value="Newest">Newest to oldest</option>
+							<option value="Oldest">Oldest to Newest</option>
+						</select>
+					</form>
 				</div>
 				<div id="type">
-					<p>
-						<a href=""> Project Type</a>
-					</p>
-					<div class="dropdown-content">
-						<ul>
-							<li><a href=""> All Projects </a></li>
-							<li><a href=""> Cosc Projects </a></li>
-							<li><a href=""> Math Projects </a></li>
-							<li><a href=""> Engineering Projects</a></li>
-							<li><a href=""> Physics Projects</a></li>
-						</ul>
-					</div>
-				</div>
-				<div id="rating">
-					<p>
-						<a href=""> Project Rating</a>
-					</p>
-					<div class="dropdown-content">
-						<ul>
-							<li><a href=""> 5 Stars </a></li>
-							<li><a href=""> 4 Stars </a></li>
-							<li><a href=""> 3 Stars </a></li>
-							<li><a href=""> 2 Stars</a></li>
-							<li><a href=""> 1 Stars</a></li>
-						</ul>
-					</div>
+					<form method="get" action="Browse.php" name="sort_Time">
+						<select name="Types" onchange='this.form.submit()'>
+							<option disabled selected>Filter projects by type</option>
+							<option value="Web Development">Web Development</option>
+							<option value="Mobile Application">Mobile Application</option>
+							<option value="Data Science">Data Science</option>
+							<option value="Object Oriented Programs (Java, C# etc.)">Object
+								Oriented Programs (Java, C# etc.)</option>
+							<option value="Robotics/Arduino/Raspberry Pi">Robotics/Arduino/Raspberry
+								Pi</option>
+							<option value="Biology Technology">Biology Technology</option>
+							<option value="Parallel Computing">Parallel Computing</option>
+							<option value="Games">Games</option>
+							<option value="Virtual Reality">Virtual Reality</option>
+							<option value="3D Modeling/Printing">3D Modeling/Printing</option>
+							<option value="Math/Optimization">Math/Optimization</option>
+							<option value="Algorithm Development">Algorithm Development</option>
+							<option value="Other">Other</option>
+						</select>
+					</form>
 				</div>
 			</div>
 			<div id="dummyProject">
 				<h2>Projects</h2>
 				<?php
-    // Just Testing a database query
-    if ($conn->connect_error) {
-        die("Connection failed:" . $conn->connect_error);
+    
+    $contentGet = new listContent();
+    if (isset($_GET["Times"])) {
+        $time = $_GET["Times"];
+        $result = $contentGet->sortedQuery_time($time);
+        $resultCheck = mysqli_num_rows($result);
+        
+        if ($resultCheck == 0) {
+            echo "<em>No projects available</em>";
+        } elseif ($resultCheck > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $contentGet->displayContent($row['projectTitle'], $row['username'], $row['date'], $row['projDesc']);
+            }
+        }
     }
-    $test = new listContent();
-    $result = $test->query_all();
+    elseif (isset($_GET["Types"])) {
+        $type = $_GET["Types"];
+        $result = $contentGet->sortedQuery_types($type);
+        $resultCheck = mysqli_num_rows($result);
+        if ($resultCheck == 0) {
+            echo "<em>No projects available</em>";
+        } elseif ($resultCheck > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $contentGet->displayContent($row['projectTitle'], $row['username'], $row['date'], $row['projDesc']);
+            }
+        }
+    }
+    
+    elseif (isset($_GET["search"])) {
+        $search = $_GET["search"];
+        $result = $contentGet->sortedQuery_search($search);
+        $resultCheck = mysqli_num_rows($result);
+        if ($resultCheck == 0) {
+            echo "<em>No projects available</em>";
+        } elseif ($resultCheck > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $contentGet->displayContent($row['projectTitle'], $row['username'], $row['date'], $row['projDesc']);
+            }
+        }
+    } else
+        $result = $contentGet->query_all();
     $resultCheck = mysqli_num_rows($result);
     if ($resultCheck > 0) {
         while ($row = mysqli_fetch_assoc($result)) {
-            
-        echo "<table class=\"project\" id=\"website\">"
-            ."<caption>".$row['projectTitle']."</caption>"
-            ."<thead>"
-            ."<tr>"
-            ."<th> By: ".$row['username']."</th>"
-                    ."<th class=\"textright\">".$row['date']."</th>"
-            ."</tr>"
-            ."</thead>"
-            ."<tbody>"
-            ."<tr>"
-            ."<td colspan=\"2\"><img src=\"Images/BuildingWebsite.jpg\"name=\"web\"class=\"images\" />"
-    ."<p>".$row['projDesc']."</p></td>"
-    ."</tr>"
-    ."</tbody>"
-    ."<tfoot>
-    <tr>
-    <td colspan=\"2\">
-    <p id=\"copyright\">Copyright &copy; ".$row['projectTitle']."</p>
-    </td>
-    </tr>
-    </tfoot>
-    </table>";
+            $contentGet->displayContent($row['projectTitle'], $row['username'], $row['date'], $row['projDesc']);
         }
-    }else{
-        echo "0 results";
     }
     $conn->close();
     ?>
-    
     		</div>
 		</div>
 	</div>
