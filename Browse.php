@@ -18,7 +18,7 @@ class listContent
         echo "<table class=\"project\" id=\"website\">" . "<caption>" . $param1 . "</caption>" . "<thead>" . "<tr>" . "<th> By: " . $param2 . "</th>" . "<th class=\"textright\">" . $param3 . "</th>" . "</tr>" . "</thead>" . "<tbody>" . "<tr>" . "<td colspan=\"2\"><img src=\"Images/BuildingWebsite.jpg\"name=\"web\"class=\"images\" />" . "<p>" . $param4 . "</p></td>" . "</tr>" . "</tbody>" . "<tfoot>
     <tr>
     <td colspan=\"2\">
-    <p id=\"copyright\">Copyright &copy; " . $param1 . "</p>
+    <p id=\"copyright\">Copyright &copy; ".$param1."</p>
     </td>
     </tr>
     </tfoot>
@@ -176,7 +176,7 @@ if (isset($_SESSION["user"])) {
         $resultCheck = mysqli_num_rows($result);
         
         if ($resultCheck == 0) {
-            echo "No projects available";
+            echo "<em>No projects available</em>";
         } elseif ($resultCheck > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
                 $test->displayContent($row['projectTitle'], $row['username'], $row['date'], $row['projDesc']);
@@ -185,24 +185,19 @@ if (isset($_SESSION["user"])) {
         $conn->close();
     } elseif (isset($_GET["Types"])) {
         $type = $_GET["Types"];
-        echo $type;
         $result = $test->sortedQuery_types($type);
         $resultCheck = mysqli_num_rows($result);
         if ($resultCheck == 0) {
-            echo "No projects available";
+            echo "<em>No projects available</em>";
         } elseif ($resultCheck > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
                 $test->displayContent($row['projectTitle'], $row['username'], $row['date'], $row['projDesc']);
             }
         }
-        
         $conn->close();
     } else
         $result = $test->query_all();
     $resultCheck = mysqli_num_rows($result);
-    if ($resultCheck == 0) {
-        echo "No projects available";
-    }
     if ($resultCheck > 0) {
         while ($row = mysqli_fetch_assoc($result)) {
             $test->displayContent($row['projectTitle'], $row['username'], $row['date'], $row['projDesc']);
