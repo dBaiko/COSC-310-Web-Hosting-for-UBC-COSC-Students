@@ -169,38 +169,38 @@ if (isset($_SESSION["user"])) {
 				<h2>Projects</h2>
 				<?php
 				
-    $test = new listContent();
+    $contentGet = new listContent();
     if (isset($_GET["Times"])) {
         $time = $_GET["Times"];
-        $result = $test->sortedQuery_time($time);
+        $result = $contentGet->sortedQuery_time($time);
         $resultCheck = mysqli_num_rows($result);
         
         if ($resultCheck == 0) {
             echo "<em>No projects available</em>";
         } elseif ($resultCheck > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
-                $test->displayContent($row['projectTitle'], $row['username'], $row['date'], $row['projDesc']);
+                $contentGet->displayContent($row['projectTitle'], $row['username'], $row['date'], $row['projDesc']);
             }
         }
         $conn->close();
     } elseif (isset($_GET["Types"])) {
         $type = $_GET["Types"];
-        $result = $test->sortedQuery_types($type);
+        $result = $contentGet->sortedQuery_types($type);
         $resultCheck = mysqli_num_rows($result);
         if ($resultCheck == 0) {
             echo "<em>No projects available</em>";
         } elseif ($resultCheck > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
-                $test->displayContent($row['projectTitle'], $row['username'], $row['date'], $row['projDesc']);
+                $contentGet->displayContent($row['projectTitle'], $row['username'], $row['date'], $row['projDesc']);
             }
         }
         $conn->close();
     } else
-        $result = $test->query_all();
+        $result = $contentGet->query_all();
     $resultCheck = mysqli_num_rows($result);
     if ($resultCheck > 0) {
         while ($row = mysqli_fetch_assoc($result)) {
-            $test->displayContent($row['projectTitle'], $row['username'], $row['date'], $row['projDesc']);
+            $contentGet->displayContent($row['projectTitle'], $row['username'], $row['date'], $row['projDesc']);
         }
     }
     ?>
