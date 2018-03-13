@@ -180,6 +180,7 @@ if (isset($_SESSION["user"])) {
 					</form>
 				</div>
 			</div>
+				<button><a href="Browse.php">Reset</a></button>
 			<div id="dummyProject">
 				<h2>Projects</h2>
 				<?php
@@ -237,8 +238,7 @@ if (isset($_SESSION["user"])) {
 	</div>
 	<footer>
 		<ul>
-			<li class="footerlinks"><a href="Browse.php">Browse</a>
-		
+			<li class="footerlinks"><a href="Browse.php">Browse</a></li>
 		</ul>
 		<p>Copyright &copy; 2018 CSPub</p>
 	</footer>
