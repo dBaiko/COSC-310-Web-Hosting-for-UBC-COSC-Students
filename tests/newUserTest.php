@@ -144,6 +144,7 @@ class newUserTest extends TestCase{
            
     }
     
+    //Testing Test class methods
     public function testDatabaseConnection(){
         $this->getConnection();
         $this->assertNotNull($this->conn);
@@ -164,6 +165,7 @@ class newUserTest extends TestCase{
         $this->assertTrue($this->deleteTestData("testUserU"));
     }
     
+    //Testing newUser.php methods
     public function testCreateNewBasicUser(){
         $this->getConnection();
         $expected = "testUserU";
