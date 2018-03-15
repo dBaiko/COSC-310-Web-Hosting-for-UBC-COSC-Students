@@ -1,7 +1,5 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-session_start();
+
 
 class newUser {
     private $db_host = 'localhost';
@@ -28,7 +26,7 @@ class newUser {
     public function createNewUser($userName,$firstName,$lastName,$email,$password, $passConf,$studentNum,$stuSchool,$major,$profSchool,$faculty){
         if($userName != null && $userName != "" && $firstName != null && $firstName != "" && $lastName != null && $lastName != "" && $password != null && $password != "" && $passConf != null && $passConf != "" &&  $email != null  && $email != ""){
             if($password == $passConf){
-                if(strpos($email, "@") == false && strpos($email, ".") == false){
+                if(strpos($email, "@") != false && strpos($email, ".") != false){
                     $confirm = false;
                     $userName = chop($userName);
                     $firstName = chop($firstName);
@@ -43,7 +41,7 @@ class newUser {
                     $dbPass = hash('sha256', $toHash);
                     
                     $stm = "INSERT INTO User (userName, firstName, lastName, email, password, salt) VALUES (?,?,?,?,?,?)";
-                    if($sql = $conn->prepare($stm)){
+                    if($sql = $this->conn->prepare($stm)){
                         $sql->bind_param("ssssss", $userName,$firstName,$lastName,$email,$dbPass,$salt);
                         if($sql->execute()){
                             $confirm = true;
@@ -58,7 +56,7 @@ class newUser {
                                 $major = chop($major);
                                 
                                 $stm = "INSERT INTO Student (userName, studentNum, school, major) VALUES (?,?,?,?)";
-                                if($sql = $conn->prepare($stm)){
+                                if($sql = $this->conn->prepare($stm)){
                                     $sql->bind_param("ssss", $userName, $studentNum, $stuSchool, $major);
                                     if($sql->execute()){
                                         return true;
@@ -75,7 +73,7 @@ class newUser {
                                 $faculty = chop($faculty);
                                 
                                 $stm = "INSERT INTO Professor (userName, faculty, school) VALUES (?,?,?)";
-                                if($sql = $conn->prepare($stm)){
+                                if($sql = $this->conn->prepare($stm)){
                                     $sql->bind_param("sss", $userName, $faculty, $profSchool);
                                     if($sql->execute()){
                                         return true;
@@ -115,7 +113,17 @@ class newUser {
 
 
 //set session variable, method above doesn't do it
-
+/*
+function consoleLog($toLog) {
+    ?>
+    <script type="text/javascript">
+		console.log("<?php echo $toLog?>");
+	</script>
+    <?php
+}*/
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+session_start();
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     $newUser = new newUser();
     
@@ -142,8 +150,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     //echo $profSchool . "<br>";
     $faculty = $_POST["faculty"];
     //echo $faculty . "<br>";
-    
     if($newUser->createNewUser($userName, $firstName, $lastName, $email, $password, $passConf, $studentNum, $stuSchool, $major, $profSchool, $faculty)){
+        $_SESSION['user'] = $userName;
         ?>
         <meta http-equiv="refresh" content="0; URL='../confirmNewUser.php'"/>
         <?php
@@ -157,7 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 }
 else{
     ?>
-        <meta http-equiv="refresh" content="0; URL='../Register.php'"/>
+       <meta http-equiv="refresh" content="0; URL='../Register.php'"/>
         <?php
     }
 ?>
