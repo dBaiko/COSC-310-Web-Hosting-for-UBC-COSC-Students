@@ -1,6 +1,4 @@
 <?php
-
-
 class newUser {
     private $db_host = 'localhost';
     private $db_name = 'cswebhosting';
@@ -51,6 +49,7 @@ class newUser {
                         }
                         if($confirm){
                             if($studentNum != null && $studentNum != "" && $stuSchool != null && $stuSchool != "" && $major != null && $major != ""){
+                                $userName = chop($userName);
                                 $studentNum = chop($studentNum);
                                 $stuSchool = chop($stuSchool);
                                 $major = chop($major);
@@ -69,6 +68,7 @@ class newUser {
                                 }
                             }
                             else if($profSchool != null && $profSchool != "" && $faculty != null && $faculty != ""){
+                                $userName = chop($userName);
                                 $profSchool = chop($profSchool);
                                 $faculty = chop($faculty);
                                 
@@ -109,6 +109,7 @@ class newUser {
         }
         return false;
     }
+    
 }
 
 
@@ -121,51 +122,53 @@ function consoleLog($toLog) {
 	</script>
     <?php
 }*/
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-session_start();
-if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-    $newUser = new newUser();
+if(isset($_SERVER["REQUEST_METHOD"])){
     
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    session_start();
+    if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+        $newUser = new newUser();
+        
+        
+        $userName = $_POST["username"];
+        //echo $userName . "<br>";
+        $firstName = $_POST["firstName"];
+        //echo $firstName . "<br>";
+        $lastName = $_POST["lastName"];
+        //echo $lastName . "<br>";
+        $password = $_POST["pass"];
+        //echo $password . "<br>";
+        $passConf = $_POST["passConf"];
+        //echo $passConf . "<br>";
+        $email = $_POST["email"];
+       // echo $email . "<br>";
+        $studentNum = $_POST["studentNum"];
+        //echo $studentNum . "<br>";
+        $stuSchool = $_POST["stuSchool"];
+        //echo $stuSchool . "<br>";
+        $major = $_POST["major"];
+        //echo $major . "<br>";
+        $profSchool = $_POST["profSchool"];
+        //echo $profSchool . "<br>";
+        $faculty = $_POST["faculty"];
+        //echo $faculty . "<br>";
+        if($newUser->createNewUser($userName, $firstName, $lastName, $email, $password, $passConf, $studentNum, $stuSchool, $major, $profSchool, $faculty)){
+            $_SESSION['user'] = $userName;
+            ?>
+            <meta http-equiv="refresh" content="0; URL='../confirmNewUser.php'"/>
+            <?php
+        }
+        else{
+            ?>
+            <meta http-equiv="refresh" content="0; URL='../Register.php'"/>
+            <?php
+        }
     
-    $userName = $_POST["username"];
-    //echo $userName . "<br>";
-    $firstName = $_POST["firstName"];
-    //echo $firstName . "<br>";
-    $lastName = $_POST["lastName"];
-    //echo $lastName . "<br>";
-    $password = $_POST["pass"];
-    //echo $password . "<br>";
-    $passConf = $_POST["passConf"];
-    //echo $passConf . "<br>";
-    $email = $_POST["email"];
-   // echo $email . "<br>";
-    $studentNum = $_POST["studentNum"];
-    //echo $studentNum . "<br>";
-    $stuSchool = $_POST["stuSchool"];
-    //echo $stuSchool . "<br>";
-    $major = $_POST["major"];
-    //echo $major . "<br>";
-    $profSchool = $_POST["profSchool"];
-    //echo $profSchool . "<br>";
-    $faculty = $_POST["faculty"];
-    //echo $faculty . "<br>";
-    if($newUser->createNewUser($userName, $firstName, $lastName, $email, $password, $passConf, $studentNum, $stuSchool, $major, $profSchool, $faculty)){
-        $_SESSION['user'] = $userName;
-        ?>
-        <meta http-equiv="refresh" content="0; URL='../confirmNewUser.php'"/>
-        <?php
     }
     else{
         ?>
-        <meta http-equiv="refresh" content="0; URL='../Register.php'"/>
-        <?php
-    }
-
+           <meta http-equiv="refresh" content="0; URL='../Register.php'"/>
+            <?php
+        }
 }
-else{
-    ?>
-       <meta http-equiv="refresh" content="0; URL='../Register.php'"/>
-        <?php
-    }
-?>
