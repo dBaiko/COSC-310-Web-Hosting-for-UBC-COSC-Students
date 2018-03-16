@@ -45,6 +45,11 @@ class newProject
             }
         }
     }
+    
+    public function __destruct(){
+        $this->conn->close();
+        $this->conn = null;
+    }
 
     public function createNewProject($userName, $title, $desc, $type, $link, $contribArray, $fileNames, $fileTypes, $files)
     {
@@ -63,7 +68,6 @@ class newProject
                     $sql->bind_param("ssss", $title, $desc, $link, $type);
                     if ($sql->execute()) {
                         $id = mysqli_insert_id($this->conn);
-                        echo "<br>" . $id;
                         $confirm = true;
                     } else {
                         $error = $this->conn->errno . ' ' . $this->conn->error;
@@ -93,7 +97,6 @@ class newProject
                         echo $error;
                         return false;
                     }
-                    echo "<br>" . $studentNum;
                     $s = "INSERT INTO Published (userName, studentNum, projectId) VALUES (?,?,?)";
                     if ($sq = $this->conn->prepare($s)) {
                         $sq->bind_param("sss", $userName, $studentNum, $id);
@@ -125,7 +128,7 @@ class newProject
                         echo $error;
                         return false;
                     }
-                    
+                    if(! empty($files)){
                     $stmFiles = "INSERT INTO Files (projectId, fileName, file, fileType) VALUES (?,?,?,?);";
                     if ($sqlFiles = $this->conn->prepare($stmFiles)) {
                         $name = "";
@@ -143,6 +146,7 @@ class newProject
                     }
                     $sqlFiles->close();
                     return true;
+                }
                 }
             } else {
                 return false;
@@ -266,7 +270,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){
         }
         
         if($newProjectCreator->createNewProject($newProjectCreator->userName, $newProjectCreator->title, $newProjectCreator->desc, $newProjectCreator->type, $newProjectCreator->link, $newProjectCreator->contribArray, $newProjectCreator->fileNames, $newProjectCreator->fileTypes, $newProjectCreator->files)){
-                
+            $newProjectCreator = null;    
             ?>
             <meta http-equiv="refresh" content="0; URL='../confirmNewProject.php'" />
             <?php

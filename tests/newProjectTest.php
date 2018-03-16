@@ -19,6 +19,8 @@ class newProjectTest extends TestCase{
         $this->newProjectCreator = new newProject();
     }
     
+    
+    
     protected function getConnection(){
         if($this->conn === null){
             $this->conn = mysqli_connect($this->db_host, $this->db_user, $this->db_pass);
@@ -28,19 +30,13 @@ class newProjectTest extends TestCase{
     }
     
     protected function getLastId(){
-        $stm = "SELECT projectId FROM Project ORDER BY projectId DESC LIMIT 1";
+        $stm = "SELECT `AUTO_INCREMENT` FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'cswebhosting' AND   TABLE_NAME   = 'Project'";
         if($sql = $this->conn->prepare($stm)){
-            if($sql->execute()){
-                $sql->bind_result($id);
-                $sql->fetch();
-                return $id;
-            }
-            else{
-                return null;
-            }
-        }
-        else{
-            return null;
+            $sql->execute();
+            $sql->bind_result($u);
+            $sql->fetch();
+            $sql->close();
+            return $u;
         }
     }
     
@@ -65,11 +61,13 @@ class newProjectTest extends TestCase{
         }
     }
     
-    protected function selectTestData($type) {
+    protected function selectTestData($type, $id) {
         $this->getConnection();
+        $id = strval($id);
         if($type == "project"){
-            $stm = "SELECT projectId FROM User WHERE username = 'testUserU'";
+            $stm = "SELECT projectId FROM Project WHERE projectId = ?";
             if($sql = $this->conn->prepare($stm)){
+                $sql->bind_param("s",$id);
                 if($sql->execute()){
                     $sql->bind_result($u);
                     $sql->fetch();
@@ -83,9 +81,10 @@ class newProjectTest extends TestCase{
                 }
             }
         }
-        else if($type == "prof"){
-            $stm = "SELECT username FROM Professor WHERE username = 'testUserU'";
+        else if($type == "published"){
+            $stm = "SELECT projectId FROM Published WHERE projectId = ?";
             if($sql = $this->conn->prepare($stm)){
+                $sql->bind_param("s",$id);
                 if($sql->execute()){
                     $sql->bind_result($u);
                     $sql->fetch();
@@ -99,9 +98,10 @@ class newProjectTest extends TestCase{
                 }
             }
         }
-        else if($type == "student"){
-            $stm = "SELECT username FROM Student WHERE username = 'testUserU'";
+        else if($type == "files"){
+            $stm = "SELECT projectId FROM Files WHERE projectId = ?";
             if($sql = $this->conn->prepare($stm)){
+                $sql->bind_param("s",$id);
                 if($sql->execute()){
                     $sql->bind_result($u);
                     $sql->fetch();
@@ -166,23 +166,69 @@ class newProjectTest extends TestCase{
     public function testDatabaseConnection(){
         $this->getConnection();
         $this->assertNotNull($this->conn);
+        $this->conn->close();
     }
     
     public function testGetLastId(){
         $this->getConnection();
-        $expected = "35";
+        $expected = "";
+        $stm = "SELECT `AUTO_INCREMENT` FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'cswebhosting' AND   TABLE_NAME   = 'Project'";
+        if($sql = $this->conn->prepare($stm)){
+            $sql->execute();
+            $sql->bind_result($u);
+            $sql->fetch();
+            $sql->close();
+            $expected = $u;
+        }
         $actual = $this->getLastId();
         $this->assertEquals($expected, $actual);
+        $this->conn->close();
     }
     
     public function testInsertTestData(){
         $this->getConnection();
         $this->assertNotNull($this->insertTestData());
+        $this->conn->close();
+    }
+    
+    public function testSelectTestData(){
+        $this->getConnection();
+        $expected = $this->getLastId()-1;
+        $actual = $this->selectTestData("project",$this->getLastId()-1);
+        $this->assertEquals($expected, $actual);
+        $this->conn->close();
     }
     
     public function testDeleteTestData(){
         $this->getConnection();
-        $this->assertTrue($this->deleteTestData("36"));
+        $this->assertTrue($this->deleteTestData($this->getLastId()-1));
+        $this->conn->close();
+    }
+    
+    public function testInsertNewProjectBasic(){
+        $this->getConnection();
+        $id = $this->getLastId();
+        $id = (int)$id;
+        $expected = $id;
+        
+        $user = "dillyjb";
+        $t = "test";
+        $n = null;
+        
+        $this->newProjectCreator->createNewProject($user, $t, $t, $t, $n, $n, $n, $n, $n);
+        
+        $proj = false;
+        $pub = false;
+        if($this->selectTestData("published", $id) == $expected){
+            $pub = true;
+        }
+        if($this->selectTestData("project", $id) == $expected){
+            $proj = true;
+        }
+        $this->deleteTestData($id);
+        $this->assertTrue($proj && $pub);
+        $this->conn->close();
+        $this->newProjectCreator = null;
     }
     
     
