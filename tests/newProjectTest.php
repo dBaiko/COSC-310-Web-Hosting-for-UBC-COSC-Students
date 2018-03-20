@@ -1,5 +1,7 @@
 <?php
 
+//in Xampp --> phpunit C:\xampp\htdocs\COSC-310-Web-Hosting-For-UBC-COSC-Students\tests
+
 use PHPUnit\Framework\TestCase;
 
 require __DIR__ . '/../php/newProject.php';
