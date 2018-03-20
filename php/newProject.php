@@ -154,6 +154,7 @@ class newProject
         } else {
             return false;
         }
+        return true;
     }
 
     public function setUserName($user)
