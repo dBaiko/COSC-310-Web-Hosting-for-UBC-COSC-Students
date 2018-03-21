@@ -40,7 +40,7 @@ CREATE TABLE Files(
 	fileName VARCHAR(255),
 	file MEDIUMBLOB NOT NULL,
 	fileType VARCHAR(30),
-	PRIMARY KEY(projectId, fileName),
+	PRIMARY KEY(projectId,fileName),
 	FOREIGN KEY(projectId) REFERENCES Project(projectId)
 );
 
