@@ -1,8 +1,222 @@
 <?php
+class projectVeiwer{
+    
+    //database attributes
+    private $db_host = 'localhost';
+    private $db_name = 'cswebhosting';
+    private $db_user = 'cswebhosting';
+    private $db_pass = 'a9zEkajA';
+    private $conn = null;
+    private $db = null;
+    
+    public function __construct(){
+        $this->conn = mysqli_connect($this->db_host, $this->db_user, $this->db_pass);
+        if (! $this->conn) {
+            die('Could not connect: ' . mysqli_error());
+        } else {
+            $this->db = mysqli_select_db($this->conn, $this->db_name);
+            if (! $this->db) {
+                die('Could not connect: ' . mysqli_error());
+            }
+        }
+    }
+    
+    public function __destruct(){
+        $this->conn->close();
+        $this->conn = null;
+    }
+    
+    public function getLargestId(){
+        if($this->conn != null){
+            $stm = "SELECT projectId FROM Project ORDER BY projectId DESC LIMIT 1";
+            if($sql = $this->conn->prepare($stm)){
+                if($sql->execute()){
+                    $id = null;
+                    $sql->bind_result($id);
+                    $sql->fetch();
+                    $sql->close();
+                    return $id;
+                }else {
+                    $sql->close();
+                    $error = $this->conn->errno . ' ' . $this->conn->error;
+                    echo $error;
+                    return null;
+                }
+            }else {
+                $error = $this->conn->errno . ' ' . $this->conn->error;
+                echo $error;
+                return null;
+            }
+        }
+        
+    }
+    
+    public function getProjectInfo($projectId){
+        if($this->conn != null){
+           
+            $stm = "SELECT projectTitle, projDesc, demoUrl, date, projType, logoImage FROM Project WHERE projectId = ?";
+            if($sql = $this->conn->prepare($stm)){
+                $sql->bind_param("s", $projectId);
+                if($sql->execute()){
+                    $title = $desc =  $demoUrl = $date = $type = $logo = null;
+                    $sql->bind_result($title, $desc, $demoUrl, $date, $type, $logo);
+                    $sql->fetch();
+                    $resultSet = array("projectTitle"=>$title, "projDesc"=>$desc, "demoUrl"=>$demoUrl, "date"=>$date, "projType"=>$type, "logoImage"=>$logo);
+                    $sql->close();
+                    return $resultSet;
+                }else {
+                    $error = $this->conn->errno . ' ' . $this->conn->error;
+                    echo $error;
+                    return null;
+                }
+            }else {
+                $sql->close();
+                $error = $this->conn->errno . ' ' . $this->conn->error;
+                echo $error;
+                return null;
+            }
+            
+        }
+        else{
+            return null;
+        }
+    }
+    
+    public function getContribInfo($projectId){
+        if($this->conn != null){
+            
+            $stm = "SELECT userName FROM Published WHERE projectId = ?";
+            if($sql = $this->conn->prepare($stm)){
+                $sql->bind_param("s", $projectId);
+                if($sql->execute()){
+                    $sql->bind_result($u);
+                    while($sql->fetch()){
+                        echo " <a href=''>".$u."</a> |";
+                    }
+                    $sql->close();
+                    return true;                    
+                }else {
+                    $error = $this->conn->errno . ' ' . $this->conn->error;
+                    echo $error;
+                    return null;
+                }
+            }else {
+                $sql->close();
+                $error = $this->conn->errno . ' ' . $this->conn->error;
+                echo $error;
+                return null;
+            }
+            
+        }
+        else{
+            return null;
+        }
+    }
+    
+    public function getPicFiles($projectId){
+        if($this->conn != null){
+            
+            $stm = "SELECT file, fileName FROM Files WHERE projectId = ? AND (fileType = 'png' OR fileType = 'jpg' or fileType = 'jpeg')";
+            if($sql = $this->conn->prepare($stm)){
+                $sql->bind_param("s", $projectId);
+                if($sql->execute()){
+                    $sql->bind_result($f,$n);
+                    while($sql->fetch()){
+                        ?>
+                        <a href = 'php/viewPicture.php?projectId=<?php echo $projectId?>&fileName=<?php echo $n?>' ><img src = 'data:image/png;base64,<?php echo  base64_encode($f)?>' alt = 'Project Image' class = 'img'/></a> 
+                        <?php
+                    }
+                    $sql->close();
+                    return true;
+                }else {
+                    $error = $this->conn->errno . ' ' . $this->conn->error;
+                    echo $error;
+                    return null;
+                }
+            }else {
+                $error = $this->conn->errno . ' ' . $this->conn->error;
+                echo $error;
+                return null;
+            }
+            
+        }
+        else{
+            return null;
+        }
+    }
+    
+    public function getPdfFiles($projectId){
+        if($this->conn != null){
+            
+            $stm = "SELECT file, fileName FROM Files WHERE projectId = ? AND fileType = 'pdf'";
+            if($sql = $this->conn->prepare($stm)){
+                $sql->bind_param("s", $projectId);
+                if($sql->execute()){
+                    $sql->bind_result($f, $n);
+                    while($sql->fetch()){
+                        ?>
+                        <a href = 'php/viewPdf.php?projectId=<?php echo $projectId?>&fileName=<?php echo $n?>' ><object data="data:application/pdf;base64,<?php echo base64_encode($f) ?>" type="application/pdf"></object></a> 
+                        <?php
+                    }
+                    $sql->close();
+                    return true;
+                }else {
+                    $error = $this->conn->errno . ' ' . $this->conn->error;
+                    echo $error;
+                    return null;
+                }
+            }else {
+                $error = $this->conn->errno . ' ' . $this->conn->error;
+                echo $error;
+                return null;
+            }
+            
+        }
+        else{
+            return null;
+        }
+    }
+    
+    
+}
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 session_start();
 $user = $_SESSION["user"];
-?>
-<!DOCTYPE html> 
+
+if(isset($_SERVER["REQUEST_METHOD"])){//to prevent code running during testing
+  
+    $projViewer = new projectVeiwer();
+    $projInfo = null;
+    
+    if(isset($_GET['projectId'])){
+        $id = $_GET['projectId'];
+        if(is_numeric($id)){
+            if($id <= $projViewer->getLargestId()){
+                $projInfo = $projViewer->getProjectInfo($id);
+            }else{
+               echo $projViewer->getLargestId();
+                $projViewer = null;
+                ?>
+        		<meta http-equiv="refresh" content="0; URL='Browse.php'" />
+        		<?php
+            }
+        }else{
+            $projViewer = null;
+            ?>
+        	<meta http-equiv="refresh" content="0; URL='Browse.php'" />
+        	<?php
+        }
+    }
+    else{
+        $projViewer = null;
+        ?>
+        <meta http-equiv="refresh" content="0; URL='Browse.php'" />
+        <?php
+    }
+    
+    ?>
+  <!DOCTYPE html> 
 <html>
 <head>
 <meta charset="UTF-8">
@@ -14,7 +228,11 @@ $user = $_SESSION["user"];
 <header>
 <h1>CSPub</h1>
 <div class = "right">
-	<div class = "dropdown">
+		<?php 
+		if(isset($_SESSION["user"])){
+		    echo "<p id = 'signIn'><a href = 'php/logUserOut.php'>Log Out</a></p>";
+		    ?>
+		    <div class = "dropdown">
 		<p id = "dropimg"> <img src = "Images/Bars.png" class = "icons"/> </p>
 		<div class = "dropdown-content">
 			<ul>					
@@ -24,9 +242,7 @@ $user = $_SESSION["user"];
 			</ul>
 		</div>
 	</div>
-		<?php 
-		if($user!=null){
-		    echo "<p id = 'signIn'><a href = 'index.php'>Log Out</a></p>";
+		    <?php
 		}
 		else{
 		    echo "<p id = 'signIn'><a href = 'SignIn.php'>Sign In</a></p>";
@@ -34,71 +250,59 @@ $user = $_SESSION["user"];
 		?>
 	</div>
 </header>
-
 <div id="main">
 	<article id="Project1">
 		<table class = "Project">
-			<caption ><h2 id = "title">How To Build An Awesome Website</h2></caption>
+			<caption ><h2 id = "title"><?php echo $projInfo['projectTitle']?></h2></caption>
 			<thead>
 				<tr>
-					<th><a href = '' ><img src = 'Images/SunsLogo.png' alt = 'Project Image' id = 'logo'/></a></th>
-					<th>By: <a href ="">Dbroomfield</a></th>
-					<th> Contributors: <a href ="">Dylan</a>, <a href ="">Noman</a>, <a href ="">Karanmeet</a>, and <a href ="">Harman</a> 
+					<th><img class="blogImg" src="data:image/png;base64,<?php echo base64_encode($projInfo['logoImage'])?>" alt="blog picture" width="30%"></th>
+					<th> Contributors: 
+					<?php 
+					$projViewer->getContribInfo($id);
+					?>
+					</th>
+					<th>Publish Date: <?php echo substr($projInfo['date'],0,strpos($projInfo['date'], ' '))?></th> 
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
 					<td colspan = "3">
-						<p id = "desc">Maecenas volutpat blandit aliquam etiam erat velit scelerisque 
-						in dictum. Ornare massa eget egestas purus viverra. Quis risus sed 
-						vulputate odio ut enim blandit volutpat maecenas. Odio eu feugiat 
-						pretium nibh ipsum. Dignissim enim sit amet venenatis urna. Sed 
-						ullamcorper morbi tincidunt ornare massa eget egestas purus viverra. 
-						Ac felis donec et odio pellentesque diam volutpat commodo. Semper 
-						eget duis at tellus at urna condimentum mattis. Eget nulla facilisi 
-						etiam dignissim. Commodo ullamcorper a lacus vestibulum sed arcu non 
-						odio euismod. Tincidunt praesent semper feugiat nibh sed pulvinar 
-						proin gravida. Porttitor leo a diam sollicitudin tempor id eu nisl. 
-						In hac habitasse platea dictumst vestibulum rhoncus. Vulputate eu 
-						scelerisque felis imperdiet proin fermentum leo vel. Ligula ullamcorper
-						malesuada proin libero nunc. Ullamcorper a lacus vestibulum sed arcu. 
-						Sit amet cursus sit amet dictum sit amet. Lectus magna fringilla urna 
-						porttitor.Condimentum mattis pellentesque id nibh tortor id. Vitae 
-						et leo duis ut diam quam nulla. In ornare quam viverra orci sagittis. 
-						Amet est placerat in egestas. Elementum pulvinar etiam non quam lacus 
-						suspendisse faucibus interdum posuere. Felis bibendum ut tristique et 
-						egestas. Scelerisque varius morbi enim nunc. Ut eu sem integer vitae 
-						justo eget magna fermentum iaculis. Pellentesque dignissim enim sit 
-						amet venenatis urna cursus eget nunc. Facilisi etiam dignissim diam 
-						quis enim. Gravida dictum fusce ut placerat orci nulla pellentesque
-						dignissim. Commodo quis imperdiet massa tincidunt nunc. Tortor vitae 
-						purus faucibus ornare suspendisse. Libero enim sed faucibus turpis in 
-						eu mi. Eget arcu dictum varius duis at consectetur lorem donec. Pharetra 
-						vel turpis nunc eget lorem dolor sed viverra.
-						</p>
+						<p id = "desc"><?php echo $projInfo['projDesc']?></p>
 					</td>
 				<tr>
-					<td>
-						<p id = "links">  Links: <a href ="">abasasndaks</a> </p>
-					</td>
+					<?php 
+					if($projInfo['demoUrl'] != ""){
+					    if(strpos($projInfo['demoUrl'], "http") !== false){
+					        ?>
+					   		<td>
+							<p id = "links">Demo Link: <a href ="<?php echo $projInfo['demoUrl']?>"><?php echo $projInfo['demoUrl']?></a> </p>
+							</td>
+					   <?php
+					    }else{
+					   ?>
+					   <td>
+						<p id = "links">Demo Link: <a href ="http://<?php echo $projInfo['demoUrl']?>"><?php echo $projInfo['demoUrl']?></a> </p>
+						</td>
+					   <?php
+					    }
+					}
+					?>
 				</tr>
 			</tbody>
 		</table>
 	</article>
 <div id = "extraImages">
-	<a href = '' ><img src = 'Images/SunsLogo.png' alt = 'Project Image' class = 'img'/>
-	<a href = '' ><img src = 'Images/SunsLogo.png' alt = 'Project Image' class = 'img'/>
-	<a href = '' ><img src = 'Images/SunsLogo.png' alt = 'Project Image' class = 'img'/>
-	<a href = '' ><img src = 'Images/SunsLogo.png' alt = 'Project Image' class = 'img'/>
-	<a href = '' ><img src = 'Images/SunsLogo.png' alt = 'Project Image' class = 'img'/>
-	<a href = '' ><img src = 'Images/SunsLogo.png' alt = 'Project Image' class = 'img'/>
-	<a href = '' ><img src = 'Images/SunsLogo.png' alt = 'Project Image' class = 'pdf'/>
-	<a href = '' ><img src = 'Images/SunsLogo.png' alt = 'Project Image' class = 'img'/>
-	<a href = '' ><img src = 'Images/SunsLogo.png' alt = 'Project Image' class = 'img'/>
-	<a href = ''><img src = 'Images/SunsLogo.png' alt = 'Project Image' class = 'img'/>
-	<a href = '' ><img src = 'Images/SunsLogo.png' alt = 'Project Image' class = 'img'/>
+	<?php 
+	$projViewer->getPicFiles($id);
+	?>
 </div>
-	<p id = "copyright"> Copyright &copy; 2018 How To Build An Awesome Website  </p>
+<div id = "extraImages">
+	<?php 
+	$projViewer->getPdfFiles($id);
+	?>
+</div>
+	<p id = "copyright"> Copyright &copy; 2018 <?php echo $projInfo['projectTitle']?>  </p>
 </div>
 
 
@@ -111,3 +315,6 @@ $user = $_SESSION["user"];
 </footer>
 </body>
 </html>
+  <?php  
+}
+?>
