@@ -102,7 +102,8 @@ if(isset($_POST['submit']))
        $a = $blobObj->selectBlob(3);
             # header("Content-Type:" . $a['fileName']);
             # echo $a['file'];
-      ?>
+       //echo '<img src="data:image/png;base64,'.base64_encode($result['file']).'"/>'; 
+       ?>
      <object data="data:application/pdf;base64,<?php echo base64_encode($a['file']) ?>" type="application/pdf" style="height:200px;width:60%"></object>
     </p>
 </body>

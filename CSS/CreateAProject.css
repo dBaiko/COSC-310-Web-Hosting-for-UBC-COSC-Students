@@ -50,6 +50,9 @@ input[type="submit"]{
 .empty{
 	background-color: red;
 }
+option{
+	background-color: white;
+}
 footer{
 	position: relative;
 	bottom: 0;
