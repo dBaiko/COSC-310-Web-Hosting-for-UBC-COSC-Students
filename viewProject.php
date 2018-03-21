@@ -91,25 +91,25 @@ class projectVeiwer{
                 if($sql->execute()){
                     $sql->bind_result($u);
                     while($sql->fetch()){
-                        echo " <a href=''>".$u."</a> |";
+                        echo " <a href='Portfolio.php?userName=".$u."'>".$u."</a> |";
                     }
                     $sql->close();
-                    return true;                    
+                    return false;                    
                 }else {
                     $error = $this->conn->errno . ' ' . $this->conn->error;
                     echo $error;
-                    return null;
+                    return false;
                 }
             }else {
                 $sql->close();
                 $error = $this->conn->errno . ' ' . $this->conn->error;
                 echo $error;
-                return null;
+                return false;
             }
             
         }
         else{
-            return null;
+            return false;
         }
     }
     

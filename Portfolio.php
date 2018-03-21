@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 session_start();
 if(isset($_SESSION['user'])){
     $user = $_SESSION['user'];
@@ -9,6 +11,32 @@ if(isset($_SESSION['user'])){
 if(isset($_SESSION['user'])){
 
   class listContent{
+      
+      private $db_host = 'localhost';
+      private $db_name = 'cswebhosting';
+      private $db_user = 'cswebhosting';
+      private $db_pass = 'a9zEkajA';
+      private $conn = null;
+      private  $db = null;
+      
+      
+      public function __construct() {
+          $this->conn = mysqli_connect($this->db_host, $this->db_user, $this->db_pass);
+          if(!$this->conn){
+              die('Could not connect: ' .mysqli_error());
+          }
+          else{
+              $this->db = mysqli_select_db($this->conn, $this->db_name);
+              if(!$this->db){
+                  die('Could not connect: ' .mysqli_error());
+              }
+          }
+      }
+      
+      public function __destruct(){
+          $this->conn->close();
+          $this->conn = null;
+      }
       
       //This function takes in username, firstname, lastname, studentnumber, email, school, major
     public function displayContent($param1, $param2, $param3, $param4, $param5, $param6, $param7){
@@ -36,8 +64,7 @@ if(isset($_SESSION['user'])){
  
       }
       
-      public function query_userInfo($param1)
-      {
+      public function query_userInfo($param1){
           include 'php/all_projects.php';
           if ($conn->connect_error) {
               die("Connection failed:" . $conn->connect_error);
@@ -49,6 +76,45 @@ if(isset($_SESSION['user'])){
           
           $result = mysqli_query($conn, $sql);
           return $result;
+      }
+      
+      public function displayAllProjects($userName){
+          if($this->conn != null){
+              $stm = "SELECT p.projectId, p.projectTitle, pub.userName, p.date, p.projDesc, p.logoImage FROM Project AS p, Published AS pub WHERE p.projectId = pub.projectId AND pub.userName = ? GROUP BY pub.projectId ORDER BY p.date DESC";
+              if($sql = $this->conn->prepare($stm)){
+                  $sql->bind_param("s",$userName);
+                  if($sql->execute()){
+                      $sql->bind_result($id,$title,$u,$date,$desc,$logo);
+                      while($sql->fetch()){
+                          $this->displayPContent($title,$u,$date,$desc,$logo,$id);
+                      }
+                      return true;
+                  }else {
+                      $error = $this->conn->errno . ' ' . $this->conn->error;
+                      echo $error;
+                      return false;
+                  }
+              }else {
+                  $error = $this->conn->errno . ' ' . $this->conn->error;
+                  echo $error;
+                  return false;
+              }
+          }
+          else{
+              return false;
+          }
+      }
+      
+      public function displayPContent($param1, $param2, $param3, $param4, $param5,$param6)
+      {
+          echo "<a href=\"viewProject.php?projectId=$param6\" style=\"\"><table class=\"project\" id=\"website\">" . "<caption>" . $param1 . "</caption>" . "<thead>" . "<tr>" . "<th> By: " . $param2 . "</th>" . "<th class=\"textright\">" . $param3 . "</th>" . "</tr>" . "</thead>" . "<tbody>" . "<tr>" . "<td colspan=\"2\"><img src=\"data:image/png;base64,".base64_encode($param5)."\"name=\"web\"class=\"images\" alt=\"logo here\" />" . "<p>" . $param4 . "</p></td>" . "</tr>" . "</tbody>" . "<tfoot>
+    <tr>
+    <td colspan=\"2\">
+    <p id=\"copyright\">Copyright &copy; " . $param1 . "</p>
+    </td>
+    </tr>
+    </tfoot>
+    </table></a>";
       }
       
        
@@ -112,6 +178,10 @@ if(isset($_SESSION['user'])){
 	<div id = "projects">
 	
 <!-- 	display user project goes here -->
+	<?php 
+	   $contentGet->displayAllProjects($user);
+	   $contentGet = null;
+	?>
 	
 	</div>
 	</div>
