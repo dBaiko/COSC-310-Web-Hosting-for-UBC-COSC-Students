@@ -84,6 +84,7 @@ $user = $_SESSION["user"];
 		</div>
 		<div id = "dummyProject">
 				<h2>Projects:</h2>
+				<a href="viewProject.php">
 					<table class = "project" id = "website">
 						<caption>How To Build An Awesome Website</caption>
 						<thead>
@@ -124,6 +125,8 @@ $user = $_SESSION["user"];
 							</tr>
 						</tfoot>	
 					</table>
+				</a>
+				<a href="viewProject.php">
 					<table class = "project" id = "project">
 						<caption>Managing A Successful Project</caption>
 						<thead>
@@ -174,6 +177,8 @@ $user = $_SESSION["user"];
 							</tr>
 						</tfoot>	
 						</table>
+					</a>
+					<a href="viewProject.php">
 						<table class = "project" id = "database">
 						<caption>Building An Efficient Database </caption>
 						<thead>
@@ -233,6 +238,7 @@ $user = $_SESSION["user"];
 							</tr>
 						</tfoot>	
 					</table>
+				</a>
 			</div>
 			</div>
 </div>
