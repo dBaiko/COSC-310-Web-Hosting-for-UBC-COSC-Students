@@ -223,5 +223,6 @@ if (isset($_SESSION["user"])) {
 		</ul>
 		<p>Copyright &copy; 2018 CSPub</p>
 	</footer>
+
 </body>
 </html>
