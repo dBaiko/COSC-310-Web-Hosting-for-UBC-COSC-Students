@@ -7,7 +7,7 @@ CREATE TABLE User(
 	salt TEXT NOT NULL,
 	PRIMARY KEY(userName)
 );
-x
+
 CREATE TABLE Student(
 	userName VARCHAR(30) NOT NULL,
 	studentNum VARCHAR(8) NOT NULL,
