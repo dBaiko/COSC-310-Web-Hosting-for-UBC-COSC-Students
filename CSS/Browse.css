@@ -69,10 +69,11 @@ th{
 	border: 1px solid Grey;
 	border-top: 0;
 	padding: 1em 1em 0em 2em;
-	width: 80%;
+	width: 100%;
 	margin-left: 2em;
 	margin-bottom: 1em;
 }
+
 caption{
 	background-color:#F2F2F2;
 	border: 1px solid Grey;
