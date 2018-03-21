@@ -83,16 +83,26 @@ class checkPassTest extends TestCase
         $this->getConnection();
         $this->assertTrue($this->insertTestData());
     }
-    public function testCheckUser(){
+    public function testDeleteTestData(){
+        $this->getConnection();
+        $this->assertTrue($this->deleteTestData());
+    }
+    public function testCheckPassWithExistingUser(){
         $this->getConnection();
         $this->insertTestData();
         $actual = $this->passChecker->checkPass("testUserP","test123");
         $expected = "1";
         $this->assertEquals($expected, $actual);
+        $this->deleteTestData();
     }
-    public function testDeleteTestData(){
+    public function testCheckPassWithoutExistingUser(){
         $this->getConnection();
-        $this->assertTrue($this->deleteTestData());
+        $this->deleteTestData();
+        $actual = $this->passChecker->checkPass("testUserP","test123");
+        $expected = "0";
+        $this->assertEquals($expected, $actual);
+        $this->deleteTestData();
     }
+    
     
 }

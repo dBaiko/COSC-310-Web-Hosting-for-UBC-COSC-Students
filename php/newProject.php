@@ -1,170 +1,297 @@
 <?php
+
+class newProject
+{
+
+    private $db_host = 'localhost';
+
+    private $db_name = 'cswebhosting';
+
+    private $db_user = 'cswebhosting';
+
+    private $db_pass = 'a9zEkajA';
+
+    private $conn = null;
+
+    private $db = null;
+
+    public $userName = null;
+
+    public $title = null;
+
+    public $desc = null;
+
+    public $link = null;
+
+    public $type = null;
+
+    public $contribArray = array();
+
+    public $fileNames = array();
+
+    public $fileTypes = array();
+
+    public $files = array();
+    
+    public $logo = null;
+
+    public function __construct()
+    {
+        $this->conn = mysqli_connect($this->db_host, $this->db_user, $this->db_pass);
+        if (! $this->conn) {
+            die('Could not connect: ' . mysqli_error());
+        } else {
+            $this->db = mysqli_select_db($this->conn, $this->db_name);
+            if (! $this->db) {
+                die('Could not connect: ' . mysqli_error());
+            }
+        }
+    }
+    
+    public function __destruct(){
+        $this->conn->close();
+        $this->conn = null;
+    }
+
+    public function createNewProject($userName, $title, $desc, $type, $link, $contribArray, $fileNames, $fileTypes, $files, $logo)
+    {
+        if ($this->conn != null) {
+            if ($userName != null && $title != null && $desc != null && $type != null) {
+                $userName = chop($userName);
+                $title = chop($title);
+                $desc = chop($desc);
+                $type = chop($type);
+                $link = chop($link);
+                
+                $id = null;
+                $confirm = false;
+                $stm = "INSERT INTO Project (projectTitle, projDesc, demoUrl, date, projType, logoImage) VALUES (?,?,?, NOW(),?,?)";
+                if ($sql = $this->conn->prepare($stm)) {
+                    $null = null;
+                    $sql->bind_param("ssssb", $title, $desc, $link, $type,$null);
+                    $sql->send_long_data(4,$logo);
+                    if ($sql->execute()) {
+                        $id = mysqli_insert_id($this->conn);
+                        $confirm = true;
+                    } else {
+                        $error = $this->conn->errno . ' ' . $this->conn->error;
+                        echo $error;
+                        return false;
+                    }
+                    
+                    $sql->close();
+                } else {
+                    $error = $this->conn->errno . ' ' . $this->conn->error;
+                    echo $error;
+                    return false;
+                }
+                
+                $studentNum = "";
+                
+                if ($confirm == true) {
+                    $stm = "SELECT studentNum FROM Student WHERE userName = ?";
+                    if ($s = $this->conn->prepare($stm)) {
+                        $s->bind_param("s", $userName);
+                        $s->execute();
+                        $s->bind_result($studentNum);
+                        $s->fetch();
+                        $s->close();
+                    } else {
+                        $error = $conn->errno . ' ' . $conn->error;
+                        echo $error;
+                        return false;
+                    }
+                    $s = "INSERT INTO Published (userName, studentNum, projectId) VALUES (?,?,?)";
+                    if ($sq = $this->conn->prepare($s)) {
+                        $sq->bind_param("sss", $userName, $studentNum, $id);
+                        $sq->execute();
+                        $sq->close();
+                        if (! empty($contribArray)) {
+                            $sqlAdd = $this->conn->prepare($s);
+                            $sqlAdd->bind_param("sss", $val, $stu, $id);
+                            foreach ($contribArray as $x => $val) {
+                                $stu = "";
+                                $stmGetStu = "SELECT studentNum FROM Student WHERE userName = ?";
+                                if ($sqlStu = $this->conn->prepare($stmGetStu)) {
+                                    $sqlStu->bind_param("s", $val);
+                                    $sqlStu->execute();
+                                    $sqlStu->bind_result($stu);
+                                    $sqlStu->fetch();
+                                    $sqlStu->close();
+                                } else {
+                                    $error = $this->conn->errno . ' ' . $this->conn->error;
+                                    echo $error;
+                                    return false;
+                                }
+                                $sqlAdd->execute();
+                            }
+                            $sqlAdd->close();
+                        }
+                    } else {
+                        $error = $this->conn->errno . ' ' . $this->conn->error;
+                        echo $error;
+                        return false;
+                    }
+                    if(! empty($files)){
+                    $stmFiles = "INSERT INTO Files (projectId, fileName, file, fileType) VALUES (?,?,?,?);";
+                    if ($sqlFiles = $this->conn->prepare($stmFiles)) {
+                        $name = "";
+                        $filetype = "";
+                        $fileC = "";
+                        $null = NULL;
+                        $sqlFiles->bind_param("ssbs", $id, $name, $null, $filetype);
+                        foreach ($files as $key => $fValue) {
+                            $name = $fileNames[$key];
+                            $filetype = $fileTypes[$key];
+                            $fileC = $fValue;
+                            $sqlFiles->send_long_data(2, $fileC);
+                            $sqlFiles->execute();
+                        }
+                    }
+                    $sqlFiles->close();
+                    return true;
+                }
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+        return true;
+    }
+
+    public function setUserName($user)
+    {
+        $this->userName = $user;
+    }
+
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
+
+    public function setDesc($desc)
+    {
+        $this->desc = $desc;
+    }
+
+    public function setLink($link)
+    {
+        $this->link = $link;
+    }
+
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
+
+    public function buildContribArray($contrib)
+    {
+        foreach ($contrib as $index => $value) {
+            $this->contribArray[] = $value;
+        }
+    }
+
+    public function buildFileArrays($files)
+    {
+        if (isset($files['name'])) {
+            $this->buildFileNameArray($files['name']);
+            $this->buildFileTypeArray($files['name']);
+        }
+        if (isset($files['tmp_name'])) {
+            $this->buildFiles($files['tmp_name']);
+        }
+    }
+
+    public function buildFileNameArray($fileNames)
+    {
+        foreach ($fileNames as $x => $value) {
+            if($value != "")
+                $this->fileNames[] = $value;
+        }
+    }
+
+    public function buildFileTypeArray($fileNames)
+    {
+        foreach ($fileNames as $x => $value) {
+            if($value != ""){
+                $tmp = substr($value, strrpos($value, "."));
+                $this->fileTypes[] = substr($tmp, 1);
+            }
+            
+        }
+    }
+
+    public function buildFiles($files)
+    {
+        foreach ($files as $x => $value) {
+            if ($value != null) {
+                $content = file_get_contents($value);
+                $this->files[] = $content;
+            }
+        }
+    }
+}
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 session_start();
-$username = $_SESSION["user"];
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    echo $username;
-    $title = $_POST["title"];
-    echo "<br>" . $title;
-    $desc = $_POST["description"];
-    echo "<br>" . $desc;
-    $contributors = array();
-    $type = $_POST["projType"];
-    if($type == null || $type == ""){
-        $type = "Other";
-    }
-    echo "<br>".$type;
-    if (isset($_POST['contributor'])) {
-        foreach ($_POST['contributor'] as $index => $value) {
-            $contributors[] = $value;
-        }
-        foreach ($contributors as $x => $value) {
-            echo "<br>Value= " . $value;
-        }
-    }
-    
-    $link = $_POST["link"];
-    echo "<br>" . $link;
-    
-    $fileNames = array();
-    $fileTypes = array();
-    $files = array();
-    
-    if ($_FILES['pics']['name'] != null) {
-        foreach ($_FILES['pics']['name'] as $x => $value) {
-            if($value != null){
-                $fileNames[] = $value;
-                $tmp = substr($value, strrpos($value, "."));
-                $fileTypes[] = substr($tmp, 1);
-            }
-            
-        }
-        foreach ($_FILES["pics"]["tmp_name"] as $x => $value) {
-            if ($value != null) {
-                $content = file_get_contents($value);
-                $files[] = $content;
-            }
-        }
-    }
-    
-    if ($_FILES['pdfs']['name'] != null) {
-        foreach ($_FILES['pdfs']['name'] as $i => $value) {
-            if($value != null){
-                $fileNames[] = $value;
-                $tmp = substr($value, strrpos($value, "."));
-                $fileTypes[] = substr($tmp, 1);
-            }
-            
-        }
-        foreach ($_FILES["pdfs"]["tmp_name"] as $x => $value) {
-            if ($value != null) {
-                $content = file_get_contents($value);
-                $files[] = $content;
-            }
-        }
-    }
-    
-    foreach ($fileNames as $x => $value) {
-        echo "<br>Key= ". $x ." Value= " . $value;
-    }
-    
-    foreach ($fileTypes as $x => $value) {
-        echo "<br>Key= ". $x ." Value= " . $value;
-    }
-    
-    
-    $servername = "localhost";
-    $db_user = "cswebhosting";
-    $db_pass = "a9zEkajA";
-    $db = "cswebhosting";
-    
-    $conn = mysqli_connect($servername, $db_user, $db_pass, $db);
-    $id = null;
-    $confirm = false;
-    $title = chop($title);
-    $desc = chop($desc);
-    $link = chop($link);
-    $stm = "INSERT INTO Project (projectTitle, projDesc, demoUrl, date, projType) VALUES (?,?,?, NOW(),?)";
-    if ($sql = $conn->prepare($stm)) {
-        $sql->bind_param("ssss", $title, $desc, $link, $type);
-        $sql->execute();
-        $id = mysqli_insert_id($conn);
-        echo "<br>" . $id;
-        $confirm = true;
-    } else {
-        $error = $conn->errno . ' ' . $conn->error;
-        echo $error;
-    }
-    
-    $studentNum = "";
-    
-    if ($confirm == true) {
-        $stm = "SELECT studentNum FROM Student WHERE userName = ?";
-        if($s = $conn->prepare($stm)){
-            $s->bind_param("s", $username);
-            $s->execute();
-            $s->bind_result($studentNum);
-            $s->fetch();
-        }else{
-            $error = $conn->errno . ' ' . $conn->error;
-            echo $error;
-        }
-        echo "<br>".$studentNum;
-        $s = "INSERT INTO Published (userName, studentNum, projectId) VALUES (?,?,?)";
-        if($sq = $conn->prepare($s)){
-            $sq->bind_param("sss",$username,$studentNum,$id);
-            $sq->execute();
-           $sq->close();
-            if(!empty($contributors)){
-                $sqlAdd = $conn->prepare($s);
-                $sqlAdd->bind_param("sss", $val, $stu, $id);
-                foreach ($contributors as $x => $val){
-                    $stu = "";
-                    $stmGetStu = "SELECT studentNum FROM Student WHERE userName = ?";
-                    if($sqlStu = $conn->prepare($stmGetStu)){
-                        $sqlStu->bind_param("s", $val);
-                        $sqlStu->execute();
-                        $sqlStu->bind_result($stu);
-                        $sqlStu->fetch();
-                        $sqlStu->close();
-                    }else{
-                        $error = $conn->errno . ' ' . $conn->error;
-                        echo $error;
-                    }
-                        $sqlAdd->execute();
-                       
-                    
-                }
-                $sqlAdd->close();
-            }
-        }else{
-            $error = $conn->errno . ' ' . $conn->error;
-            echo $error;
+
+if(isset($_SERVER["REQUEST_METHOD"])){
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $username = $_SESSION["user"];
+        
+        $newProjectCreator = new newProject();
+        
+        $newProjectCreator->setUserName($username);
+        
+        if(isset($_POST["title"])){
+            $newProjectCreator->setTitle($_POST["title"]);
         }
         
-        $stmFiles = "INSERT INTO Files (projectId, fileName, file, fileType) VALUES (?,?,?,?);";
-        if($sqlFiles = $conn->prepare($stmFiles)){
-            $name = "";
-            $type = "";
-            $fileC = "";
-            $null = NULL;
-            $sqlFiles->bind_param("ssbs", $id,$name,$null,$type);
-            foreach ($files as $key => $fValue){
-                $name = $fileNames[$key];
-                $type = $fileTypes[$key];
-                $fileC = $fValue;
-                $sqlFiles->send_long_data(2,$fileC);
-                $sqlFiles->execute();
-            }
+        if(isset($_POST["description"])){
+            $newProjectCreator->setDesc($_POST["description"]);
         }
-        $sqlFiles->close();
-        $conn->close();
-        ?>
-         <meta http-equiv="refresh" content="0; URL='../confirmNewProject.php'"/>
-        <?php    
-    
+        
+        if(isset($_POST["link"])){
+            $newProjectCreator->setLink($_POST["link"]);
+        }
+        
+        if(isset($_POST["projType"])){
+            $newProjectCreator->setType($_POST["projType"]);
+        }
+        
+        if(isset($_POST["contributor"])){
+            $newProjectCreator->buildContribArray($_POST["contributor"]);
+        }
+        
+        if($_FILES['pics'] != null){
+            $newProjectCreator->buildFileArrays($_FILES['pics']);
+        }
+        
+        if(isset($_FILES['pdfs'])){
+            $newProjectCreator->buildFileArrays($_FILES['pdfs']);
+        }
+        
+        $logoFile = $_FILES['logo']['tmp_name'];
+        if($logoFile != null){
+            $newProjectCreator->logo = file_get_contents($logoFile);
+        }
+        else{
+            $newProjectCreator->logo = file_get_contents("../Images/default.png");
+        }
+        
+        if($newProjectCreator->createNewProject($newProjectCreator->userName, $newProjectCreator->title, $newProjectCreator->desc, $newProjectCreator->type, $newProjectCreator->link, $newProjectCreator->contribArray, $newProjectCreator->fileNames, $newProjectCreator->fileTypes, $newProjectCreator->files, $newProjectCreator->logo)){
+            $newProjectCreator = null;    
+            ?>
+            <meta http-equiv="refresh" content="0; URL='../confirmNewProject.php'" />
+            <?php
+        }
+        else{
+           ?>
+           <meta http-equiv="refresh" content="0; URL='../CreateAProject.php'" />
+           <?php 
+        }
     }
-
-
 }

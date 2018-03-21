@@ -7,7 +7,7 @@ CREATE TABLE User(
 	salt TEXT NOT NULL,
 	PRIMARY KEY(userName)
 );
-
+x
 CREATE TABLE Student(
 	userName VARCHAR(30) NOT NULL,
 	studentNum VARCHAR(8) NOT NULL,
@@ -28,18 +28,19 @@ CREATE TABLE Professor(
 CREATE TABLE Project(
 	projectId INT AUTO_INCREMENT PRIMARY KEY,
 	projectTitle VARCHAR(255),
-	projDesc LONGTEXT,
+	projDesc MEDIUMTEXT,
 	demoUrl VARCHAR(255),
 	date DATETIME,
-	projType VARCHAR(50)
+	projType VARCHAR(50),
+	logoImage MEDIUMBLOB
 );
 
 CREATE TABLE Files(
 	projectId INT NOT NULL,
 	fileName VARCHAR(255),
-	file LONGBLOB NOT NULL,
+	file MEDIUMBLOB NOT NULL,
 	fileType VARCHAR(30),
-	PRIMARY KEY(projectId, fileName),
+	PRIMARY KEY(projectId,fileName),
 	FOREIGN KEY(projectId) REFERENCES Project(projectId)
 );
 
