@@ -107,7 +107,9 @@ if(isset($_SESSION['user'])){
       
       public function displayPContent($param1, $param2, $param3, $param4, $param5,$param6)
       {
+
           echo "<a href=\"viewProject.php?projectId=$param6\" style=\"\"><table class=\"project\" id=\"website\">" . "<caption>" . $param1 . "</caption>" . "<thead>" . "<tr>" . "<th class=\"textleft\"> By: " . $param2 . "</th>" . "<th class=\"textright\">" . $param3 . "</th>" . "</tr>" . "</thead>" . "<tbody>" . "<tr>" . "<td colspan=\"2\"><img src=\"data:image/png;base64,".base64_encode($param5)."\"name=\"web\"class=\"images\" alt=\"logo here\" />" . "<p class=\"desc\">" . $param4 . "</p></td>" . "</tr>" . "</tbody>" . "<tfoot>
+
     <tr>
     <td colspan=\"2\">
     <p id=\"copyright\">Copyright &copy; " . $param1 . "</p>

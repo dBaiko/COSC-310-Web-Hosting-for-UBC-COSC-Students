@@ -64,6 +64,12 @@ if(isset($_SESSION['user'])){
 					</p>
 					<p id="contributors">
 					</p>
+					<div>
+						<label>Logo Image (The main image or logo to be displayed with your project):</label><br>
+						<img id="logo" src="Images/default.png" width="25%"/><br>
+						<input type="file" accept=".png, .jpg, .jpeg" onchange="previewFile(this)" name="logo" />
+						<button  type="button" onclick="remove()">Remove</button>
+					</div>
 					<div id = "pics">
 						<label>Images (PNG, JPG, JPEG):</label><br>
 						<div>
@@ -118,6 +124,49 @@ if(isset($_SESSION['user'])){
 </footer>
 </body>
 <script>
+function previewFile(e) {
+	var file    = document.querySelector('input[name=logo]').files[0];  
+	if(checkFileType(file) == true){
+    	  var preview = document.querySelector('#logo');
+    	  
+    	  var reader  = new FileReader();
+
+    	  reader.onloadend = function () {
+    	    preview.src = reader.result;
+    	  }
+
+    	  if (file) {
+    	    reader.readAsDataURL(file);
+    	  } else {
+    	    preview.src = "Images/default.png";
+    	  }
+	  }
+	else{
+		document.querySelector('input[name=logo]').value = "";
+	}
+	}
+function remove(){
+	var preview = document.querySelector('#logo');
+	preview.src = "Images/default.png";
+	document.querySelector('input[name=logo]').value = "";
+}
+function checkFileType(file){
+	if(!file)
+		return false;
+	var correct = false;
+	var name = file.name;
+	var type = name.split(".")[1];
+	if(type == "jpg" || type == "png" || type == "jpeg"){
+		return true;
+	}
+	else{
+		alert("Please only choose PNG or JPG file type");
+		return false;
+	}
+	
+}
+
+
 numPdf = 0;
 
 function addPdfFile(e){

@@ -63,6 +63,11 @@ footer{
 input[name="copyright"] {
 	width: 20%;
 }
+<<<<<<< HEAD
+#projectlinks{
+	background-color: black;
+}
+=======
 
 .cont{
 	margin: 0.5em 0.25em 0.5em 0em;
@@ -99,3 +104,4 @@ input[name="copyright"] {
 	display: block;
 }
 
+>>>>>>> refs/remotes/origin/development

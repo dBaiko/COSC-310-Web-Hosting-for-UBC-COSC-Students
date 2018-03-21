@@ -32,6 +32,8 @@ class newProject
     public $fileTypes = array();
 
     public $files = array();
+    
+    public $logo = null;
 
     public function __construct()
     {
@@ -51,7 +53,7 @@ class newProject
         $this->conn = null;
     }
 
-    public function createNewProject($userName, $title, $desc, $type, $link, $contribArray, $fileNames, $fileTypes, $files)
+    public function createNewProject($userName, $title, $desc, $type, $link, $contribArray, $fileNames, $fileTypes, $files, $logo)
     {
         if ($this->conn != null) {
             if ($userName != null && $title != null && $desc != null && $type != null) {
@@ -63,9 +65,11 @@ class newProject
                 
                 $id = null;
                 $confirm = false;
-                $stm = "INSERT INTO Project (projectTitle, projDesc, demoUrl, date, projType) VALUES (?,?,?, NOW(),?)";
+                $stm = "INSERT INTO Project (projectTitle, projDesc, demoUrl, date, projType, logoImage) VALUES (?,?,?, NOW(),?,?)";
                 if ($sql = $this->conn->prepare($stm)) {
-                    $sql->bind_param("ssss", $title, $desc, $link, $type);
+                    $null = null;
+                    $sql->bind_param("ssssb", $title, $desc, $link, $type,$null);
+                    $sql->send_long_data(4,$logo);
                     if ($sql->execute()) {
                         $id = mysqli_insert_id($this->conn);
                         $confirm = true;
@@ -270,7 +274,15 @@ if(isset($_SERVER["REQUEST_METHOD"])){
             $newProjectCreator->buildFileArrays($_FILES['pdfs']);
         }
         
-        if($newProjectCreator->createNewProject($newProjectCreator->userName, $newProjectCreator->title, $newProjectCreator->desc, $newProjectCreator->type, $newProjectCreator->link, $newProjectCreator->contribArray, $newProjectCreator->fileNames, $newProjectCreator->fileTypes, $newProjectCreator->files)){
+        $logoFile = $_FILES['logo']['tmp_name'];
+        if($logoFile != null){
+            $newProjectCreator->logo = file_get_contents($logoFile);
+        }
+        else{
+            $newProjectCreator->logo = file_get_contents("../Images/default.png");
+        }
+        
+        if($newProjectCreator->createNewProject($newProjectCreator->userName, $newProjectCreator->title, $newProjectCreator->desc, $newProjectCreator->type, $newProjectCreator->link, $newProjectCreator->contribArray, $newProjectCreator->fileNames, $newProjectCreator->fileTypes, $newProjectCreator->files, $newProjectCreator->logo)){
             $newProjectCreator = null;    
             ?>
             <meta http-equiv="refresh" content="0; URL='../confirmNewProject.php'" />

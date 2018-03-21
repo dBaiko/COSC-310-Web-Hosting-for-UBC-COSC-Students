@@ -105,6 +105,7 @@ table caption, table th, table td{
 table img, table{
 	float:left;
 }
+
 .project a{
 	color: black;
 }
@@ -115,3 +116,4 @@ table img, table{
 .desc{
 	margin-left: 2em;
 }
+

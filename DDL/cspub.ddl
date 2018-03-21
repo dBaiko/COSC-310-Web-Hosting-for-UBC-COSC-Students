@@ -7,7 +7,7 @@ CREATE TABLE User(
 	salt TEXT NOT NULL,
 	PRIMARY KEY(userName)
 );
-x
+
 CREATE TABLE Student(
 	userName VARCHAR(30) NOT NULL,
 	studentNum VARCHAR(8) NOT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE Files(
 	fileName VARCHAR(255),
 	file MEDIUMBLOB NOT NULL,
 	fileType VARCHAR(30),
-	PRIMARY KEY(projectId, fileName),
+	PRIMARY KEY(projectId,fileName),
 	FOREIGN KEY(projectId) REFERENCES Project(projectId)
 );
 

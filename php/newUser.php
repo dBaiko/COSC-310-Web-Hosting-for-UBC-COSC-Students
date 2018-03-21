@@ -21,6 +21,11 @@ class newUser {
         }
     }
     
+    public function __destruct(){
+        $this->conn->close();
+        $this->conn = null;
+    }
+    
     public function createNewUser($userName,$firstName,$lastName,$email,$password, $passConf,$studentNum,$stuSchool,$major,$profSchool,$faculty){
         if($userName != null && $userName != "" && $firstName != null && $firstName != "" && $lastName != null && $lastName != "" && $password != null && $password != "" && $passConf != null && $passConf != "" &&  $email != null  && $email != ""){
             if($password == $passConf){
