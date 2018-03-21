@@ -187,8 +187,8 @@ if (isset($_SESSION["user"])) {
         } elseif ($resultCheck > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
 
-                $contentGet->displayContent($row['projectTitle'], $row['userName'], $row['date'], $row['projDesc'], $row['logoImage'], $row['projectId']);
-
+                $contentGet->displayContent($row['projectTitle'], $row['userName'],   date('Y-m-d', strtotime($row['date'])), $row['projDesc'], $row['logoImage'], $row['projectId']);
+                
             }
         }
     }
@@ -200,8 +200,8 @@ if (isset($_SESSION["user"])) {
             echo "<em>No projects available</em>";
         } elseif ($resultCheck > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
-
-                $contentGet->displayContent($row['projectTitle'], $row['userName'], $row['date'], $row['projDesc'], $row['logoImage'], $row['projectId']);
+              
+                $contentGet->displayContent($row['projectTitle'], $row['userName'],   date('Y-m-d', strtotime($row['date'])), $row['projDesc'], $row['logoImage'], $row['projectId']);
 
             }
         }
@@ -216,8 +216,8 @@ if (isset($_SESSION["user"])) {
         } elseif ($resultCheck > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
 
-                $contentGet->displayContent($row['projectTitle'], $row['userName'], $row['date'], $row['projDesc'], $row['logoImage'], $row['projectId']);
-
+                $contentGet->displayContent($row['projectTitle'], $row['userName'],   date('Y-m-d', strtotime($row['date'])), $row['projDesc'], $row['logoImage'], $row['projectId']);
+                
             }
         }
     } else
@@ -226,8 +226,8 @@ if (isset($_SESSION["user"])) {
     if ($resultCheck > 0) {
         while ($row = mysqli_fetch_assoc($result)) {
 
-            $contentGet->displayContent($row['projectTitle'], $row['userName'], $row['date'], $row['projDesc'], $row['logoImage'], $row['projectId']);
-
+            $contentGet->displayContent($row['projectTitle'], $row['userName'],   date('Y-m-d', strtotime($row['date'])), $row['projDesc'], $row['logoImage'], $row['projectId']);
+            
         }
     }
     $conn->close();
