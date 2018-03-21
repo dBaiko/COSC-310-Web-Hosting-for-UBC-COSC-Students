@@ -31,7 +31,9 @@ class listContent
         if ($conn->connect_error) {
             die("Connection failed:" . $conn->connect_error);
         }
+
         $sql = "SELECT p.projectId, p.projectTitle, pub.userName, p.date, p.projDesc, p.logoImage FROM Project AS p, Published AS pub WHERE p.projectId = pub.projectId GROUP BY pub.projectId ORDER BY p.date DESC"; 
+
         
         $result = mysqli_query($conn, $sql);
         return $result;
@@ -44,14 +46,18 @@ class listContent
             die("Connection failed:" . $conn->connect_error);
         }
         if ($time == "Newest") {
+
             $sql = "SELECT p.projectId, p.projectTitle, pub.userName, p.date, p.projDesc, p.logoImage FROM Project AS p, Published AS pub WHERE p.projectId = pub.projectId GROUP BY pub.projectId ORDER BY p.date DESC";
             
+
             $result = mysqli_query($conn, $sql);
             return $result;
         }
         if ($time == "Oldest") {
+
             $sql = "SELECT p.projectId, p.projectTitle, pub.userName, p.date, p.projDesc, p.logoImage FROM Project AS p, Published AS pub WHERE p.projectId = pub.projectId GROUP BY pub.projectId ORDER BY p.date ASC";
             
+
             $result = mysqli_query($conn, $sql);
             return $result;
         }
@@ -63,8 +69,10 @@ class listContent
         if ($conn->connect_error) {
             die("Connection failed:" . $conn->connect_error);
         }
+
         $sql = $sql = "SELECT p.projectId, p.projectTitle, pub.userName, p.date, p.projDesc, p.logoImage FROM Project AS p, Published AS pub WHERE p.projectId = pub.projectId AND p.projType = \"$type\" GROUP BY pub.projectId ORDER BY p.date DESC";
         
+
         $result = mysqli_query($conn, $sql);
         return $result;
     }
@@ -75,8 +83,10 @@ class listContent
         if ($conn->connect_error) {
             die("Connection failed:" . $conn->connect_error);
         }
+
         $sql = $sql = "SELECT p.projectTitle, pub.userName, p.date, p.projDesc, p.logoImage FROM Project AS p, Published AS pub WHERE p.projectId = pub.projectId AND p.projectTitle LIKE \"%$search%\" GROUP BY pub.projectId ORDER BY p.date DESC";
         
+
         $result = mysqli_query($conn, $sql);
         return $result;
     }
@@ -176,7 +186,9 @@ if (isset($_SESSION["user"])) {
             echo "<em>No projects available</em>";
         } elseif ($resultCheck > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
+
                 $contentGet->displayContent($row['projectTitle'], $row['userName'], $row['date'], $row['projDesc'], $row['logoImage'], $row['projectId']);
+
             }
         }
     }
@@ -188,7 +200,9 @@ if (isset($_SESSION["user"])) {
             echo "<em>No projects available</em>";
         } elseif ($resultCheck > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
+
                 $contentGet->displayContent($row['projectTitle'], $row['userName'], $row['date'], $row['projDesc'], $row['logoImage'], $row['projectId']);
+
             }
         }
     }
@@ -201,7 +215,9 @@ if (isset($_SESSION["user"])) {
             echo "<em>No projects available</em>";
         } elseif ($resultCheck > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
+
                 $contentGet->displayContent($row['projectTitle'], $row['userName'], $row['date'], $row['projDesc'], $row['logoImage'], $row['projectId']);
+
             }
         }
     } else
@@ -209,7 +225,9 @@ if (isset($_SESSION["user"])) {
     $resultCheck = mysqli_num_rows($result);
     if ($resultCheck > 0) {
         while ($row = mysqli_fetch_assoc($result)) {
+
             $contentGet->displayContent($row['projectTitle'], $row['userName'], $row['date'], $row['projDesc'], $row['logoImage'], $row['projectId']);
+
         }
     }
     $conn->close();
