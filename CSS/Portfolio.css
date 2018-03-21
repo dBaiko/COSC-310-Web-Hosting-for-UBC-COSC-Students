@@ -57,6 +57,7 @@ body{
 .images{
 	width: 300px;
 	height: 300px;
+	
 	margin: 1em 1em 0em 2em;
 }
 caption{
@@ -105,7 +106,6 @@ table caption, table th, table td{
 table img, table{
 	float:left;
 }
-
 .project a{
 	color: black;
 }
@@ -116,4 +116,3 @@ table img, table{
 .desc{
 	margin-left: 2em;
 }
-
