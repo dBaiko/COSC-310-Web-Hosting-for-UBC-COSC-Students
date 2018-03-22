@@ -306,7 +306,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){//to prevent code running during testing
 </div>
 <div id = "extraImages">
 	<table class = "Project">
-	<caption>Additional Images:</caption>
+	<caption>Additional Files:</caption>
 		<tr>
 			<td>
                 	<?php 
