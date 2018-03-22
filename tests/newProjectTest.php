@@ -217,7 +217,7 @@ class newProjectTest extends TestCase{
         $t = "test";
         $n = null;
         
-        $this->newProjectCreator->createNewProject($user, $t, $t, $t, $n, $n, $n, $n, $n);
+        $this->newProjectCreator->createNewProject($user, $t, $t, $t, $n, $n, $n, $n, $n, $n);
         
         $proj = false;
         $pub = false;
