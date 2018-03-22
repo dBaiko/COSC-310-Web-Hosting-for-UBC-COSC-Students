@@ -198,6 +198,9 @@ if (isset($_SESSION["user"])) {
         $resultCheck = mysqli_num_rows($result);
         if ($resultCheck == 0) {
             echo "<em>No projects available</em>";
+            ?>
+            <link rel="stylesheet" type="text/css" href="CSS/footer2.css">
+            <?php 
         } elseif ($resultCheck > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
               
@@ -213,6 +216,9 @@ if (isset($_SESSION["user"])) {
         $resultCheck = mysqli_num_rows($result);
         if ($resultCheck == 0) {
             echo "<em>No projects available</em>";
+            ?>
+            <link rel="stylesheet" type="text/css" href="CSS/footer2.css">
+            <?php 
         } elseif ($resultCheck > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
 
