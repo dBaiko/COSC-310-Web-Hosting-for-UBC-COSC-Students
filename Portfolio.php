@@ -85,8 +85,21 @@ if(isset($_SESSION['user'])){
                   $sql->bind_param("s",$userName);
                   if($sql->execute()){
                       $sql->bind_result($id,$title,$u,$date,$desc,$logo);
+                      $numOfProjects = 0;
                       while($sql->fetch()){
+                          $numOfProjects = $numOfProjects +1;
                           $this->displayPContent($title,$u,$date,$desc,$logo,$id);
+                      }
+                      if($numOfProjects == 0){
+                          echo "<p> No Projects from this user </p>";
+                          ?>
+                          <link rel="stylesheet" type="text/css" href="CSS/footer0.css">
+                          <?php 
+                      }
+                      if($numOfProjects == 1){
+                          ?>
+                          <link rel="stylesheet" type="text/css" href="CSS/footer1.css">
+                          <?php 
                       }
                       return true;
                   }else {
@@ -103,6 +116,7 @@ if(isset($_SESSION['user'])){
           else{
               return false;
           }
+        
       }
       
       public function displayPContent($param1, $param2, $param3, $param4, $param5,$param6)
