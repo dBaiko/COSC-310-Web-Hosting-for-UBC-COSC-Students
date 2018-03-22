@@ -11,7 +11,6 @@ if(isset($_SESSION['user'])){
 <title>CSPub ~ Register</title>
 <link rel="stylesheet" type="text/css" href="CSS/Default.css">
 <link rel="stylesheet" type="text/css" href="CSS/Register.css">
-<!--<script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>-->
 <script src="Javascript/jquery-3.1.1.min.js"></script>
 </head>
 <body>
@@ -110,7 +109,7 @@ if(isset($_SESSION['user'])){
 	</form>	
 	</div>
 	<div>
-	<h3>Already have an account? Great News!<a href = "SignIn.html"> Sign In </a>Now</h3>
+	<h3>Already have an account? Great News!<a href = "SignIn.php"> Sign In </a>Now</h3>
 	</div>
 	</section>
 

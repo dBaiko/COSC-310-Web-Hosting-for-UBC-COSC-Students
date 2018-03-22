@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('America/Los_Angeles');
 class newUser {
     private $db_host = 'localhost';
     private $db_name = 'cswebhosting';
@@ -129,7 +130,7 @@ function consoleLog($toLog) {
 }*/
 if(isset($_SERVER["REQUEST_METHOD"])){
     
-    error_reporting(E_ALL);
+    #error_reporting(E_ALL);
     ini_set('display_errors', 1);
     session_start();
     if ($_SERVER['REQUEST_METHOD'] == 'POST'){
