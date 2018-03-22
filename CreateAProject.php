@@ -116,12 +116,11 @@ if(isset($_SESSION['user'])){
 	</div>
 	
 <footer>
-	<ul>
-		<li class = "footerlinks"> <a href = "home.html">Home</a>
-		<li class = "footerlinks"> <a href = "About.html">About</a> </li>
-	</ul>
-	<p> Copyright &copy; 2018 CSPub</p>
-</footer>
+		<ul>
+			<li class="footerlinks"><a href="Browse.php">Browse</a></li>
+		</ul>
+		<p>Copyright &copy; 2018 CSPub</p>
+	</footer>
 </body>
 <script>
 function previewFile(e) {
