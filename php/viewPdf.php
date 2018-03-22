@@ -16,7 +16,7 @@ if($sql = $conn->prepare($stm)){
     $sql->execute();
     $sql->bind_result($f,$t);
     $sql->fetch();
-    
+    header('Content-Disposition: inline; filename="'.$fileName.'"');
     header('Content-type: application/pdf'  );
     echo $f;
 }
