@@ -91,7 +91,7 @@ class projectVeiwer{
                 if($sql->execute()){
                     $sql->bind_result($u);
                     while($sql->fetch()){
-                        echo " <a href='Portfolio.php?userName=".$u."'>".$u."</a> |";
+                        echo " <a href='Portfolio.php?userName=".$u."'>".$u."</a> <br>";
                     }
                     $sql->close();
                     return false;                    
@@ -123,7 +123,7 @@ class projectVeiwer{
                     $sql->bind_result($f,$n);
                     while($sql->fetch()){
                         ?>
-                        <a href = 'php/viewPicture.php?projectId=<?php echo $projectId?>&fileName=<?php echo $n?>' ><img src = 'data:image/png;base64,<?php echo  base64_encode($f)?>' alt = 'Project Image' class = 'img'/></a> 
+                        <a href = 'php/viewPicture.php?projectId=<?php echo $projectId?>&fileName=<?php echo $n?>' ><img src = 'data:image/png;base64,<?php echo  base64_encode($f)?>' alt = 'Project Image' class = 'img'/></a>
                         <?php
                     }
                     $sql->close();
@@ -253,16 +253,16 @@ if(isset($_SERVER["REQUEST_METHOD"])){//to prevent code running during testing
 <div id="main">
 	<article id="Project1">
 		<table class = "Project">
-			<caption ><h2 id = "title"><?php echo $projInfo['projectTitle']?></h2></caption>
+			<caption id = "title"><h2 ><?php echo $projInfo['projectTitle']?></h2></caption>
 			<thead>
 				<tr>
 					<th><img class="blogImg" src="data:image/png;base64,<?php echo base64_encode($projInfo['logoImage'])?>" alt="blog picture" width="30%"></th>
-					<th> Contributors: 
+					<th> Contributors:<br> 
 					<?php 
 					$projViewer->getContribInfo($id);
 					?>
 					</th>
-					<th>Publish Date: <?php echo substr($projInfo['date'],0,strpos($projInfo['date'], ' '))?></th> 
+					<th>Publish Date: <br><?php echo substr($projInfo['date'],0,strpos($projInfo['date'], ' '))?></th> 
 				</tr>
 			</thead>
 			<tbody>
@@ -293,14 +293,28 @@ if(isset($_SERVER["REQUEST_METHOD"])){//to prevent code running during testing
 		</table>
 	</article>
 <div id = "extraImages">
-	<?php 
-	$projViewer->getPicFiles($id);
-	?>
+	<table class = "Project">
+	<caption>Additional Images:</caption>
+		<tr>
+			<td>
+				<?php 
+	            $projViewer->getPicFiles($id);
+	            ?>
+            </td>
+		<tr>
+	</table>
 </div>
 <div id = "extraImages">
-	<?php 
-	$projViewer->getPdfFiles($id);
-	?>
+	<table class = "Project">
+	<caption>Additional Files:</caption>
+		<tr>
+			<td>
+                	<?php 
+                	$projViewer->getPdfFiles($id);
+                	?>
+	 		</td>
+		<tr>
+	</table>
 </div>
 	<p id = "copyright"> Copyright &copy; 2018 <?php echo $projInfo['projectTitle']?>  </p>
 </div>
