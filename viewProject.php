@@ -179,10 +179,13 @@ class projectVeiwer{
     
     
 }
-error_reporting(E_ALL);
+//error_reporting(E_ALL);
 ini_set('display_errors', 1);
 session_start();
-$user = $_SESSION["user"];
+if(isset($_SESSION['user'])){
+    $user = $_SESSION["user"];
+}
+
 
 if(isset($_SERVER["REQUEST_METHOD"])){//to prevent code running during testing
   

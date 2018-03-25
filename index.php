@@ -4,7 +4,6 @@
    <meta charset="utf-8">
    <title>CSPub</title>
    <link rel="stylesheet" type="text/css" href="CSS/index.css">
- 
 </head>
 
 <body>
