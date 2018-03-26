@@ -34,15 +34,126 @@ class userInfo{
     }
     
     public function getBasicInfo($userName){
-        #$userName = 
+        if($this->conn != null){
+            
+            $userName = chop($userName);
+            $userName = mysqli_real_escape_string($this->conn, $userName);
+            
+            $stm = "SELECT userName, firstName, lastName, email FROM User WHERE userName = ?";
+            if($sql = $this->conn->prepare($stm)){
+                $sql->bind_param("s",$userName);
+                if($sql->execute()){
+                    $sql->bind_result($u,$f,$l,$e);
+                    $sql->fetch();
+                    $toReturn = array("userName"=>$u,"firstName"=>$f,"lastName"=>$l,"email"=>$e);
+                    $sql->close();
+                    return $toReturn;
+                }else {
+                    $sql->close();
+                    $error = $this->conn->errno . ' ' . $this->conn->error;
+                    echo $error;
+                    return false;
+                }
+            }else {
+                $error = $this->conn->errno . ' ' . $this->conn->error;
+                echo $error;
+                return false;
+            }
+            
+        }
+        else{
+            return false;
+        }
     }
+    
+    public function getStudentInfo($userName){
+        if($this->conn != null){
+            
+            $userName = chop($userName);
+            $userName = mysqli_real_escape_string($this->conn, $userName);
+            
+            $stm = "SELECT studentNum, school, major FROM Student WHERE userName = ?";
+            if($sql = $this->conn->prepare($stm)){
+                $sql->bind_param("s",$userName);
+                if($sql->execute()){
+                    $sql->bind_result($n,$s,$m);
+                    if($sql->fetch()){
+                        $toReturn = array("studentNum"=>$n,"school"=>$s,"major"=>$m);
+                        $sql->close();
+                        return $toReturn;
+                    }
+                    else{
+                        $sql->close();
+                        return false;
+                    }
+                    
+                }else {
+                    $sql->close();
+                    $error = $this->conn->errno . ' ' . $this->conn->error;
+                    echo $error;
+                    return false;
+                }
+            }else {
+                $error = $this->conn->errno . ' ' . $this->conn->error;
+                echo $error;
+                return false;
+            }
+            
+        }
+        else{
+            return false;
+        }
+    }
+    
+    public function getProfInfo($userName){
+        if($this->conn != null){
+            
+            $userName = chop($userName);
+            $userName = mysqli_real_escape_string($this->conn, $userName);
+            
+            $stm = "SELECT faculty, school FROM Professor WHERE userName = ?";
+            if($sql = $this->conn->prepare($stm)){
+                $sql->bind_param("s",$userName);
+                if($sql->execute()){
+                    $sql->bind_result($f,$s);
+                    if($sql->fetch()){
+                        $toReturn = array("faculty"=>$n,"school"=>$s);
+                        $sql->close();
+                        return $toReturn;
+                    }
+                    else{
+                        $sql->close();
+                        return false;
+                    }
+                    
+                }else {
+                    $sql->close();
+                    $error = $this->conn->errno . ' ' . $this->conn->error;
+                    echo $error;
+                    return false;
+                }
+            }else {
+                $error = $this->conn->errno . ' ' . $this->conn->error;
+                echo $error;
+                return false;
+            }
+            
+        }
+        else{
+            return false;
+        }
+    }
+    
+    
     
 }
 
 
 if(isset($_SERVER["REQUEST_METHOD"])){
     if(isset($_SESSION['user'])){
-    
+        $user = $_SESSION['user'];
+        $info = new userInfo();
+        $basic = $info->getBasicInfo($user);
 ?>
 <!DOCTYPE html>
 <html>
@@ -50,13 +161,247 @@ if(isset($_SERVER["REQUEST_METHOD"])){
         <meta charset="UTF-8">
         <title>CSPUB Your Account</title>
         <link rel="stylesheet" type="text/css" href="CSS/Default.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="Javascript/jquery-3.1.1.min.js"></script>
     </head>
 	<body>
 	<?php include 'header.php';?>
+	<!-- ATTN: KARANMEET/DARRIEN
+	       When styling this page, it is important that you do not change id's or change the structure of
+	       the html inside the div's or remove the empty span tag's. The JavaScript methods in the script
+	       at the bottom rely on the dom tree inside the div's being in the structure that they are
+	       and if that structure is changed the methods will break. You can change the parent structure in any way
+	       if needed, just as long as the divs and everything inside them keeps the same id, names, and structure
+	       
+	       Also keep in mind when styling that although the span tags are empty now, Javascript will fill them with
+	       "Updated successfully" messages when the user clicks any of the buttons. So keep that in mind when figuring out
+	       spacing and what not.
+	 -->
+	<fieldset>
+		<legend>Account info for user: <span id="user"><?php echo $basic['userName']?></span></legend>
+		
+		<div>
+    		<label>First Name: </label>
+    		<input class="" type="text" name="firstName" maxLength="30" value="<?php echo $basic['firstName'];?>">
+    		<button class="" onclick="update(this)">Change First name</button><span></span><br>
+    	</div>	
+		
+		<div>
+    		<label>Last Name: </label>
+    		<input class="" type="text" name="lastName" maxLength="30" value="<?php echo $basic['lastName'];?>">
+    		<button class="" onclick="update(this)">Change Last name</button><span></span><br>
+    	</div>	
+		
+		<div>
+			<label>Email: </label>
+			<input class="" type="text" name="email" maxLength="30" value="<?php echo $basic['email'];?>">
+			<button class="" onclick="update(this)">Change Last name</button><span></span><br>
+		</div>	
+		
+		<br>
+		
+		<div>	
+			<label>Old Password: </label>
+			<input class="" type="password" id="oldPass" name="oldPass" onchange="checkPass()"><span></span><br>
+			<label>New Password: </label>
+			<input class="" type="password" id="password" name="password" onchange="checkPassMatch()"><br>
+			<label>Password Confirm: </label>
+			<input class="" type="password" id="passConf" name="passConf" onchange="checkPassMatch()">
+			<button class="" onclick="changePassword(this)">Change Password</button><span id="p"></span><br>
+		</div>
+		
+		<br>
+		
+		<?php 
+		if($student = $info->getStudentInfo($user)){
+		?>
+		<p>Student info:</p>
+		
+		<div>
+			<label>Student Number: </label>
+    		<input class="" type="text" name="studentNum" maxLength="8" value="<?php echo $student['studentNum'];?>">
+    		<button class="" onclick="update(this)">Change Student Number</button><span></span><br>
+		</div>
+		
+		<div>
+			<label>School: </label>
+    		<input class="" type="text" name="school" maxLength="30" value="<?php echo $student['school'];?>">
+    		<button class="" onclick="update(this)">Change School</button><span></span><br>
+		</div>
+		
+		<div>
+			<label>Major: </label>
+    		<input class="" type="text" name="major" maxLength="30" value="<?php echo $student['major'];?>">
+    		<button class="" onclick="update(this)">Change Major</button><span></span><br>
+		</div>
+		<?php
+		}
+		else if($prof = $info->getProfInfo($user)){
+		?>
+		<p>Proffesor info:</p>
+		
+		<div>
+			<label>Faculty: </label>
+    		<input class="" type="text" name="studentNum" maxLength="8" value="<?php echo $prof['faculty'];?>">
+    		<button class="" onclick="update(this)">Change Student Number</button><span></span><br>
+		</div>
+		
+		<div>
+			<label>School: </label>
+    		<input class="" type="text" name="school" maxLength="30" value="<?php echo $prof['school'];?>">
+    		<button class="" onclick="update(this)">Change School</button><span></span><br>
+		</div>
+		<?php
+		}
+		
+		?>
+		
+		<br>
+		
+		<form action="php/deleteAccount.php" id="delete" >
+        	<input type="hidden" value="<?php echo $user?>"/>
+           	<button class="changeButton" onclick="deleteAccount(this)">Delete Account</button>
+        </form>
+		<?php
+		
+		$info = null;
+		?>
 	
+	</fieldset>
 	</body>
+	<script type="text/javascript">
+
+	$("#delete").on("submit",function(e){
+		e.preventDefault();
+        });
+
+	function deleteAccount(e){
+		$(e).after("<label>Are you sure?</label>");
+		$(e).next().after("<button class \"changeButton\" onclick=\"yesDelete(this)\">Yes</button>");
+		$(e).next().next().after("<button class \"changeButton\" onclick=\"noDelete(this)\">No</button>");
+	}
+
+	function noDelete(e){
+		$(e).prev().prev().remove();
+		$(e).prev().remove();
+		$(e).remove();
+	}
+
+	function yesDelete(e){
+		$("#delete")[0].submit();
+	}
+
+	var oldPassCorrect = false;
+
+	function checkPassMatch(){
+		if(oldPassCorrect){
+			var password = $("#password").val();
+			var passConf = $("#passConf").val();
+			if(password == passConf){
+				$("#p").html("");
+			}
+			else{
+				$("#p").html("Passwords do not match");
+			}
+		}
+	}
+
+
+	function changePassword(e){
+		checkPass();
+		if(oldPassCorrect){
+
+			var password = $("#password").val();
+			var passConf = $("#passConf").val();
+
+			if(password == passConf){
+
+				update($(e).prev().prev());
+				$("#password").val("");
+				$("#passConf").val("");
+				$("#oldPass").val("");
+				
+			}
+			else{
+
+				$("#p").html("Passwords do not match");
+				
+			}
+
+		}
+	}
+
+	function checkPass(){
+			var pass = $("#oldPass").val();
+			var user = $("#user").html();
+			$.ajax({
+				type: 'POST',
+				url: 'php/checkPass.php',
+				data: {'pass': ''+pass, 'username': ''+user},
+				success: function(responce){
+					console.log(responce);
+					if(responce==0){
+						oldPassCorrect = false;
+						$("#p").html("Old Password Incorrect");
+					}
+					else if (responce==1) {
+						var password = $("#password").val();
+						var passConf = $("#passConf").val();
+						if(password == passConf){
+							$("#p").html("");
+						}
+						else{
+							$("#p").html("Passwords do not match");
+						}
+						oldPassCorrect = true;
+					}
+					else if(responce==2){
+						//connection failed
+						console.log("connection failed");
+					}
+				}
+			});
+		
+	}
+
+	function update(e){
+		var toUpdate = $(e).prev().attr('name');
+		toUpdate = toUpdate.trim();
+		var changeVal = $(e).prev().val();
+		changeVal = changeVal.trim();
+		var userToChange = $("#userName").html();
+		userToChange = userToChange.trim();
+		var canUpdate = true;
+			
+			$.ajax({
+        		type: 'POST',
+        		url: 'php/updateUser.php',
+        		data: {'username': ''+userToChange, 'toUpdate': ''+toUpdate, 'changeVal': ''+changeVal},
+        		success: function(responce){
+        			console.log(responce);
+        			if(responce==0){
+            				$(e).next().html("Not updated successfully");
+        				
+        			}
+        			else if (responce==1) {
+        				$(e).next().html("Updated Successfully");
+    				}
+        			else if(responce==2){
+        				//connection failed
+        				console.log("connection failed");
+        			}
+        		}
+        	});
+	}
+	
+
+	</script>
 </html>
 <?php
-    }
+    }else{
+        ?>
+    <meta http-equiv="refresh" content="0; URL='browse.php'" />
+    <?php 
+}
 }
 ?>
