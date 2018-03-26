@@ -39,7 +39,7 @@ if (isset($_SESSION["user"])) {
 							<li><a href="Portfolio.php">Portfolio</a></li>
 							<li><a href="Browse.php">Browse</a></li>
 							<li><a href="CreateAProject.php">Create A Project</a></li>
-							<li><a href="">Your account</a></li>
+							<li><a href="yourAccount.php">Your account</a></li>
 						</ul>
 					</div>
 				</div>
@@ -56,7 +56,7 @@ if (isset($_SESSION["user"])) {
 					<div class="dropdown-content">
 						<ul>
 							<li><a href="Browse.php">Browse</a></li>
-							<li><a href="">Your account</a></li>
+							<li><a href="yourAccount.php">Your account</a></li>
 						</ul>
 					</div>
 				</div>
