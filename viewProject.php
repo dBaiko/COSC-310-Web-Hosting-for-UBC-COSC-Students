@@ -228,31 +228,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){//to prevent code running during testing
 <link rel="stylesheet" type="text/css" href="CSS/viewProject.css">
 </head>
 <body>
-<header>
-<h1>CSPub</h1>
-<div class = "right">
-		<?php 
-		if(isset($_SESSION["user"])){
-		    echo "<p id = 'signIn'><a href = 'php/logUserOut.php'>Log Out</a></p>";
-		    ?>
-		    <div class = "dropdown">
-		<p id = "dropimg"> <img src = "Images/Bars.png" class = "icons"/> </p>
-		<div class = "dropdown-content">
-			<ul>					
-				<li> <a href = "Portfolio.php">Portfolio</a></li> 
-				<li> <a href = "Browse.php">Browse</a></li> 
-				<li> <a href = "CreateAProject.php">Create A Project</a></li>
-			</ul>
-		</div>
-	</div>
-		    <?php
-		}
-		else{
-		    echo "<p id = 'signIn'><a href = 'SignIn.php'>Sign In</a></p>";
-		}
-		?>
-	</div>
-</header>
+<?php include "header.php"?>
 <div id="main">
 	<article id="Project1">
 		<table class = "Project">
