@@ -285,7 +285,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){
         if($newProjectCreator->createNewProject($newProjectCreator->userName, $newProjectCreator->title, $newProjectCreator->desc, $newProjectCreator->type, $newProjectCreator->link, $newProjectCreator->contribArray, $newProjectCreator->fileNames, $newProjectCreator->fileTypes, $newProjectCreator->files, $newProjectCreator->logo)){
             $newProjectCreator = null;    
             ?>
-            <meta http-equiv="refresh" content="0; URL='../confirmNewProject.php'" />
+            <meta http-equiv="refresh" content="0; URL='../Browse.php'" />
             <?php
         }
         else{
