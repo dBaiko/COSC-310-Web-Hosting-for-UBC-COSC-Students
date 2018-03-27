@@ -260,10 +260,12 @@ if(isset($_SERVER["REQUEST_METHOD"])){
 		<?php include "header.php"?>
 
     <div id="main">
-    		<form method = "post" action = "php/newProject.php" id = "create" enctype="multipart/form-data">
+    		<form method = "post" action = "php/updateProject.php" id = "create" enctype="multipart/form-data">
     			<fieldset>
     				<legend> Edit Project </legend>
     					<p>
+    						<input type="hidden" value="<?php echo $projInfo['date'];?>" name="date">
+    						<input type="hidden" value="<?php echo $id;?>" name="projectId">
     						<label>Title: </label>
     						<input type = "text" name = "title" class = "required" id="title" value="<?php echo $projInfo['projectTitle'];?>"/>
     					</p>
@@ -280,7 +282,8 @@ if(isset($_SERVER["REQUEST_METHOD"])){
     						if(sizeof($con) > 0){
     						    foreach ($con as $x){
     						        ?>
-    						        <input type="text" value="<?php echo $x?>" disabled="disabled" name="contribs[]"/>
+    						        <input type="hidden" value="<?php echo $x;?>" name="oldContribs[]">
+    						        <input type="text" value="<?php echo $x;?>" disabled="disabled"/>
     						        <button type="button" onclick="removeC(this)">X</button>
     						        <?php
     						    }
@@ -350,8 +353,8 @@ if(isset($_SERVER["REQUEST_METHOD"])){
     					</p>
     			</fieldset>
     			</form>
-    			<form action="php/deleteProject.php" id="delete" >
-        			<input type="hidden" value="<?php echo $user?>"/>
+    			<form action="php/deleteProject.php" method="post" id="delete" >
+        			<input type="hidden" value="<?php echo $id;?>" name="delId"/>
            			<button class="changeButton" onclick="deleteAccount(this)">Delete Project</button>
         		</form>
     	</div>
@@ -385,6 +388,7 @@ function yesDelete(e){
 }
 
 function removeC(e){
+	$(e).prev().prev().remove();
 	$(e).prev().remove();
 	$(e).remove();
 }
