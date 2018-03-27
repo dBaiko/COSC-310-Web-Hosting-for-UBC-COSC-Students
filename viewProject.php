@@ -155,7 +155,7 @@ class projectVeiwer{
                     $sql->bind_result($f, $n);
                     while($sql->fetch()){
                         ?>
-                        <a href = 'php/viewPdf.php?projectId=<?php echo $projectId?>&fileName=<?php echo $n?>' ><object data="data:application/pdf;base64,<?php echo base64_encode($f) ?>" type="application/pdf"></object></a> 
+                        <object data="data:application/pdf;base64,<?php echo base64_encode($f) ?>" type="application/pdf"></object><a href = 'php/viewPdf.php?projectId=<?php echo $projectId?>&fileName=<?php echo $n?>' ><button>View</button></a> 
                         <?php
                     }
                     $sql->close();
