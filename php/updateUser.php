@@ -43,13 +43,13 @@ class userUpdater{
             $dbPass = hash('sha256', $toHash);
             
             $stm = "UPDATE User SET password = ?, salt = ? WHERE userName = ?";
-            if($sql = $conn->prepare($stm)){
-                $sql->bind_param("sss", $dbPass, $salt, $username);
+            if($sql = $this->conn->prepare($stm)){
+                $sql->bind_param("sss", $dbPass, $salt, $userName);
                 if($sql->execute()){
-                    echo "1";
+                    $toEcho =  "1";
                 }
                 else{
-                    echo "0";
+                    $toEcho =  "0";
                 }
                 $sql->close();
             }
@@ -68,17 +68,18 @@ class userUpdater{
     
     
     public function updateText($userName, $toUpdate, $changeVal) {
+        $toEcho = null;
         $userName = chop($userName);
         $userName = mysqli_real_escape_string($this->conn, $userName);
-        $changeVal = mysqli_real_escape_string($conn,$changeVal);
+        $changeVal = mysqli_real_escape_string($this->conn,$changeVal);
         $stm = "UPDATE User SET ".$toUpdate." = ? WHERE userName = ?";
-        if($sql = $conn->prepare($stm)){
-            $sql->bind_param("ss", $changeVal, $username);
+        if($sql = $this->conn->prepare($stm)){
+            $sql->bind_param("ss", $changeVal, $userName);
             if($sql->execute()){
-                echo "1";
+                $toEcho = "1";
             }
             else{
-                echo "0";
+                $toEcho =  "0";
             }
             $sql->close();
         }
@@ -86,22 +87,27 @@ class userUpdater{
             $error = $this->conn->errno . ' ' . $this->conn->error;
             echo $error;
         }
+        return $toEcho;
     }
     
     public function updateTextStudent($userName, $toUpdate, $changeVal) {
+        $toEcho = null;
         if($toUpdate == "schoolS")
             $toUpdate = "school";
         $userName = chop($userName);
         $userName = mysqli_real_escape_string($this->conn, $userName);
-        $changeVal = mysqli_real_escape_string($conn,$changeVal);
-        $stm = "UPDATE User SET ".$toUpdate." = ? WHERE userName = ?";
-        if($sql = $conn->prepare($stm)){
-            $sql->bind_param("ss", $changeVal, $username);
+        $changeVal = mysqli_real_escape_string($this->conn,$changeVal);
+        
+        
+        $stm = "UPDATE Student SET ".$toUpdate." = ? WHERE userName = ?";
+        if($sql = $this->conn->prepare($stm)){
+            $sql->bind_param("ss", $changeVal, $userName);
             if($sql->execute()){
-                echo "1";
+                $toEcho = "1";
             }
             else{
-                echo "0";
+                $error = $this->conn->errno . ' ' . $this->conn->error;
+                $toEcho =  $error;
             }
             $sql->close();
         }
@@ -109,22 +115,25 @@ class userUpdater{
             $error = $this->conn->errno . ' ' . $this->conn->error;
             echo $error;
         }
+        return $toEcho;
     }
     
     public function updateTextProf($userName, $toUpdate, $changeVal) {
+        $toEcho = null;
         if($toUpdate == "schoolP")
             $toUpdate = "school";
             $userName = chop($userName);
             $userName = mysqli_real_escape_string($this->conn, $userName);
-            $changeVal = mysqli_real_escape_string($conn,$changeVal);
-            $stm = "UPDATE User SET ".$toUpdate." = ? WHERE userName = ?";
-            if($sql = $conn->prepare($stm)){
-                $sql->bind_param("ss", $changeVal, $username);
+            $changeVal = mysqli_real_escape_string($this->conn,$changeVal);
+            $stm = "UPDATE Professor SET ".$toUpdate." = ? WHERE userName = ?";
+            if($sql = $this->conn->prepare($stm)){
+                $sql->bind_param("ss", $changeVal, $userName);
                 if($sql->execute()){
-                    echo "1";
+                    $toEcho =  "1";
                 }
                 else{
-                    echo "0";
+                    $error = $this->conn->errno . ' ' . $this->conn->error;
+                    $toEcho =  $error;
                 }
                 $sql->close();
             }
@@ -137,19 +146,20 @@ class userUpdater{
     
     
     public function update($userName, $toUpdate, $changeVal) {
+        $toEcho = NULL;
         if($toUpdate == "password"){
-            $this->updatePassword($userName, $changeVal);
+            $toEcho = $this->updatePassword($userName, $changeVal);
         }
         else if($toUpdate == "studentNum" || $toUpdate == "schoolS" || $toUpdate == "major"){
-            $this->updateTextStudent($userName, $toUpdate, $changeVal);
+            $toEcho = $this->updateTextStudent($userName, $toUpdate, $changeVal);
         }
         else if($toUpdate == "faculty" || $toUpdate == "schoolP"){
-            $this->updateTextProf($userName, $toUpdate, $changeVal);
+            $toEcho = $this->updateTextProf($userName, $toUpdate, $changeVal);
         }
         else{
-            $this->updateText($userName, $toUpdate, $changeVal);
+            $toEcho = $this->updateText($userName, $toUpdate, $changeVal);
         }
-        return true;
+        return $toEcho;
     }
     
 }
@@ -161,20 +171,9 @@ if(isset($_SERVER["REQUEST_METHOD"])){
         $toUpdate = $_POST['toUpdate'];
         $changeVal = $_POST['changeVal'];
         $updater = new userUpdater();
-        if($updater->update($user,$toUpdate,$changeVal)){
-            unset($_SESSION['user']);
-            $updater = null;
-            ?>
-            <meta http-equiv="refresh" content="0; URL='../index.php'"/>
-            <?php
-        }
-        else{
-            $updater = null;
-            ?>
-            <meta http-equiv="refresh" content="0; URL='../yourAccount.php'"/>
-            <?php
-        }
-        
+        //echo $toUpdate;
+        echo $updater->update($user, $toUpdate, $changeVal);
+        $updater = null; 
         
     }
     
