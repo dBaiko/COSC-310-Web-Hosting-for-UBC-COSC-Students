@@ -225,7 +225,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){
 		
 		<div>
 			<label>School: </label>
-    		<input class="" type="text" name="school" maxLength="30" value="<?php echo $student['school'];?>">
+    		<input class="" type="text" name="schoolS" maxLength="30" value="<?php echo $student['school'];?>">
     		<button class="" onclick="update(this)">Change School</button><span></span><br>
 		</div>
 		
@@ -242,13 +242,13 @@ if(isset($_SERVER["REQUEST_METHOD"])){
 		
 		<div>
 			<label>Faculty: </label>
-    		<input class="" type="text" name="studentNum" maxLength="8" value="<?php echo $prof['faculty'];?>">
+    		<input class="" type="text" name="faculty" maxLength="8" value="<?php echo $prof['faculty'];?>">
     		<button class="" onclick="update(this)">Change Student Number</button><span></span><br>
 		</div>
 		
 		<div>
 			<label>School: </label>
-    		<input class="" type="text" name="school" maxLength="30" value="<?php echo $prof['school'];?>">
+    		<input class="" type="text" name="schoolP" maxLength="30" value="<?php echo $prof['school'];?>">
     		<button class="" onclick="update(this)">Change School</button><span></span><br>
 		</div>
 		<?php
