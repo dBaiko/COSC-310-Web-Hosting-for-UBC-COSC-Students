@@ -113,6 +113,30 @@ class projectVeiwer{
         }
     }
     
+    public function getAuthor($projectId){
+        if($this->conn != null){
+            $stm = "SELECT userName FROM Published WHERE projectId = ? LIMIT 1";
+            if($sql = $this->conn->prepare($stm)){
+                $sql->bind_param("s",$projectId);
+                if($sql->execute()){
+                    $sql->bind_result($u);
+                    $sql->fetch();
+                    $us = $u;
+                    $sql->close();
+                    return $us;
+                }else {
+                    $error = $this->conn->errno . ' ' . $this->conn->error;
+                    echo $error;
+                    return null;
+                }
+            }else {
+                $error = $this->conn->errno . ' ' . $this->conn->error;
+                echo $error;
+                return null;
+            }
+        }
+    }
+    
     public function getPicFiles($projectId){
         if($this->conn != null){
             
@@ -191,7 +215,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){//to prevent code running during testing
   
     $projViewer = new projectVeiwer();
     $projInfo = null;
-    
+    $id = null;
     if(isset($_GET['projectId'])){
         $id = $_GET['projectId'];
         if(is_numeric($id)){
@@ -231,6 +255,15 @@ if(isset($_SERVER["REQUEST_METHOD"])){//to prevent code running during testing
 <?php include "header.php"?>
 <div id="main">
 	<article id="Project1">
+		<?php 
+		if(isset($_SESSION['user'])){
+    		if($projViewer->getAuthor($id) == $user){
+    		    ?>
+    		    <a href="editProject.php?projectId=<?php echo $id;?>"><button style="float: right;">Edit this project</button></a>
+    		    <?php
+    		}
+		}
+		?>
 		<table class = "Project">
 			<caption id = "title"><h2 ><?php echo $projInfo['projectTitle']?></h2></caption>
 			<thead>

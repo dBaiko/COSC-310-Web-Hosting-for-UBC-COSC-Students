@@ -14,6 +14,7 @@ if(isset($_SESSION['user'])){
 <title>CSPUB-Create A Project</title>
 <link rel="stylesheet" type="text/css" href="CSS/Default.css">
 <link rel="stylesheet" type="text/css" href="CSS/CreateAProject.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="Javascript/jquery-3.1.1.min.js"></script>
 <!--<script type="text/javascript" src="Javascript/CreateAProject.js"></script>-->
 </head>
