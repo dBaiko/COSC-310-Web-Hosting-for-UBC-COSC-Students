@@ -207,7 +207,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){
 			<input class="" type="password" id="password" name="password" onchange="checkPassMatch()"><br>
 			<label>Password Confirm: </label>
 			<input class="" type="password" id="passConf" name="passConf" onchange="checkPassMatch()">
-			<button class="" onclick="changePassword(this)">Change Password</button><span id="p"></span><br>
+			<button class="" onclick="changePassword(this)">Change Password</button><span id="passWarn"></span><br>
 		</div>
 		
 		<br>
@@ -225,7 +225,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){
 		
 		<div>
 			<label>School: </label>
-    		<input class="" type="text" name="school" maxLength="30" value="<?php echo $student['school'];?>">
+    		<input class="" type="text" name="schoolS" maxLength="30" value="<?php echo $student['school'];?>">
     		<button class="" onclick="update(this)">Change School</button><span></span><br>
 		</div>
 		
@@ -242,13 +242,13 @@ if(isset($_SERVER["REQUEST_METHOD"])){
 		
 		<div>
 			<label>Faculty: </label>
-    		<input class="" type="text" name="studentNum" maxLength="8" value="<?php echo $prof['faculty'];?>">
+    		<input class="" type="text" name="faculty" maxLength="8" value="<?php echo $prof['faculty'];?>">
     		<button class="" onclick="update(this)">Change Student Number</button><span></span><br>
 		</div>
 		
 		<div>
 			<label>School: </label>
-    		<input class="" type="text" name="school" maxLength="30" value="<?php echo $prof['school'];?>">
+    		<input class="" type="text" name="schoolP" maxLength="30" value="<?php echo $prof['school'];?>">
     		<button class="" onclick="update(this)">Change School</button><span></span><br>
 		</div>
 		<?php
@@ -298,10 +298,10 @@ if(isset($_SERVER["REQUEST_METHOD"])){
 			var password = $("#password").val();
 			var passConf = $("#passConf").val();
 			if(password == passConf){
-				$("#p").html("");
+				$("#passWarn").html("");
 			}
 			else{
-				$("#p").html("Passwords do not match");
+				$("#passWarn").html("Passwords do not match");
 			}
 		}
 	}
@@ -316,7 +316,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){
 
 			if(password == passConf){
 
-				update($(e).prev().prev());
+				update($(e).prev().prev().prev());
 				$("#password").val("");
 				$("#passConf").val("");
 				$("#oldPass").val("");
@@ -324,7 +324,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){
 			}
 			else{
 
-				$("#p").html("Passwords do not match");
+				$("#passWarn").html("Passwords do not match");
 				
 			}
 
@@ -342,16 +342,16 @@ if(isset($_SERVER["REQUEST_METHOD"])){
 					console.log(responce);
 					if(responce==0){
 						oldPassCorrect = false;
-						$("#p").html("Old Password Incorrect");
+						$("#passWarn").html("Old Password Incorrect");
 					}
 					else if (responce==1) {
 						var password = $("#password").val();
 						var passConf = $("#passConf").val();
 						if(password == passConf){
-							$("#p").html("");
+							$("#passWarn").html("");
 						}
 						else{
-							$("#p").html("Passwords do not match");
+							$("#passWarn").html("Passwords do not match");
 						}
 						oldPassCorrect = true;
 					}
@@ -365,14 +365,13 @@ if(isset($_SERVER["REQUEST_METHOD"])){
 	}
 
 	function update(e){
-		var toUpdate = $(e).prev().attr('name');
+		var toUpdate = $(e).prev().prop('name');
 		toUpdate = toUpdate.trim();
 		var changeVal = $(e).prev().val();
 		changeVal = changeVal.trim();
-		var userToChange = $("#userName").html();
+		var userToChange = $("#user").html();
 		userToChange = userToChange.trim();
 		var canUpdate = true;
-			
 			$.ajax({
         		type: 'POST',
         		url: 'php/updateUser.php',
@@ -380,11 +379,21 @@ if(isset($_SERVER["REQUEST_METHOD"])){
         		success: function(responce){
         			console.log(responce);
         			if(responce==0){
-            				$(e).next().html("Not updated successfully");
+            			if(toUpdate == "password"){
+							$("#passWarn").html("Not updated successfully");
+                		}
+            			else{
+            				$(e).next().html("Not updated successfully")
+            			}
         				
         			}
         			else if (responce==1) {
-        				$(e).next().html("Updated Successfully");
+        				if(toUpdate == "password"){
+							$("#passWarn").html("Updated successfully");
+                		}
+            			else{
+            				$(e).next().html("Updated successfully")
+            			}
     				}
         			else if(responce==2){
         				//connection failed

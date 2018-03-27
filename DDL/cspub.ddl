@@ -46,10 +46,9 @@ CREATE TABLE Files(
 
 CREATE TABLE Published(
 	userName VARCHAR(30) NOT NULL,
-	studentNum VARCHAR(8) NOT NULL,
 	projectId INT NOT NULL,
-	PRIMARY KEY(userName, studentNum, projectId),
-	FOREIGN KEY(userName, studentNum) REFERENCES Student(userName, studentNum),
+	PRIMARY KEY(userName, projectId),
+	FOREIGN KEY(userName) REFERENCES Student(userName),
 	FOREIGN KEY(projectId) REFERENCES Project(projectId)
 );
 
