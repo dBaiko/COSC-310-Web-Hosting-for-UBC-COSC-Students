@@ -161,7 +161,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){
         //echo $faculty . "<br>";
         if($newUser->createNewUser($userName, $firstName, $lastName, $email, $password, $passConf, $studentNum, $stuSchool, $major, $profSchool, $faculty)){
             ?>
-            <meta http-equiv="refresh" content="0; URL='../SignIn.php'"/>
+            <meta http-equiv="refresh" content="0; URL='../confirmNewUser.php'"/>
             <?php
         }
         else{
