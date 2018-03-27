@@ -91,7 +91,7 @@ class projectVeiwer{
                 if($sql->execute()){
                     $sql->bind_result($u);
                     while($sql->fetch()){
-                        echo " <a href='Portfolio.php?userName=".$u."'>".$u."</a> <br>";
+                        echo " <a href='Portfolio.php?user=".$u."'>".$u."</a> <br>";
                     }
                     $sql->close();
                     return false;                    

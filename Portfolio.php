@@ -8,7 +8,6 @@ if(isset($_SESSION['user'])){
 ?>
 
 <?php 
-if(isset($_SESSION['user'])){
 
   class listContent{
       
@@ -148,9 +147,8 @@ if(isset($_SESSION['user'])){
 <div id = "main">
 	<div id ="profileInfo">
 <?php 
-if(isset($_SESSION['user'])){
-    $user = $_SESSION['user'];
-}
+if(isset($_GET['user'])){
+    $user = $_GET['user'];
     $contentGet = new listContent();
 
         $result = $contentGet->query_userInfo($user);
@@ -171,7 +169,8 @@ if(isset($_SESSION['user'])){
 	<?php 
 	   $contentGet->displayAllProjects($user);
 	   $contentGet = null;
-	?>
+}
+	   ?>
 	
 	</div>
 	</div>
@@ -186,12 +185,6 @@ if(isset($_SESSION['user'])){
 </footer>
 </body>
 </html>
-<?php   
-}
-else{
-    ?>
-    <meta http-equiv="refresh" content="0; URL='Browse.php'"/>
-    <?php
-}
+
 
 ?>
