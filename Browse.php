@@ -13,7 +13,7 @@ include 'php/all_projects.php';
 class listContent
 {
 
-    public function displayContent($param1, $param2, $param3, $param4, $param5,$param6)
+    public function displayContent($param1, $param2, $param3, $param4, $param5, $param6)
     {
         echo "<a href=\"viewProject.php?projectId=$param6\" style=\"\"><table class=\"project\" id=\"website\">" . "<caption>" . $param1 . "</caption>" . "<thead>" . "<tr>" . "<th> By: " . $param2 . "</th>" . "<th class=\"textright\">" . $param3 . "</th>" . "</tr>" . "</thead>" . "<tbody>" . "<tr>" . "<td colspan=\"2\"><img src=\"data:image/png;base64,".base64_encode($param5)."\"name=\"web\"class=\"images\" alt=\"logo here\" />" . "<p>" . $param4 . "</p></td>" . "</tr>" . "</tbody>" . "<tfoot>
     <tr>
@@ -84,7 +84,7 @@ class listContent
             die("Connection failed:" . $conn->connect_error);
         }
 
-        $sql = $sql = "SELECT p.projectTitle, pub.userName, p.date, p.projDesc, p.logoImage FROM Project AS p, Published AS pub WHERE p.projectId = pub.projectId AND p.projectTitle LIKE \"%$search%\" GROUP BY pub.projectId ORDER BY p.date DESC";
+        $sql = $sql = "SELECT * FROM Project AS p, Published AS pub WHERE p.projectId = pub.projectId AND p.projectTitle LIKE \"%$search%\" GROUP BY pub.projectId ORDER BY p.date DESC";
         
 
         $result = mysqli_query($conn, $sql);
@@ -172,7 +172,7 @@ class listContent
         $result = $contentGet->sortedQuery_types($type);
         $resultCheck = mysqli_num_rows($result);
         if ($resultCheck == 0) {
-            echo "<em>No projects available</em>";
+            echo "<em>No projects of the type <b>" .$type. "</b> available</em>";
             ?>
             <link rel="stylesheet" type="text/css" href="CSS/footer2.css">
             <?php 
@@ -190,7 +190,7 @@ class listContent
         $result = $contentGet->sortedQuery_search($search);
         $resultCheck = mysqli_num_rows($result);
         if ($resultCheck == 0) {
-            echo "<em>No projects available</em>";
+            echo "<em>No projects matched your search <b>'" .$search. "'</b> </em>";
             ?>
             <link rel="stylesheet" type="text/css" href="CSS/footer2.css">
             <?php 
