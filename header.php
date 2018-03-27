@@ -7,7 +7,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
 ?>
 <header>
-	<h1>CSPub</h1>
+	<a href="Browse.php"><h1>CSPub</h1></a>
 	<div class="right">
 		<?php
 if (isset($_SESSION["user"])) {
