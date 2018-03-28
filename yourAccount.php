@@ -161,6 +161,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){
         <meta charset="UTF-8">
         <title>CSPUB Your Account</title>
         <link rel="stylesheet" type="text/css" href="CSS/Default.css">
+        <link rel="stylesheet" type="text/css" href="CSS/youraccount.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<script src="Javascript/jquery-3.1.1.min.js"></script>
     </head>
@@ -178,28 +179,30 @@ if(isset($_SERVER["REQUEST_METHOD"])){
 	       spacing and what not.
 	 -->
 	<fieldset>
-		<legend>Account info for user: <span id="user"><?php echo $basic['userName']?></span></legend>
+		<legend>Account Info For User: <span id="user"><?php echo $basic['userName']?></span></legend>
 		
+		<div class = "input1">
 		<div>
     		<label>First Name: </label>
-    		<input class="" type="text" name="firstName" maxLength="30" value="<?php echo $basic['firstName'];?>">
-    		<button class="" onclick="update(this)">Change First name</button><span></span><br>
+    		<input class=""type="text" name="firstName" maxLength="30" value="<?php echo $basic['firstName'];?>">
+    		<button class="" onclick="update(this)">Change First Name</button><span></span><br>
     	</div>	
 		
 		<div>
     		<label>Last Name: </label>
     		<input class="" type="text" name="lastName" maxLength="30" value="<?php echo $basic['lastName'];?>">
-    		<button class="" onclick="update(this)">Change Last name</button><span></span><br>
+    		<button class="" onclick="update(this)">Change Last Name</button><span></span><br>
     	</div>	
 		
 		<div>
 			<label>Email: </label>
-			<input class="" type="text" name="email" maxLength="30" value="<?php echo $basic['email'];?>">
-			<button class="" onclick="update(this)">Change Last name</button><span></span><br>
+			<input  type="text" name="email" maxLength="30" value="<?php echo $basic['email'];?>">
+			<button class="" onclick="update(this)">Change Email</button><span></span><br>
 		</div>	
-		
+		</div>
 		<br>
 		
+		<div class = "input1">
 		<div>	
 			<label>Old Password: </label>
 			<input class="" type="password" id="oldPass" name="oldPass" onchange="checkPass()"><span></span><br>
@@ -209,14 +212,14 @@ if(isset($_SERVER["REQUEST_METHOD"])){
 			<input class="" type="password" id="passConf" name="passConf" onchange="checkPassMatch()">
 			<button class="" onclick="changePassword(this)">Change Password</button><span id="passWarn"></span><br>
 		</div>
-		
+		</div>
 		<br>
 		
 		<?php 
 		if($student = $info->getStudentInfo($user)){
 		?>
-		<p>Student info:</p>
-		
+		<p id = "info">Student info:</p>
+		<div class = "input1">
 		<div>
 			<label>Student Number: </label>
     		<input class="" type="text" name="studentNum" maxLength="8" value="<?php echo $student['studentNum'];?>">
@@ -234,12 +237,13 @@ if(isset($_SERVER["REQUEST_METHOD"])){
     		<input class="" type="text" name="major" maxLength="30" value="<?php echo $student['major'];?>">
     		<button class="" onclick="update(this)">Change Major</button><span></span><br>
 		</div>
+		</div>
 		<?php
 		}
 		else if($prof = $info->getProfInfo($user)){
 		?>
-		<p>Proffesor info:</p>
-		
+		<p id = "info">Proffesor info:</p>
+		<div class = "input1">
 		<div>
 			<label>Faculty: </label>
     		<input class="" type="text" name="faculty" maxLength="8" value="<?php echo $prof['faculty'];?>">
@@ -250,6 +254,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){
 			<label>School: </label>
     		<input class="" type="text" name="schoolP" maxLength="30" value="<?php echo $prof['school'];?>">
     		<button class="" onclick="update(this)">Change School</button><span></span><br>
+		</div>
 		</div>
 		<?php
 		}
