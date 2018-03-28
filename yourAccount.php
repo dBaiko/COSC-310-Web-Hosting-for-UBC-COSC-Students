@@ -222,8 +222,8 @@ if(isset($_SERVER["REQUEST_METHOD"])){
 		<div class = "input1">
 		<div>
 			<label>Student Number: </label>
-    		<input class="" type="text" name="studentNum" maxLength="8" onkeypress='return event.charCode >= 48 && event.charCode <= 57' value="<?php echo $student['studentNum'];?>">
-    		<button class="changeButton2" onclick="update(this)">Change Student Number</button><span></span><br>
+        	<input class="" type="text" name="studentNum" maxLength="8" onkeypress='return event.charCode >= 48 && event.charCode <= 57' value="<?php echo $student['studentNum'];?>">
+        	<button class="changeButton2" onclick="update(this)">Change SN#</button><span></span><br>
 		</div>
 		
 		<div>

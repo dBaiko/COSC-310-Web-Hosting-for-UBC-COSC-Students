@@ -30,3 +30,18 @@ p{
 	background-color: orange;
 	border-color: rgb(46, 108, 209);
 }
+
+.input1 div input{
+	position: absolute;
+	left: 16%;
+}
+
+.input1 div button{
+	position: absolute;
+	left: 29%;
+}
+
+.input1 div span{
+	position: absolute;
+	left: 40%;
+}
