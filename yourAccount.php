@@ -247,7 +247,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){
 		<div>
 			<label>Faculty: </label>
     		<input class="" type="text" name="faculty"  value="<?php echo $prof['faculty'];?>">
-    		<button class="changeButton2" onclick="update(this)">Change Student Number</button><span></span><br>
+    		<button class="changeButton2" onclick="update(this)">Change Faculty</button><span></span><br>
 		</div>
 		
 		<div>
@@ -325,7 +325,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){
 				$("#password").val("");
 				$("#passConf").val("");
 				$("#oldPass").val("");
-				
+				$("#passWarn").html("");
 			}
 			else{
 
