@@ -54,7 +54,7 @@ class newProject
         $this->conn = null;
     }
 
-    public function createNewProject($userName, $title, $desc, $type, $link, $contribArray, $fileNames, $fileTypes, $files, $logo, $date)
+    public function createNewProject($userName, $title, $desc, $type, $link, $contribArray, $fileNames, $fileTypes, $files, $logo, $date,$author)
     {
         if ($this->conn != null) {
             if ($userName != null && $title != null && $desc != null && $type != null) {
@@ -63,23 +63,24 @@ class newProject
                 $desc = chop($desc);
                 $type = chop($type);
                 $link = chop($link);
+                $author = chop($author);
                 
                 $id = null;
                 $confirm = false;
                 $stm = null;
                 if ($date == null) {
-                    $stm = "INSERT INTO Project (projectTitle, projDesc, demoUrl, date, projType, logoImage) VALUES (?,?,?, NOW(),?,?)";
+                    $stm = "INSERT INTO Project (projectTitle, projDesc, demoUrl, date, projType, logoImage, author) VALUES (?,?,?, NOW(),?,?,?)";
                 } else {
-                    $stm = "INSERT INTO Project (projectTitle, projDesc, demoUrl, date, projType, logoImage) VALUES (?,?,?, ?,?,?)";
+                    $stm = "INSERT INTO Project (projectTitle, projDesc, demoUrl, date, projType, logoImage, author) VALUES (?,?,?, ?,?,? ?)";
                 }
                 
                 if ($sql = $this->conn->prepare($stm)) {
                     $null = null;
                     if ($date == null) {
-                        $sql->bind_param("ssssb", $title, $desc, $link, $type, $null);
+                        $sql->bind_param("ssssbs", $title, $desc, $link, $type, $null,$author);
                         $sql->send_long_data(4, $logo);
                     } else {
-                        $sql->bind_param("sssssb", $title, $desc, $link, $date, $type, $null);
+                        $sql->bind_param("sssssbs", $title, $desc, $link, $date, $type, $null,$author);
                         $sql->send_long_data(5, $logo);
                     }
                     

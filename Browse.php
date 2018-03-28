@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('America/Los_Angeles');
 session_start();
 if (isset($_SESSION['user'])) {
     $user = $_SESSION['user'];
@@ -13,9 +14,9 @@ include 'php/all_projects.php';
 class listContent
 {
 
-    public function displayContent($param1, $param2, $param3, $param4, $param5, $param6)
+    public function displayContent($param1, $param2, $param3, $param4, $param5, $param6,$param7)
     {
-        echo "<a href=\"viewProject.php?projectId=$param6\" style=\"\"><table class=\"project\" id=\"website\">" . "<caption>" . $param1 . "</caption>" . "<thead>" . "<tr>" . "<th> By: " . $param2 . "</th>" . "<th class=\"textright\">" . $param3 . "</th>" . "</tr>" . "</thead>" . "<tbody>" . "<tr>" . "<td colspan=\"2\"><img src=\"data:image/png;base64,".base64_encode($param5)."\"name=\"web\"class=\"images\" alt=\"logo here\" />" . "<p>" . $param4 . "</p></td>" . "</tr>" . "</tbody>" . "<tfoot>
+        echo "<a href=\"viewProject.php?projectId=$param6\" style=\"\"><table class=\"project\" id=\"website\">" . "<caption>" . $param1 . "</caption>" . "<thead>" . "<tr>" . "<th> By: " . $param7 . "</th>" . "<th class=\"textright\">" . $param3 . "</th>" . "</tr>" . "</thead>" . "<tbody>" . "<tr>" . "<td colspan=\"2\"><img src=\"data:image/png;base64,".base64_encode($param5)."\"name=\"web\"class=\"images\" alt=\"logo here\" />" . "<p>" . $param4 . "</p></td>" . "</tr>" . "</tbody>" . "<tfoot>
     <tr>
     <td colspan=\"2\">
     <p id=\"copyright\">Copyright &copy; " . $param1 . "</p>
@@ -32,7 +33,7 @@ class listContent
             die("Connection failed:" . $conn->connect_error);
         }
 
-        $sql = "SELECT p.projectId, p.projectTitle, pub.userName, p.date, p.projDesc, p.logoImage FROM Project AS p, Published AS pub WHERE p.projectId = pub.projectId GROUP BY pub.projectId ORDER BY p.date DESC"; 
+        $sql = "SELECT p.projectId, p.projectTitle, pub.userName, p.date, p.projDesc, p.logoImage, p.author FROM Project AS p, Published AS pub WHERE p.projectId = pub.projectId GROUP BY pub.projectId ORDER BY p.date DESC"; 
 
         
         $result = mysqli_query($conn, $sql);
@@ -47,7 +48,7 @@ class listContent
         }
         if ($time == "Newest") {
 
-            $sql = "SELECT p.projectId, p.projectTitle, pub.userName, p.date, p.projDesc, p.logoImage FROM Project AS p, Published AS pub WHERE p.projectId = pub.projectId GROUP BY pub.projectId ORDER BY p.date DESC";
+            $sql = "SELECT p.projectId, p.projectTitle, pub.userName, p.date, p.projDesc, p.logoImage, p.author FROM Project AS p, Published AS pub WHERE p.projectId = pub.projectId GROUP BY pub.projectId ORDER BY p.date DESC";
             
 
             $result = mysqli_query($conn, $sql);
@@ -55,7 +56,7 @@ class listContent
         }
         if ($time == "Oldest") {
 
-            $sql = "SELECT p.projectId, p.projectTitle, pub.userName, p.date, p.projDesc, p.logoImage FROM Project AS p, Published AS pub WHERE p.projectId = pub.projectId GROUP BY pub.projectId ORDER BY p.date ASC";
+            $sql = "SELECT p.projectId, p.projectTitle, pub.userName, p.date, p.projDesc, p.logoImage, p.author FROM Project AS p, Published AS pub WHERE p.projectId = pub.projectId GROUP BY pub.projectId ORDER BY p.date ASC";
             
 
             $result = mysqli_query($conn, $sql);
@@ -70,7 +71,7 @@ class listContent
             die("Connection failed:" . $conn->connect_error);
         }
 
-        $sql = $sql = "SELECT p.projectId, p.projectTitle, pub.userName, p.date, p.projDesc, p.logoImage FROM Project AS p, Published AS pub WHERE p.projectId = pub.projectId AND p.projType = \"$type\" GROUP BY pub.projectId ORDER BY p.date DESC";
+        $sql = $sql = "SELECT p.projectId, p.projectTitle, pub.userName, p.date, p.projDesc, p.logoImage, p.author FROM Project AS p, Published AS pub WHERE p.projectId = pub.projectId AND p.projType = \"$type\" GROUP BY pub.projectId ORDER BY p.date DESC";
         
 
         $result = mysqli_query($conn, $sql);
@@ -162,7 +163,7 @@ class listContent
         } elseif ($resultCheck > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
 
-                $contentGet->displayContent($row['projectTitle'], $row['userName'],   date('Y-m-d', strtotime($row['date'])), $row['projDesc'], $row['logoImage'], $row['projectId']);
+                $contentGet->displayContent($row['projectTitle'], $row['userName'],   date('Y-m-d', strtotime($row['date'])), $row['projDesc'], $row['logoImage'], $row['projectId'], $row['author']);
                 
             }
         }
@@ -179,7 +180,7 @@ class listContent
         } elseif ($resultCheck > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
               
-                $contentGet->displayContent($row['projectTitle'], $row['userName'],   date('Y-m-d', strtotime($row['date'])), $row['projDesc'], $row['logoImage'], $row['projectId']);
+                $contentGet->displayContent($row['projectTitle'], $row['userName'],   date('Y-m-d', strtotime($row['date'])), $row['projDesc'], $row['logoImage'], $row['projectId'], $row['author']);
 
             }
         }
@@ -197,7 +198,7 @@ class listContent
         } elseif ($resultCheck > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
 
-                $contentGet->displayContent($row['projectTitle'], $row['userName'],   date('Y-m-d', strtotime($row['date'])), $row['projDesc'], $row['logoImage'], $row['projectId']);
+                $contentGet->displayContent($row['projectTitle'], $row['userName'],   date('Y-m-d', strtotime($row['date'])), $row['projDesc'], $row['logoImage'], $row['projectId'], $row['author']);
                 
             }
         }
@@ -207,7 +208,7 @@ class listContent
     if ($resultCheck > 0) {
         while ($row = mysqli_fetch_assoc($result)) {
 
-            $contentGet->displayContent($row['projectTitle'], $row['userName'],   date('Y-m-d', strtotime($row['date'])), $row['projDesc'], $row['logoImage'], $row['projectId']);
+            $contentGet->displayContent($row['projectTitle'], $row['userName'],   date('Y-m-d', strtotime($row['date'])), $row['projDesc'], $row['logoImage'], $row['projectId'], $row['author']);
             
         }
     }
