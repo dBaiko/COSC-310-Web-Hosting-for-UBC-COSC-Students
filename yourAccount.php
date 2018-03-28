@@ -205,7 +205,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){
 		<div class = "input1">
 		<div>	
 			<label>Old Password: </label>
-			<input class="" type="password" id="oldPass" name="oldPass" onchange="checkPass()"><span></span><br>
+			<input class="" type="password" id="oldPass" name="oldPass" onfocusout="checkPass()"><span></span><br>
 			<label>New Password: </label>
 			<input class="" type="password" id="password" name="password" onchange="checkPassMatch()"><br>
 			<label>Password Confirm: </label>
