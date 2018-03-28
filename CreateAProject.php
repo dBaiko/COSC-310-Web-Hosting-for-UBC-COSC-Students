@@ -1,12 +1,27 @@
 <?php
-session_start(); 
-if(isset($_SESSION['user'])){
+session_start();
+if (isset($_SESSION['user'])) {
     $user = $_SESSION['user'];
 }
 ?>
-<?php 
-if(isset($_SESSION['user'])){
-    ?>
+<?php
+if (isset($_SESSION['user'])) {
+    $db_host = 'localhost';
+    $db_name = 'cswebhosting';
+    $db_user = 'cswebhosting';
+    $db_pass = 'a9zEkajA';
+    $db = 'cswebhosting';
+    
+    $conn = mysqli_connect($db_host, $db_user, $db_pass, $db);
+    
+    $stm = "SELECT userName FROM Student WHERE userName = ?";
+    if ($sql = $conn->prepare($stm)) {
+        $sql->bind_param("s", $_SESSION['user']);
+        if ($sql->execute()) {
+            $sql->bind_result($u);
+            $sql->fetch();
+            if ($u) {
+                ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,7 +29,8 @@ if(isset($_SESSION['user'])){
 <title>CSPUB-Create A Project</title>
 <link rel="stylesheet" type="text/css" href="CSS/Default.css">
 <link rel="stylesheet" type="text/css" href="CSS/CreateAProject.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="Javascript/jquery-3.1.1.min.js"></script>
 <!--<script type="text/javascript" src="Javascript/CreateAProject.js"></script>-->
 </head>
@@ -23,76 +39,79 @@ if(isset($_SESSION['user'])){
 <?php include "header.php"?>
 
 <div id="main">
-		<form method = "post" action = "php/newProject.php" id = "create" enctype="multipart/form-data">
+		<form method="post" action="php/newProject.php" id="create"
+			enctype="multipart/form-data">
 			<fieldset>
 				<legend> Create a Project </legend>
-					<p>
-						<label>Title: </label>
-						<input type = "text" name = "title" placeholder="Enter Project title" class = "required" id="title"/>
-					</p>
-			
-						<label>Description: </label>
-						<div id="description" >
-							<textarea name="description" rows="15" cols ="80" class = "required" id="desc"></textarea>
-						</div>
-					<p>
-						<label>Any other contributors?</label>
-						<input type="checkbox" id="moreC" onclick="addC()"/>
-					</p>
-					<p id="contributors">
-					</p>
+				<p>
+					<label>Title: </label> <input type="text" name="title"
+						placeholder="Enter Project title" class="required" id="title" />
+				</p>
+
+				<label>Description: </label>
+				<div id="description">
+					<textarea name="description" rows="15" cols="80" class="required"
+						id="desc"></textarea>
+				</div>
+				<p>
+					<label>Any other contributors?</label> <input type="checkbox"
+						id="moreC" onclick="addC()" />
+				</p>
+				<p id="contributors"></p>
+				<div>
+					<label>Logo Image (The main image or logo to be displayed with your
+						project):</label><br> <img id="logo" src="Images/default.png"
+						width="25%" /><br> <input type="file" accept=".png, .jpg, .jpeg"
+						onchange="previewFile(this)" name="logo" />
+					<button type="button" onclick="remove()">Remove</button>
+				</div>
+				<div id="pics">
+					<label>Images (PNG, JPG, JPEG):</label><br>
 					<div>
-						<label>Logo Image (The main image or logo to be displayed with your project):</label><br>
-						<img id="logo" src="Images/default.png" width="25%"/><br>
-						<input type="file" accept=".png, .jpg, .jpeg" onchange="previewFile(this)" name="logo" />
-						<button  type="button" onclick="remove()">Remove</button>
+						<input type="file" accept=".png, .jpg, .jpeg"
+							onchange="addPicFile(this)" name="pics[]" />
 					</div>
-					<div id = "pics">
-						<label>Images (PNG, JPG, JPEG):</label><br>
-						<div>
-						<input type="file" accept=".png, .jpg, .jpeg" onchange="addPicFile(this)" name="pics[]"/>
-						</div>
+				</div>
+				<div id="pdfs">
+					<label>Additional Documents (PDF only):</label>
+					<div>
+						<input type="file" accept=".pdf" onchange="addPdfFile(this)"
+							name="pdfs[]" />
 					</div>
-					<div id="pdfs">
-						<label>Additional Documents (PDF only):</label>
-						<div>
-						<input type="file" accept=".pdf" onchange="addPdfFile(this)" name="pdfs[]"/>
-						</div>
-					</div>
-					<p id="pdfPreview">
-					</p>
-					<p>
-						<label>Project Links (GitHub, Youtube Demos etc.): </label>
-						<input type = "text" name = "link" placeholder="Project Links" />
-					</p>
-					<p>
-						<label>Project Type:</label>
-						<select name="projType" class="required" id="type">
-							<option value="" disabled selected>Select your option</option>
-							<option>Web Development</option>
-							<option>Mobile Application</option>
-							<option>Data Science</option>
-							<option>Object Oriented Programs (Java, C# etc.)</option>
-							<option>Robotics/Arduino/Raspberry Pi</option>
-							<option>Biology Technology</option>
-							<option>Parallel Computing</option>
-							<option>Games</option>
-							<option>Virtual Reality</option>
-							<option>3D Modeling/Printing</option>
-							<option>Math/Optimization</option>
-							<option>Algorithm Development</option>
-							<option>Other</option>
-						</select>
-					</p>
-					
-					<p id = "center">
-						<input type = "submit" value = "Create"/>
-					</p>
+				</div>
+				<p id="pdfPreview"></p>
+				<p>
+					<label>Project Links (GitHub, Youtube Demos etc.): </label> <input
+						type="text" name="link" placeholder="Project Links" />
+				</p>
+				<p>
+					<label>Project Type:</label> <select name="projType"
+						class="required" id="type">
+						<option value="" disabled selected>Select your option</option>
+						<option>Web Development</option>
+						<option>Mobile Application</option>
+						<option>Data Science</option>
+						<option>Object Oriented Programs (Java, C# etc.)</option>
+						<option>Robotics/Arduino/Raspberry Pi</option>
+						<option>Biology Technology</option>
+						<option>Parallel Computing</option>
+						<option>Games</option>
+						<option>Virtual Reality</option>
+						<option>3D Modeling/Printing</option>
+						<option>Math/Optimization</option>
+						<option>Algorithm Development</option>
+						<option>Other</option>
+					</select>
+				</p>
+
+				<p id="center">
+					<input type="submit" value="Create" />
+				</p>
 			</fieldset>
-			</form>
+		</form>
 	</div>
-	
-<footer>
+
+	<footer>
 		<ul>
 			<li class="footerlinks"><a href="Browse.php">Browse</a></li>
 		</ul>
@@ -384,12 +403,19 @@ $("#create").on("submit",function(e){
 
 
 </script>
-</html>    
-    <?php  
+</html>
+<?php
+            } else {
+                ?>
+<meta http-equiv="refresh" content="0; URL='Browse.php'" />
+<?php
+            }
+        }
+    }
 }
 else{
     ?>
-    <meta http-equiv="refresh" content="0; URL='Browse.php'"/>
-    <?php
+<meta http-equiv="refresh" content="0; URL='Browse.php'" />
+<?php
 }
 ?>
