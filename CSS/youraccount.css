@@ -33,15 +33,15 @@ p{
 
 .input1 div input{
 	position: absolute;
-	left: 16%;
+	left: 17em;
 }
 
 .input1 div button{
 	position: absolute;
-	left: 29%;
+	left: 26em;
 }
 
 .input1 div span{
 	position: absolute;
-	left: 40%;
+	left: 36.5em;
 }
