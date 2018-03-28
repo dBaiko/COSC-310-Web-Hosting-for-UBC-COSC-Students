@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('America/Los_Angeles');
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 if (session_status() == PHP_SESSION_NONE) {
@@ -205,7 +206,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){
 		<div class = "input1">
 		<div>	
 			<label>Old Password: </label>
-			<input class="" type="password" id="oldPass" name="oldPass" onchange="checkPass()"><span></span><br>
+			<input class="" type="password" id="oldPass" name="oldPass" onfocusout="checkPass()"><span></span><br>
 			<label>New Password: </label>
 			<input class="" type="password" id="password" name="password" onchange="checkPassMatch()"><br>
 			<label>Password Confirm: </label>

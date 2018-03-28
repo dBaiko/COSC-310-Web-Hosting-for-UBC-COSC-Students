@@ -55,8 +55,6 @@ if(isset($_SESSION['user'])){
 var validUser = false;
 var validPass = false;
 
-checkUser();
-checkPass();
 
 function checkUser(){
 	var user = $("#username").val();
