@@ -265,7 +265,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){
         $updater = null;
         $newProjectCreator = null;
         ?>
-         <!--   <meta http-equiv="refresh" content="0; URL='../viewProject.php?projectId=<?php #echo $pid;?>'" />-->
+         <meta http-equiv="refresh" content="0; URL='../viewProject.php?projectId=<?php echo $pid;?>'" />
             <?php
         }
         else{
