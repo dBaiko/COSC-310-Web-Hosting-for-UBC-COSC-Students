@@ -406,12 +406,14 @@ $("#create").on("submit",function(e){
 </html>
 <?php
             } else {
+                $conn->close();
                 ?>
 <meta http-equiv="refresh" content="0; URL='Browse.php'" />
 <?php
             }
         }
     }
+    $conn->close();
 }
 else{
     ?>
