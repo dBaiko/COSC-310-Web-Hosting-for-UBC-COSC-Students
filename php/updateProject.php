@@ -199,28 +199,19 @@ if(isset($_SERVER["REQUEST_METHOD"])){
         $allContributors = $newContribs;
     }
     
-    $allFiles = null;
     
-    $newPdfFiles = array();
     if($_FILES['pdfs'] != null){
-        $newPdfFiles = $_FILES['pdfs'];
+        $newProjectCreator->buildFileArrays($_FILES['pdfs']);
     }
     
-    $newPicFiles = array();
     if($_FILES['pics'] != null){
-        $newPdfFiles = $_FILES['pics'];
+        $newProjectCreator->buildFileArrays($_FILES['pics']);
     }
     
-    $newFiles = array_merge($newPdfFiles, $newPicFiles);
     
     $oldFiles = NULL;
-    if(isset($_POST['hiddenFileNames'])){
-        $oldFiles = $updater->buildOldFileArrays($_POST['hiddenFileNames'],$id);
-        $allFiles = $updater->joinFileArrays($oldFiles, $newFiles);
-    }
-    else{
-        $allFiles = $newFiles;
-    }
+    $oldFiles = $updater->buildOldFileArrays($_POST['hiddenFileNames'],$id);
+    
     
     
     $logo = $updater->getLogo($id);
@@ -247,7 +238,6 @@ if(isset($_SERVER["REQUEST_METHOD"])){
     
     $newProjectCreator->buildContribArray($allContributors);
     
-    $newProjectCreator->buildFileArrays($allFiles);
     
     
     $logoFile = $_FILES['logo']['tmp_name'];
@@ -275,7 +265,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){
         $updater = null;
         $newProjectCreator = null;
         ?>
-          <meta http-equiv="refresh" content="0; URL='../viewProject.php?projectId=<?php echo $pid;?>'" />
+         <!--   <meta http-equiv="refresh" content="0; URL='../viewProject.php?projectId=<?php #echo $pid;?>'" />-->
             <?php
         }
         else{
