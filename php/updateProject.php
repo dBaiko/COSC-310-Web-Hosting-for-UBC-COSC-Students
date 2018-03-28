@@ -56,6 +56,23 @@ class projectUpdater{
         }
     }
     
+    public function getAuthor($projectId){
+        $stm = "SELECT author FROM Project WHERE projectId = ?";
+        if($sql = $this->conn->prepare($stm)){
+            $sql->bind_param("s",$projectId);
+            if($sql->execute()){
+                $author = null;
+                $sql->bind_result($author);
+                $sql->fetch();
+                $sql->close();
+                return $author;
+            }
+        } else {
+            $error = $this->conn->errno . ' ' . $this->conn->error;
+            die( $error);
+        }
+    }
+    
     public function buildOldFileArrays($files, $projectId){
         $oldFiles = array();
         foreach($files as $x => $fileName){
@@ -166,6 +183,8 @@ if(isset($_SERVER["REQUEST_METHOD"])){
     $updater = new projectUpdater();
     $newProjectCreator = new newProject();
     
+    $author = $updater->getAuthor($id);
+    
     $newContribs = array();
     if(isset($_POST['contributor'])){
         $newContribs = $_POST['contributor'];
@@ -245,7 +264,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){
         
     }
     
-    if($pid = $newProjectCreator->createNewProject($newProjectCreator->userName, $newProjectCreator->title, $newProjectCreator->desc, $newProjectCreator->type, $newProjectCreator->link, $newProjectCreator->contribArray, $newProjectCreator->fileNames, $newProjectCreator->fileTypes, $newProjectCreator->files, $newProjectCreator->logo, $_POST['date'])){
+    if($pid = $newProjectCreator->createNewProject($newProjectCreator->userName, $newProjectCreator->title, $newProjectCreator->desc, $newProjectCreator->type, $newProjectCreator->link, $newProjectCreator->contribArray, $newProjectCreator->fileNames, $newProjectCreator->fileTypes, $newProjectCreator->files, $newProjectCreator->logo, $_POST['date'], $author)){
         
         if($oldFiles != null){
             foreach ($oldFiles as $v){

@@ -141,6 +141,7 @@ class userUpdater{
                 $error = $this->conn->errno . ' ' . $this->conn->error;
                 echo $error;
             }
+        return $toEcho;
     }
     
     
