@@ -35,12 +35,6 @@ if(isset($_SESSION['user'])){
 		<p id="warnPass" style="color: red;"></p>
 		</div>
 		<input type = "submit" class = "button" value = "Sign In" id="sub">
-		<p>
-			<a href = "">Forgot Username</a>
-		</p>
-		<p>
-			<a href = "">Forgot Password</a>
-		</p>
 	</fieldset>
 	</form>	
 	</div>
