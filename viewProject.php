@@ -283,7 +283,8 @@ if(isset($_SERVER["REQUEST_METHOD"])){//to prevent code running during testing
 					$projViewer->getContribInfo($id);
 					?>
 					</th>
-					<th>Publish Date: <br><?php echo substr($projInfo['date'],0,strpos($projInfo['date'], ' '))?></th> 
+					<th>Publish Date: <br><?php echo substr($projInfo['date'],0,strpos($projInfo['date'], ' '))?></th>
+					<th>Project Type: <br><?php echo $projInfo['projType']?></th>
 				</tr>
 			</thead>
 			<tbody>
