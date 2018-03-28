@@ -1,0 +1,76 @@
+@charset "UTF-8";
+body{
+	margin-top: 5em;
+}
+#main{
+	background-color: rgb(46, 108, 209);	
+	padding: 1em;
+	margin: 1em;
+}
+#logo{
+	width: 300px;
+	height: 300px;
+	Float: left;
+	padding: 1em;
+	padding-bottom: 0.1em;
+}
+.blogImg{
+	width: 300px;
+	height: 300px;
+	Float: left;
+	padding: 1em;
+	padding-bottom: 0.1em;
+}
+#title{
+	font-size: 3em;
+	background-color: #F2F2F2;
+	border-left: 3px solid black;
+	border-right: 3px solid black;
+	border-top: 3px solid black;
+	height: 3em;
+	text-align: center;
+}
+caption{
+	font-size: 2em;
+	background-color: #F2F2F2;
+	border-left: 3px solid black;
+	border-right: 3px solid black;
+	border-top: 3px solid black;
+	height: 1em;
+	text-align: left;
+}
+.Project{
+	background-color: #F2F2F2;
+	padding: 1em;
+	border: 3px solid black;
+	border-top: 0px;
+	width: 100%;
+}
+th{
+	width: 20%;
+	font-size: 1.5em;
+}
+.Project a{
+	color: blue;
+}
+#links{
+	font-size: 1.5em;
+}
+object{
+	width: 25em;
+	height: 20em;
+}
+.img{
+	width: 200px;
+	vertical-align: middle;
+	padding: 0em 1em 0em 1em;
+}
+
+#extraImages{
+	margin-top: 1em;
+	width: 100%;
+}
+.extraImg{
+	width: 250px;
+}
+}
