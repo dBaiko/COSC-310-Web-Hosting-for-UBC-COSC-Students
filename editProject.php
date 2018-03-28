@@ -308,7 +308,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){
     						<label>Logo Image (The main image or logo to be displayed with your project):</label><br>
     						<img src = 'data:image/png;base64,<?php echo  base64_encode($projInfo['logoImage'])?>' alt = 'Project Image' id="logo" width="25%"/><br>
     						<input type="file" accept=".png, .jpg, .jpeg" onchange="previewFile(this)" name="logo" />
-    						<button  type="button" onclick="remove()">Remove</button>
+    						<button  type="button" onclick="remove(this)">Remove</button>
     					</div>
     					<div id = "pics">
     						<label>Images (PNG, JPG, JPEG):</label><br>
@@ -414,10 +414,11 @@ function previewFile(e) {
 		document.querySelector('input[name=logo]').value = "";
 	}
 	}
-function remove(){
+function remove(e){
 	var preview = document.querySelector('#logo');
 	preview.src = "Images/default.png";
 	document.querySelector('input[name=logo]').value = "";
+	$(e).after("<input name='removed' value='true' hidden='hidden'/>");
 }
 function checkFileType(file){
 	if(!file)

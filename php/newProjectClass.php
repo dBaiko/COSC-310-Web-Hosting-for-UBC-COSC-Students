@@ -1,39 +1,40 @@
 <?php
+
 class newProject
 {
-    
+
     private $db_host = 'localhost';
-    
+
     private $db_name = 'cswebhosting';
-    
+
     private $db_user = 'cswebhosting';
-    
+
     private $db_pass = 'a9zEkajA';
-    
+
     public $conn = null;
-    
+
     private $db = null;
-    
+
     public $userName = null;
-    
+
     public $title = null;
-    
+
     public $desc = null;
-    
+
     public $link = null;
-    
+
     public $type = null;
-    
+
     public $contribArray = array();
-    
+
     public $fileNames = array();
-    
+
     public $fileTypes = array();
-    
+
     public $files = array();
-    
+
     public $logo = null;
-    
+
     public function __construct()
     {
         $this->conn = mysqli_connect($this->db_host, $this->db_user, $this->db_pass);
@@ -46,12 +47,13 @@ class newProject
             }
         }
     }
-    
-    public function __destruct(){
+
+    public function __destruct()
+    {
         $this->conn->close();
         $this->conn = null;
     }
-    
+
     public function createNewProject($userName, $title, $desc, $type, $link, $contribArray, $fileNames, $fileTypes, $files, $logo, $date)
     {
         if ($this->conn != null) {
@@ -65,22 +67,20 @@ class newProject
                 $id = null;
                 $confirm = false;
                 $stm = null;
-                if($date == null){
+                if ($date == null) {
                     $stm = "INSERT INTO Project (projectTitle, projDesc, demoUrl, date, projType, logoImage) VALUES (?,?,?, NOW(),?,?)";
-                }
-                else{
+                } else {
                     $stm = "INSERT INTO Project (projectTitle, projDesc, demoUrl, date, projType, logoImage) VALUES (?,?,?, ?,?,?)";
                 }
                 
                 if ($sql = $this->conn->prepare($stm)) {
                     $null = null;
-                    if($date == null){
-                        $sql->bind_param("ssssb", $title, $desc, $link, $type,$null);
-                        $sql->send_long_data(4,$logo);
-                    }
-                    else{
-                        $sql->bind_param("sssssb", $title, $desc, $link, $date, $type,$null);
-                        $sql->send_long_data(5,$logo);
+                    if ($date == null) {
+                        $sql->bind_param("ssssb", $title, $desc, $link, $type, $null);
+                        $sql->send_long_data(4, $logo);
+                    } else {
+                        $sql->bind_param("sssssb", $title, $desc, $link, $date, $type, $null);
+                        $sql->send_long_data(5, $logo);
                     }
                     
                     if ($sql->execute()) {
@@ -120,7 +120,7 @@ class newProject
                         echo $error;
                         return false;
                     }
-                    if(! empty($files)){
+                    if (! empty($files)) {
                         $stmFiles = "INSERT INTO Files (projectId, fileName, file, fileType) VALUES (?,?,?,?);";
                         if ($sqlFiles = $this->conn->prepare($stmFiles)) {
                             $name = "";
@@ -137,7 +137,7 @@ class newProject
                             }
                         }
                         $sqlFiles->close();
-                        return true;
+                        return $id;
                     }
                 }
             } else {
@@ -146,41 +146,41 @@ class newProject
         } else {
             return false;
         }
-        return true;
+        return $id;
     }
-    
+
     public function setUserName($user)
     {
         $this->userName = $user;
     }
-    
+
     public function setTitle($title)
     {
         $this->title = $title;
     }
-    
+
     public function setDesc($desc)
     {
         $this->desc = $desc;
     }
-    
+
     public function setLink($link)
     {
         $this->link = $link;
     }
-    
+
     public function setType($type)
     {
         $this->type = $type;
     }
-    
+
     public function buildContribArray($contrib)
     {
         foreach ($contrib as $index => $value) {
             $this->contribArray[] = $value;
         }
     }
-    
+
     public function buildFileArrays($files)
     {
         if (isset($files['name'])) {
@@ -191,36 +191,30 @@ class newProject
             $this->buildFiles($files['tmp_name']);
         }
     }
-    
+
     public function buildFileNameArray($fileNames)
     {
         foreach ($fileNames as $x => $value) {
-            if($value != "")
+            if ($value != "")
                 $this->fileNames[] = $value;
         }
     }
-    
+
     public function buildFileTypeArray($fileNames)
     {
         foreach ($fileNames as $x => $value) {
-            if($value != ""){
+            if ($value != "") {
                 $tmp = substr($value, strrpos($value, "."));
                 $this->fileTypes[] = substr($tmp, 1);
             }
-            
         }
     }
-    
+
     public function buildFiles($files)
     {
         foreach ($files as $x => $value) {
             if ($value != null) {
-                if(substr($value, 0,4) == "/tmp"){
-                    $content = $value;
-                }
-                else{
-                    $content = file_get_contents($value);
-                }
+                $content = file_get_contents($value);
                 
                 $this->files[] = $content;
             }
