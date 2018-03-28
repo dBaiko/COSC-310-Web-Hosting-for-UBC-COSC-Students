@@ -23,3 +23,10 @@ p{
 	background-color: rgb(46, 108, 209);
 	border-color: rgb(46, 108, 209);
 }
+
+.changeButton2{
+	font-size: 1em;
+	border-radius: 0.25em;
+	background-color: orange;
+	border-color: rgb(46, 108, 209);
+}

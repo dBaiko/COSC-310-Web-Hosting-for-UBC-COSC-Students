@@ -1,3 +1,4 @@
 /bin/
-/.project
 /.buildpath
+/.classpath
+/.project
