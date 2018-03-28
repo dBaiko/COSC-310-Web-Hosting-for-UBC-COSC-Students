@@ -152,7 +152,7 @@ class projectUpdater{
         $tmp = $tmp = substr($fileName, strrpos($fileName, "."));
         $fileType = substr($tmp, 1);
         $null = null;
-        $stm = "INSERT INTO FILES (projectId, fileName, file, fileType) VALUES (?,?,?,?)";
+        $stm = "INSERT INTO Files (projectId, fileName, file, fileType) VALUES (?,?,?,?)";
         if($sql = $this->conn->prepare($stm)){
             $sql->bind_param("ssbs",$projectId,$fileName,$null,$fileType);
             $sql->send_long_data(2, $file);
