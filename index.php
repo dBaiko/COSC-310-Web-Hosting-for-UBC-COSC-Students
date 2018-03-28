@@ -15,9 +15,9 @@
 		<h2> Let's get Started</h2>
 		
 		<h3>Already a user?</h3>
-		<button class = "button"><a href= "SignIn.php">Sign In</a></button>
+		<a href= "SignIn.php"><button class = "button">Sign In</button></a>
 		<h3>New Member?</h3>
-		<button class = "button"><a href= "Register.php">Register</a></button>
+		<a href= "Register.php"><button class = "button">Register</button></a>
 	</div>
 </div>
 <footer>
