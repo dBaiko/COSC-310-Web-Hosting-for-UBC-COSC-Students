@@ -31,17 +31,3 @@ p{
 	border-color: rgb(46, 108, 209);
 }
 
-.input1 div input{
-	position: absolute;
-	left: 17em;
-}
-
-.input1 div button{
-	position: absolute;
-	left: 26em;
-}
-
-.input1 div span{
-	position: absolute;
-	left: 36.5em;
-}

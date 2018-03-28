@@ -56,7 +56,6 @@ var validUser = false;
 var validPass = false;
 
 
-
 function checkUser(){
 	var user = $("#username").val();
 	$.ajax({

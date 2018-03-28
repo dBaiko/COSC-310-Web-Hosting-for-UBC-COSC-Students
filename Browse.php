@@ -14,12 +14,12 @@ include 'php/all_projects.php';
 class listContent
 {
 
-    public function displayContent($param1, $param2, $param3, $param4, $param5, $param6,$param7)
+    public function displayContent($title, $userName, $date, $desc, $logo, $id,$author)
     {
-        echo "<a href=\"viewProject.php?projectId=$param6\" style=\"\"><table class=\"project\" id=\"website\">" . "<caption>" . $param1 . "</caption>" . "<thead>" . "<tr>" . "<th> By: " . $param7 . "</th>" . "<th class=\"textright\">" . $param3 . "</th>" . "</tr>" . "</thead>" . "<tbody>" . "<tr>" . "<td colspan=\"2\"><img src=\"data:image/png;base64,".base64_encode($param5)."\"name=\"web\"class=\"images\" alt=\"logo here\" />" . "<p>" . $param4 . "</p></td>" . "</tr>" . "</tbody>" . "<tfoot>
+        echo "<a href=\"viewProject.php?projectId=$id\" style=\"\"><table class=\"project\" id=\"website\">" . "<caption>" . $title . "</caption>" . "<thead>" . "<tr>" . "<th> By: " . $author . "</th>" . "<th class=\"textright\">" . $date . "</th>" . "</tr>" . "</thead>" . "<tbody>" . "<tr>" . "<td colspan=\"2\"><img src=\"data:image/png;base64,".base64_encode($logo)."\"name=\"web\"class=\"images\" alt=\"logo here\" />" . "<p>" . substr($desc, 0, 1500) . "..." . "</p></td>" . "</tr>" . "</tbody>" . "<tfoot>
     <tr>
     <td colspan=\"2\">
-    <p id=\"copyright\">Copyright &copy; " . $param1 . "</p>
+    <p id=\"copyright\">Copyright &copy; " . $title . "</p>
     </td>
     </tr>
     </tfoot>
