@@ -32,7 +32,8 @@ CREATE TABLE Project(
 	demoUrl VARCHAR(255),
 	date DATETIME,
 	projType VARCHAR(50),
-	logoImage MEDIUMBLOB
+	logoImage MEDIUMBLOB,
+	author VARCHAR(30)
 );
 
 CREATE TABLE Files(
