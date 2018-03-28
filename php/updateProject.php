@@ -280,7 +280,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){
         }
         else{
            ?>
-           <meta http-equiv="refresh" content="0; URL='../Browse.php'" />
+        <meta http-equiv="refresh" content="0; URL='../Browse.php'" />
            <?php 
         }
     

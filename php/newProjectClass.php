@@ -71,7 +71,7 @@ class newProject
                 if ($date == null) {
                     $stm = "INSERT INTO Project (projectTitle, projDesc, demoUrl, date, projType, logoImage, author) VALUES (?,?,?, NOW(),?,?,?)";
                 } else {
-                    $stm = "INSERT INTO Project (projectTitle, projDesc, demoUrl, date, projType, logoImage, author) VALUES (?,?,?, ?,?,? ?)";
+                    $stm = "INSERT INTO Project (projectTitle, projDesc, demoUrl, date, projType, logoImage, author) VALUES (?,?,?,?,?,?,?)";
                 }
                 
                 if ($sql = $this->conn->prepare($stm)) {
