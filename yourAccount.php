@@ -209,7 +209,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){
 			<label>New Password: </label>
 			<input class="" type="password" id="password" name="password" onchange="checkPassMatch()"><br>
 			<label>Password Confirm: </label>
-			<input class="" type="password" id="passConf" name="passConf" onchange="checkPassMatch()">
+			<input class="" type="password" id="passConf" name="passConf" oninput="checkPassMatch()">
 			<button class="changeButton2" onclick="changePassword(this)">Change Password</button><span id="passWarn"></span><br>
 		</div>
 		</div>
