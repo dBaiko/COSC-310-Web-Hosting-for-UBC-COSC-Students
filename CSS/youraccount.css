@@ -1,0 +1,25 @@
+@charset "UTF-8";
+legend{
+	font-size: 2.5em;
+	
+}
+label{
+	font-size: 1.5em;
+}
+p{
+	font-size: 2em;
+}
+.input1{
+	background-color: rgb(46, 108, 209);
+	border-radius: 1em;
+	padding: 1em;
+}
+#info{
+	margin-bottom: 0em;
+}
+.changeButton{
+	font-size: 1em;
+	border-radius: 0.25em;
+	background-color: rgb(46, 108, 209);
+	border-color: rgb(46, 108, 209);
+}
