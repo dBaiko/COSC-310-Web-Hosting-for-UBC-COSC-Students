@@ -117,7 +117,7 @@ class userInfo{
                 if($sql->execute()){
                     $sql->bind_result($f,$s);
                     if($sql->fetch()){
-                        $toReturn = array("faculty"=>$n,"school"=>$s);
+                        $toReturn = array("faculty"=>$f,"school"=>$s);
                         $sql->close();
                         return $toReturn;
                     }
@@ -185,19 +185,19 @@ if(isset($_SERVER["REQUEST_METHOD"])){
 		<div>
     		<label>First Name: </label>
     		<input class=""type="text" name="firstName" maxLength="30" value="<?php echo $basic['firstName'];?>">
-    		<button class="" onclick="update(this)">Change First Name</button><span></span><br>
+    		<button class="changeButton2" onclick="update(this)">Change First Name</button><span></span><br>
     	</div>	
 		
 		<div>
     		<label>Last Name: </label>
     		<input class="" type="text" name="lastName" maxLength="30" value="<?php echo $basic['lastName'];?>">
-    		<button class="" onclick="update(this)">Change Last Name</button><span></span><br>
+    		<button class="changeButton2" onclick="update(this)">Change Last Name</button><span></span><br>
     	</div>	
 		
 		<div>
 			<label>Email: </label>
-			<input  type="text" name="email" maxLength="30" value="<?php echo $basic['email'];?>">
-			<button class="" onclick="update(this)">Change Email</button><span></span><br>
+			<input  type="text" name="email"  value="<?php echo $basic['email'];?>">
+			<button class="changeButton2" onclick="update(this)">Change Email</button><span></span><br>
 		</div>	
 		</div>
 		<br>
@@ -210,7 +210,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){
 			<input class="" type="password" id="password" name="password" onchange="checkPassMatch()"><br>
 			<label>Password Confirm: </label>
 			<input class="" type="password" id="passConf" name="passConf" onchange="checkPassMatch()">
-			<button class="" onclick="changePassword(this)">Change Password</button><span id="passWarn"></span><br>
+			<button class="changeButton2" onclick="changePassword(this)">Change Password</button><span id="passWarn"></span><br>
 		</div>
 		</div>
 		<br>
@@ -222,38 +222,38 @@ if(isset($_SERVER["REQUEST_METHOD"])){
 		<div class = "input1">
 		<div>
 			<label>Student Number: </label>
-    		<input class="" type="text" name="studentNum" maxLength="8" value="<?php echo $student['studentNum'];?>">
-    		<button class="" onclick="update(this)">Change Student Number</button><span></span><br>
+        	<input class="" type="text" name="studentNum" maxLength="8" onkeypress='return event.charCode >= 48 && event.charCode <= 57' value="<?php echo $student['studentNum'];?>">
+        	<button class="changeButton2" onclick="update(this)">Change SN#</button><span></span><br>
 		</div>
 		
 		<div>
 			<label>School: </label>
-    		<input class="" type="text" name="schoolS" maxLength="30" value="<?php echo $student['school'];?>">
-    		<button class="" onclick="update(this)">Change School</button><span></span><br>
+    		<input class="" type="text" name="schoolS"  value="<?php echo $student['school'];?>">
+    		<button class="changeButton2" onclick="update(this)">Change School</button><span></span><br>
 		</div>
 		
 		<div>
 			<label>Major: </label>
-    		<input class="" type="text" name="major" maxLength="30" value="<?php echo $student['major'];?>">
-    		<button class="" onclick="update(this)">Change Major</button><span></span><br>
+    		<input class="" type="text" name="major"  value="<?php echo $student['major'];?>">
+    		<button class="changeButton2" onclick="update(this)">Change Major</button><span></span><br>
 		</div>
 		</div>
 		<?php
 		}
 		else if($prof = $info->getProfInfo($user)){
 		?>
-		<p id = "info">Proffesor info:</p>
+		<p id = "info">Professor info:</p>
 		<div class = "input1">
 		<div>
 			<label>Faculty: </label>
-    		<input class="" type="text" name="faculty" maxLength="8" value="<?php echo $prof['faculty'];?>">
-    		<button class="" onclick="update(this)">Change Student Number</button><span></span><br>
+    		<input class="" type="text" name="faculty"  value="<?php echo $prof['faculty'];?>">
+    		<button class="changeButton2" onclick="update(this)">Change Student Number</button><span></span><br>
 		</div>
 		
 		<div>
 			<label>School: </label>
-    		<input class="" type="text" name="schoolP" maxLength="30" value="<?php echo $prof['school'];?>">
-    		<button class="" onclick="update(this)">Change School</button><span></span><br>
+    		<input class="" type="text" name="schoolP"  value="<?php echo $prof['school'];?>">
+    		<button class="changeButton2" onclick="update(this)">Change School</button><span></span><br>
 		</div>
 		</div>
 		<?php
@@ -265,7 +265,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){
 		
 		<form action="php/deleteAccount.php" id="delete" >
         	<input type="hidden" value="<?php echo $user?>"/>
-           	<button class="changeButton" onclick="deleteAccount(this)">Delete Account</button>
+           	<button class="changeButton" style="background: " onclick="deleteAccount(this)">Delete Account</button>
         </form>
 		<?php
 		

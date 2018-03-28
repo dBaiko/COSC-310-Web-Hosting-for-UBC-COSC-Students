@@ -232,7 +232,7 @@ class accountDeleter{
         $userName = chop($userName);
         $userName = mysqli_real_escape_string($this->conn, $userName);
         
-        $stm = "DELETE FROM Prof WHERE userName = ?";
+        $stm = "DELETE FROM Professor WHERE userName = ?";
         if($sql = $this->conn->prepare($stm)){
             $sql->bind_param("s", $userName);
             if($sql->execute()){

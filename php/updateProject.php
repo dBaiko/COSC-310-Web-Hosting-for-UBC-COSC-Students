@@ -39,27 +39,45 @@ class projectUpdater{
         return array_merge($oldContribs,$newContribs);
     }
     
+    public function getLogo($projectId){
+        $stm = "SELECT logoImage FROM Project WHERE projectId = ?";
+        if($sql = $this->conn->prepare($stm)){
+            $sql->bind_param("s",$projectId);
+            if($sql->execute()){
+                $logo = null;
+                $sql->bind_result($logo);
+                $sql->fetch();
+                $sql->close();
+                return $logo;
+            }
+        } else {
+            $error = $this->conn->errno . ' ' . $this->conn->error;
+            die( $error);
+        }
+    }
+    
     public function buildOldFileArrays($files, $projectId){
         $oldFiles = array();
-        foreach ($files as $x => $fileName){
+        foreach($files as $x => $fileName){
             $stm = "SELECT fileName, file FROM Files WHERE fileName = ? AND projectId = ?";
-            if($sql = $this->conn->prepare($stm)){
-                $sql->bind_param("ss",$fileName,$projectId);
-                if($sql->execute()){
-                    $sql->bind_result($n,$f);
-                    if($sql->fetch()){
-                        $fileRow = array('name'=>$n, 'tmp_name'=>$f);
-                        array_push($oldFiles, $fileRow);
-                        $sql->close();
+                if($sql = $this->conn->prepare($stm)){
+                    $sql->bind_param("ss",$fileName, $projectId);
+                    if($sql->execute()){
+                        $sql->bind_result($n,$f);
+                        if($sql->fetch()){
+                            $fileRow = array('name'=>$n, 'tmp_name'=>$f);
+                            array_push($oldFiles, $fileRow);
+                            $sql->close();
+                        }
+                        
+                    }else {
+                        $error = $this->conn->errno . ' ' . $this->conn->error;
+                        die( $error);
                     }
-                }else {
+                } else {
                     $error = $this->conn->errno . ' ' . $this->conn->error;
                     die( $error);
                 }
-            } else {
-                $error = $this->conn->errno . ' ' . $this->conn->error;
-                die( $error);
-            }
         }
         return $oldFiles;
     }
@@ -113,6 +131,28 @@ class projectUpdater{
         
     }
     
+    public function insertFile($projectId,$fileName,$file){
+        $tmp = $tmp = substr($fileName, strrpos($fileName, "."));
+        $fileType = substr($tmp, 1);
+        $null = null;
+        $stm = "INSERT INTO FILES (projectId, fileName, file, fileType) VALUES (?,?,?,?)";
+        if($sql = $this->conn->prepare($stm)){
+            $sql->bind_param("ssbs",$projectId,$fileName,$null,$fileType);
+            $sql->send_long_data(2, $file);
+            if($sql->execute()){
+                $sql->close();
+                return true;
+            }
+            else{
+                $error = $this->conn->errno . ' ' . $this->conn->error;
+                die( $error);
+            }
+        }else {
+            $error = $this->conn->errno . ' ' . $this->conn->error;
+            die( $error);
+        }
+    }
+    
 }
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -154,13 +194,17 @@ if(isset($_SERVER["REQUEST_METHOD"])){
     
     $newFiles = array_merge($newPdfFiles, $newPicFiles);
     
+    $oldFiles = NULL;
     if(isset($_POST['hiddenFileNames'])){
-        $oldFiles = $updater->buildOldFileArrays($_POST['hiddenFileNames'], $id);
+        $oldFiles = $updater->buildOldFileArrays($_POST['hiddenFileNames'],$id);
         $allFiles = $updater->joinFileArrays($oldFiles, $newFiles);
     }
     else{
         $allFiles = $newFiles;
     }
+    
+    
+    $logo = $updater->getLogo($id);
     
     $updater->deleteProject($id);
     
@@ -186,32 +230,38 @@ if(isset($_SERVER["REQUEST_METHOD"])){
     
     $newProjectCreator->buildFileArrays($allFiles);
     
-    if(isset($_FILES['pdfs'])){
-        $newProjectCreator->buildFileArrays($_FILES['pdfs']);
-    }
     
     $logoFile = $_FILES['logo']['tmp_name'];
     if($logoFile != null){
-        echo "here";
         $newProjectCreator->logo = file_get_contents($logoFile);
     }
-    else{
-        echo "HERE";
-        $newProjectCreator->logo = file_get_contents("../Images/default.png");
-        if($newProjectCreator->logo == null)
-            echo "NULL";
-        echo "YEAS";
+    else {
+        if($logo == file_get_contents("../Images/default.png") || isset($_POST['removed']) ){
+            $newProjectCreator->logo = file_get_contents("../Images/default.png");
+        }
+        else{
+            $newProjectCreator->logo = $logo;
+        }
+        
     }
     
-    if($newProjectCreator->createNewProject($newProjectCreator->userName, $newProjectCreator->title, $newProjectCreator->desc, $newProjectCreator->type, $newProjectCreator->link, $newProjectCreator->contribArray, $newProjectCreator->fileNames, $newProjectCreator->fileTypes, $newProjectCreator->files, $newProjectCreator->logo, $_POST['date'])){
+    if($pid = $newProjectCreator->createNewProject($newProjectCreator->userName, $newProjectCreator->title, $newProjectCreator->desc, $newProjectCreator->type, $newProjectCreator->link, $newProjectCreator->contribArray, $newProjectCreator->fileNames, $newProjectCreator->fileTypes, $newProjectCreator->files, $newProjectCreator->logo, $_POST['date'])){
+        
+        if($oldFiles != null){
+            foreach ($oldFiles as $v){
+                $updater->insertFile($pid, $v['name'], $v['tmp_name']);
+            }
+        }
+        
+        $updater = null;
         $newProjectCreator = null;
         ?>
-            <meta http-equiv="refresh" content="0; URL='../viewProject.php?projectId=<?php echo $id+1;?>'" />
+          <meta http-equiv="refresh" content="0; URL='../viewProject.php?projectId=<?php echo $pid;?>'" />
             <?php
         }
         else{
            ?>
-           <meta http-equiv="refresh" content="0; URL='../Browse.php'" /> 
+           <meta http-equiv="refresh" content="0; URL='../Browse.php'" />
            <?php 
         }
     
