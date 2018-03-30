@@ -29,7 +29,8 @@ input[name="title"] {
 	border: 1px solid black;
 }
 textarea[name="description"] {
-	width: 55%;
+	font-size: 1em;
+	width: 90%;
 	border: 1px solid black;
 }
 input[name="contributors"] {
@@ -83,11 +84,11 @@ input[name="copyright"] {
 }
 
 #pics div input{
-	margin-top: 2em;
+	margin-top: 1em;
+	width: 15em;
 }
 
 #pics div img{
-	margin-top: 2em;
 	display: block;
 }
 
@@ -96,28 +97,30 @@ input[name="copyright"] {
 }
 
 #pdfs div input{
-	margin-top: 2em;
+	margin-top: 1em;
 	
 }
 
 #pdfs div object{
-	margin-top: 2em;
+	margin-top: 1em;
 	display: block;
 }
 input{
 	font-size: 1.3em;
+	padding-top: 1em;
 }
 button{
-	font-size: 1em;
+	font-size: 1.5em;
 	border-radius: 6px;
 	margin: 0.1em;
+	padding:0.2em;
 }
-#createnew{
+#createnew, #save{
 	font-size: 2em;
 	border-radius: 6px;
 	margin: 0.1em;
 }
-#createnew:hover{
+#createnew:hover, #save:hover, .changeButton:hover{
 	background-color:#b7d7e8;	
 }
 input{
@@ -126,5 +129,32 @@ input{
 select{
 	font-size:1em;
 }
-	
+#link, #save, #title, #createnew, .cont{
+	padding-top: 0em;
+}
+.oldpics{
+	margin-top:1.5em;
+	font-size: 1.5em;
+	padding: 0.2em;
+	display: inline;
+	vertical-align: top;
+}
+.oldpics{
+	font-size: 1.5em;
+	padding: 0.2em;
+	display: inline;
+	vertical-align: top;
+}
+.background	{
+	background-color: #b7d7e8;
+	border: 1px solid black;
+	padding:0.2em;
+	margin-top: 0.2em;
+}
+button:hover{
+	background-color:#87bdd8;
+	color: white;
+	border-color: #87bdd8;
+}
+
 >>>>>>> refs/remotes/origin/development

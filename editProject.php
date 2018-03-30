@@ -192,9 +192,9 @@ class projectInfo
                     $sql->bind_result($n, $f);
                     while ($sql->fetch()) {
                         ?>
-<button type="button" onclick="removeOrigonal(this)">X</button>
+<button type="button" onclick="removeOrigonal(this)" class = 'oldpics' >X</button>
 <img src='data:image/png;base64,<?php echo  base64_encode($f)?>'
-	alt='Project Image' style="width: 20%; display: block;" />
+	alt='Project Image' style="width: 20%; display: inline;vertical-align:top;" />
 <input type="hidden" name="hiddenFileNames[]" value="<?php echo $n;?>" />
 <?php
                     }
@@ -226,8 +226,8 @@ class projectInfo
                     $sql->bind_result($f, $n);
                     while ($sql->fetch()) {
                         ?>
-<button type="button" onclick="removeOrigonal(this)">X</button>
-<object style="display: block;"
+<button type="button" onclick="removeOrigonal(this)" class = 'oldpics'>X</button>
+<object style="display: block; width: 30%; height: 25em;display: inline;vertical-align:top;"
 	data="data:application/pdf;base64,<?php echo base64_encode($f) ?>"
 	type="application/pdf"></object>
 <input type="hidden" name="hiddenFileNames[]" value="<?php echo $n;?>" />
@@ -310,6 +310,7 @@ if (isset($_SERVER["REQUEST_METHOD"])) {
 <title>CSPUB-Create A Project</title>
 <link rel="stylesheet" type="text/css" href="CSS/Default.css">
 <link rel="stylesheet" type="text/css" href="CSS/CreateAProject.css">
+<link rel="stylesheet" type="text/css" href="CSS/editproject.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="Javascript/jquery-3.1.1.min.js"></script>
@@ -323,6 +324,7 @@ if (isset($_SERVER["REQUEST_METHOD"])) {
 			enctype="multipart/form-data">
 			<fieldset>
 				<legend> Edit Project </legend>
+				<div class = "background">
 				<p>
 					<input type="hidden" value="<?php echo $projInfo['date'];?>"
 						name="date"> <input type="hidden" value="<?php echo $id;?>"
@@ -336,6 +338,8 @@ if (isset($_SERVER["REQUEST_METHOD"])) {
 					<textarea name="description" rows="15" cols="80" class="required"
 						id="desc"><?php echo $projInfo['projDesc'];?></textarea>
 				</div>
+				</div>
+				<div class = "background">
 				<p>
 					<label>Contributors:</label><br>
     						<?php
@@ -365,6 +369,8 @@ if (isset($_SERVER["REQUEST_METHOD"])) {
     						
     					</p>
 				<p id="contributors"></p>
+				</div>
+				<div class = "background">
 				<div>
 					<label>Logo Image (The main image or logo to be displayed with your
 						project):</label><br> <img
@@ -372,8 +378,10 @@ if (isset($_SERVER["REQUEST_METHOD"])) {
 						alt='Project Image' id="logo" width="20%" /><br> <input
 						type="file" accept=".png, .jpg, .jpeg"
 						onchange="previewFile(this)" name="logo" />
-					<button type="button" onclick="remove(this)">Remove</button>
+					<button type="button" onclick="remove(this)" style = "font-size: 1em">Remove</button>
 				</div>
+				</div>
+				<div class = "background">
 				<div id="pics">
 					<label>Images (PNG, JPG, JPEG):</label><br>
     						<?php $project->getPicFiles($id)?>
@@ -382,6 +390,8 @@ if (isset($_SERVER["REQUEST_METHOD"])) {
 							onchange="addPicFile(this)" name="pics[]" />
 					</div>
 				</div>
+				</div>
+				<div class = "background">
 				<div id="pdfs">
 					<label>Additional Documents (PDF only):</label><br>
     						<?php $project->getPdfFiles($id)?>
@@ -390,10 +400,13 @@ if (isset($_SERVER["REQUEST_METHOD"])) {
 							name="pdfs[]" />
 					</div>
 				</div>
+				
 				<p id="pdfPreview"></p>
+				</div>
+				<div class = "background">
 				<p>
-					<label>Project Links (GitHub, Youtube Demos etc.): </label> <input
-						type="text" name="link" value="<?php echo $projInfo['demoUrl']?>" />
+					<label>Project Links (GitHub, Youtube Demos etc.): </label> <input 
+						id = "link" type="text" name="link" value="<?php echo $projInfo['demoUrl']?>" />
 				</p>
 				<p>
 					<label>Project Type:</label> <select name="projType"
@@ -424,9 +437,9 @@ if (isset($_SERVER["REQUEST_METHOD"])) {
         ?>
     						</select>
 				</p>
-
+				</div>
 				<p id="center">
-					<input type="submit" value="Save" />
+					<input type="submit" value="Save" id = "save"/>
 				</p>
 			</fieldset>
 		</form>
@@ -441,7 +454,7 @@ if (isset($_SERVER["REQUEST_METHOD"])) {
 		<ul>
 			<li class="footerlinks"><a href="Browse.php">Browse</a></li>
 		</ul>
-		<p>Copyright &copy; 2018 CSPub</p>
+		<p id = 'copy'>Copyright &copy; 2018 CSPub</p>
 	</footer>
 </body>
 <script>
