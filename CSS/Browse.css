@@ -13,6 +13,7 @@ body{
 }
 input{
 	width: 50%;
+	font-size: 2em;
 }
 #search h2{
 	font-size: 3em;
@@ -94,7 +95,7 @@ caption{
 }
 #searchButton{
 	width: 2em;
-	font-size: 2em;
+	font-size: 1.75em;
 	display: inline;
 	vertical-align: bottom;
 }
