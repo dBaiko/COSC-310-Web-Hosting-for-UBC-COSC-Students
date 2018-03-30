@@ -95,9 +95,16 @@ caption{
 }
 #searchButton{
 	width: 2em;
+	border: none;
+	border-radius: 6px;
 	font-size: 1.75em;
 	display: inline;
 	vertical-align: bottom;
+	height: 1.6em;
+	padding-top:0.3em;
+}
+#searchButton:hover{
+	background-color:#b7d7e8;	
 }
 #reset{
 	border-radius: 6px;
@@ -111,5 +118,8 @@ caption{
 }
 footer{
 	margin-top: 2.5em;
+}
+#reset:hover{
+	background-color:#b7d7e8;
 }
 

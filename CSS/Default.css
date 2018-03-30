@@ -109,3 +109,9 @@ footer p{
 #copy{
 	color: white;
 }
+.footerlinks a:hover{
+	color:#b7d7e8;
+}
+.right a:hover{
+	color:#b7d7e8;
+}

@@ -182,7 +182,7 @@ class projectVeiwer{
                     $sql->bind_result($f, $n);
                     while($sql->fetch()){
                         ?>
-                        <object data="data:application/pdf;base64,<?php echo base64_encode($f) ?>" type="application/pdf"></object><a href = 'php/viewPdf.php?projectId=<?php echo $projectId?>&fileName=<?php echo $n?>' ><button>View</button></a> 
+                        <div class = 'pdf' ><object data="data:application/pdf;base64,<?php echo base64_encode($f) ?>" type="application/pdf"></object><a href = 'php/viewPdf.php?projectId=<?php echo $projectId?>&fileName=<?php echo $n?>' ><button class = 'view'>View</button></a></div> 
                         <?php
                     }
                     $sql->close();

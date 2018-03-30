@@ -43,28 +43,35 @@ if (isset($_SESSION['user'])) {
 			enctype="multipart/form-data">
 			<fieldset>
 				<legend> Create a Project </legend>
+				<div class = "background">
 				<p>
 					<label>Title: </label> <input type="text" name="title"
 						placeholder="Enter Project title" class="required" id="title" />
 				</p>
-
+				
 				<label>Description: </label>
 				<div id="description">
 					<textarea name="description" rows="15" cols="80" class="required"
 						id="desc"></textarea>
 				</div>
+				</div>
+				<div class = "background">
 				<p>
 					<label>Any other contributors?</label> <input type="checkbox"
 						id="moreC" onclick="addC()" />
 				</p>
 				<p id="contributors"></p>
+				</div>
+				<div class = "background">
 				<div>
 					<label>Logo Image (The main image or logo to be displayed with your
 						project):</label><br> <img id="logo" src="Images/default.png"
 						width="20%" /><br> <input type="file" accept=".png, .jpg, .jpeg"
 						onchange="previewFile(this)" name="logo" />
-					<button type="button" onclick="remove()">Remove</button>
+					<button type="button" onclick="remove()" style = "font-size: 1em">Remove</button>
 				</div>
+				</div>
+				<div class = "background">
 				<div id="pics">
 					<label>Images (PNG, JPG, JPEG):</label><br>
 					<div>
@@ -72,6 +79,8 @@ if (isset($_SESSION['user'])) {
 							onchange="addPicFile(this)" name="pics[]" class = "buttonstyle"/>
 					</div>
 				</div>
+				</div>
+				<div class = "background">
 				<div id="pdfs">
 					<label>Additional Documents (PDF only):</label>
 					<div>
@@ -80,9 +89,11 @@ if (isset($_SESSION['user'])) {
 					</div>
 				</div>
 				<p id="pdfPreview"></p>
+				</div>
+				<div class = "background">
 				<p>
 					<label>Project Links (GitHub, Youtube Demos etc.): </label> <input
-						type="text" name="link" placeholder="Project Links" class = "buttonstyle"/>
+						id = "link" type="text" name="link" placeholder="Project Links" class = "buttonstyle"/>
 				</p>
 				<p>
 					<label>Project Type:</label> <select name="projType"
@@ -103,9 +114,9 @@ if (isset($_SESSION['user'])) {
 						<option>Other</option>
 					</select>
 				</p>
-
+				</div>
 				<p id="center">
-					<input type="submit" value="Create" class = "buttonstyle" id = 'createnew'/>
+					<input type="submit" value="Create" class = "buttonstyle" id = 'createnew' />
 				</p>
 			</fieldset>
 		</form>
@@ -175,7 +186,7 @@ function addPdfFile(e){
 				$(e).next().next().attr("data", em.target.result);
 			}
 			else{
-				$(e).parent().append("<button type=\"button\" onclick=\"removePdf(this)\">X</button><object data=\""+em.target.result+"\"type=\"application/pdf\" style=\"height:50%;width:30%\"></object>");
+				$(e).parent().append("<button type=\"button\" onclick=\"removePdf(this)\">X</button><object data=\""+em.target.result+"\"type=\"application/pdf\" style=\"height:25em;width:30%\"></object>");
 				$("#pdfs").append("<div><input type=\"file\" accept=\".pdf\" onchange=\"addPdfFile(this)\" name=\"pdfs[]\"/></div>")
 			}
 			
@@ -229,7 +240,7 @@ function addPicFile(e){
 				$(e).next().next().attr("src", em.target.result);
 			}
 			else{
-				$(e).parent().append("<button type=\"button\" onclick=\"removePic(this)\">X</button><img src=\""+em.target.result+"\" style=\"width:30%;\" style=\"display:block;\"/>");
+				$(e).parent().append("<button type=\"button\" onclick=\"removePic(this)\" class='oldpics'>X</button><img src=\""+em.target.result+"\" style=\"width:20%;\" style=\"display:inline;\"/>");
 				$("#pics").append("<div><input type=\"file\" accept=\".png, .jpg, .jpeg\" onchange=\"addPicFile(this)\" name=\"pics[]\"/></div>")
 			}
 			
