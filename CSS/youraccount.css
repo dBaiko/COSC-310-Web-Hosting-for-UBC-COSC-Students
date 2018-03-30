@@ -59,3 +59,7 @@ input{
 	width: 20em;
 	font-size: 1em;
 }
+
+#blackFont{
+	color: black;
+}
