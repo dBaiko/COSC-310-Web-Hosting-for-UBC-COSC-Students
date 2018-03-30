@@ -268,7 +268,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){//to prevent code running during testing
     		}
     		if($isAuthor){
 		    ?>
-    		    <a href="editProject.php?projectId=<?php echo $id;?>"><button style="float: right;">Edit this project</button></a>
+    		    <a href="editProject.php?projectId=<?php echo $id;?>"><button style="float: right;" id = 'edit'>Edit this project</button></a>
     		    <?php
     		}
 		}
@@ -338,16 +338,16 @@ if(isset($_SERVER["REQUEST_METHOD"])){//to prevent code running during testing
 		<tr>
 	</table>
 </div>
-	<p id = "copyright"> Copyright &copy; 2018 <?php echo $projInfo['projectTitle']?>  </p>
+	<p id = "copy"> Copyright &copy; 2018 <?php echo $projInfo['projectTitle']?>  </p>
 </div>
 
 
 
 <footer>
 	<ul>
-		<li class = "footerlinks"> <a href = "Browse.php">Browse</a>
+		<li class = "footerlinks"> <a href = "Browse.php" id = 'browse'>Browse</a>
 	</ul>
-	<p> Copyright &copy; 2018 CSPub</p>
+	<p id = "copy"> Copyright &copy; 2018 CSPub</p>
 </footer>
 </body>
 </html>

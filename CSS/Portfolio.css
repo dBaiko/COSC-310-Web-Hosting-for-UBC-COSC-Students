@@ -28,12 +28,13 @@ body{
 	font-size: 80%;
 }
 #profileInfo td, #profileInfo th{
-	background-color: #F2F2F2;
+	background-color:#b7d7e8;
 	text-align: center;
 	border-color: #F2F2F2;
 	border-style: outset;
 	border-width: thin;
-	padding: 0.5em 2em 0.5em 2em;
+	padding: 0.5em 2em 0.5em 2em; 
+	border-radius: 6px;
 }
 
 #filters{
@@ -48,7 +49,7 @@ body{
 .project{
 	padding: 1em 1em 0em 1em;
 	width: 100%;
-	background-color: #F2F2F2;
+	background-color:#b7d7e8;	
 	margin-top: 1em;
 	border-left: 1.5px solid black;
 	border-right: 1.5px solid black;
@@ -61,7 +62,7 @@ body{
 	margin: 1em 1em 0em 2em;
 }
 caption{
-	background-color: #F2F2F2;
+	background-color:#b7d7e8;
 	border-left: 1.5px solid black;
 	border-right: 1.5px solid black;
 	border-top: 1.5px solid black;

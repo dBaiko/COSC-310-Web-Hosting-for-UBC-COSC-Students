@@ -6,6 +6,7 @@ body{
 	background-color: rgb(46, 108, 209);	
 	padding: 1em;
 	margin: 1em;
+	color: white;
 }
 #create{
 	border-color: black;
@@ -28,7 +29,7 @@ input[name="title"] {
 	border: 1px solid black;
 }
 textarea[name="description"] {
-	width: 53.5%;
+	width: 55%;
 	border: 1px solid black;
 }
 input[name="contributors"] {
@@ -58,7 +59,7 @@ footer{
 	bottom: 0;
 	width: 100%;
 	clear: both;
-	margin-top: 10.6em;
+	margin-top: 2em;
 }
 input[name="copyright"] {
 	width: 20%;
@@ -103,5 +104,27 @@ input[name="copyright"] {
 	margin-top: 2em;
 	display: block;
 }
-
+input{
+	font-size: 1.3em;
+}
+button{
+	font-size: 1em;
+	border-radius: 6px;
+	margin: 0.1em;
+}
+#createnew{
+	font-size: 2em;
+	border-radius: 6px;
+	margin: 0.1em;
+}
+#createnew:hover{
+	background-color:#b7d7e8;	
+}
+input{
+	margin: 0.2em;
+}
+select{
+	font-size:1em;
+}
+	
 >>>>>>> refs/remotes/origin/development
