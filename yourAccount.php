@@ -179,6 +179,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){
 	       "Updated successfully" messages when the user clicks any of the buttons. So keep that in mind when figuring out
 	       spacing and what not.
 	 -->
+	 <div id="background">
 	<fieldset>
 		<legend>Account Info For User: <span id="user"><?php echo $basic['userName']?></span></legend>
 		
@@ -274,7 +275,14 @@ if(isset($_SERVER["REQUEST_METHOD"])){
 		?>
 	
 	</fieldset>
+	</div>
 	</body>
+	<footer>
+		<ul>
+			<li class="footerlinks"><a href="Browse.php">Browse</a></li>
+		</ul>
+		<p id = "copy">Copyright &copy; 2018 CSPub</p>
+	</footer>
 	<script type="text/javascript">
 
 	$("#delete").on("submit",function(e){

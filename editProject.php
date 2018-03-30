@@ -149,7 +149,7 @@ class projectInfo{
                     while($sql->fetch()){
                         ?>
                         <button type="button" onclick="removeOrigonal(this)">X</button>
-                        <img src = 'data:image/png;base64,<?php echo  base64_encode($f)?>' alt = 'Project Image'  style="width: 30%; display: block;"/>
+                        <img src = 'data:image/png;base64,<?php echo  base64_encode($f)?>' alt = 'Project Image'  style="width: 20%; display: block;"/>
                         <input type="hidden" name="hiddenFileNames[]" value="<?php echo $n;?>"/>
                         <?php
                     }
@@ -306,7 +306,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){
     					</p>
     					<div>
     						<label>Logo Image (The main image or logo to be displayed with your project):</label><br>
-    						<img src = 'data:image/png;base64,<?php echo  base64_encode($projInfo['logoImage'])?>' alt = 'Project Image' id="logo" width="25%"/><br>
+    						<img src = 'data:image/png;base64,<?php echo  base64_encode($projInfo['logoImage'])?>' alt = 'Project Image' id="logo" width="20%"/><br>
     						<input type="file" accept=".png, .jpg, .jpeg" onchange="previewFile(this)" name="logo" />
     						<button  type="button" onclick="remove(this)">Remove</button>
     					</div>
@@ -450,7 +450,7 @@ function addPdfFile(e){
 				$(e).next().next().attr("data", em.target.result);
 			}
 			else{
-				$(e).parent().append("<button type=\"button\" onclick=\"removePdf(this)\">X</button><object data=\""+em.target.result+"\"type=\"application/pdf\" style=\"height:50%;width:30%\"></object>");
+				$(e).parent().append("<button type=\"button\" onclick=\"removePdf(this)\">X</button><object data=\""+em.target.result+"\"type=\"application/pdf\" style=\"height:25em;width:30%\"></object>");
 				$("#pdfs").append("<div><input type=\"file\" accept=\".pdf\" onchange=\"addPdfFile(this)\" name=\"pdfs[]\"/></div>")
 			}
 			
@@ -504,7 +504,7 @@ function addPicFile(e){
 				$(e).next().next().attr("src", em.target.result);
 			}
 			else{
-				$(e).parent().append("<button type=\"button\" onclick=\"removePic(this)\">X</button><img src=\""+em.target.result+"\" style=\"width:30%;\" style=\"display:block;\"/>");
+				$(e).parent().append("<button type=\"button\" onclick=\"removePic(this)\">X</button><img src=\""+em.target.result+"\" style=\"width:20%;\" style=\"display:block;\"/>");
 				$("#pics").append("<div><input type=\"file\" accept=\".png, .jpg, .jpeg\" onchange=\"addPicFile(this)\" name=\"pics[]\"/></div>")
 			}
 			

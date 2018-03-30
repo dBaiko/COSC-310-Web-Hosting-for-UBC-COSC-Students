@@ -61,7 +61,7 @@ if (isset($_SESSION['user'])) {
 				<div>
 					<label>Logo Image (The main image or logo to be displayed with your
 						project):</label><br> <img id="logo" src="Images/default.png"
-						width="25%" /><br> <input type="file" accept=".png, .jpg, .jpeg"
+						width="20%" /><br> <input type="file" accept=".png, .jpg, .jpeg"
 						onchange="previewFile(this)" name="logo" />
 					<button type="button" onclick="remove()">Remove</button>
 				</div>
@@ -69,20 +69,20 @@ if (isset($_SESSION['user'])) {
 					<label>Images (PNG, JPG, JPEG):</label><br>
 					<div>
 						<input type="file" accept=".png, .jpg, .jpeg"
-							onchange="addPicFile(this)" name="pics[]" />
+							onchange="addPicFile(this)" name="pics[]" class = "buttonstyle"/>
 					</div>
 				</div>
 				<div id="pdfs">
 					<label>Additional Documents (PDF only):</label>
 					<div>
 						<input type="file" accept=".pdf" onchange="addPdfFile(this)"
-							name="pdfs[]" />
+							name="pdfs[]" class = "buttonstyle"/>
 					</div>
 				</div>
 				<p id="pdfPreview"></p>
 				<p>
 					<label>Project Links (GitHub, Youtube Demos etc.): </label> <input
-						type="text" name="link" placeholder="Project Links" />
+						type="text" name="link" placeholder="Project Links" class = "buttonstyle"/>
 				</p>
 				<p>
 					<label>Project Type:</label> <select name="projType"
@@ -105,7 +105,7 @@ if (isset($_SESSION['user'])) {
 				</p>
 
 				<p id="center">
-					<input type="submit" value="Create" />
+					<input type="submit" value="Create" class = "buttonstyle" id = 'createnew'/>
 				</p>
 			</fieldset>
 		</form>
@@ -115,7 +115,7 @@ if (isset($_SESSION['user'])) {
 		<ul>
 			<li class="footerlinks"><a href="Browse.php">Browse</a></li>
 		</ul>
-		<p>Copyright &copy; 2018 CSPub</p>
+		<p id = "copy">Copyright &copy; 2018 CSPub</p>
 	</footer>
 </body>
 <script>
