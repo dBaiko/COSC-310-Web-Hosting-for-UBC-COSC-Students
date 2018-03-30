@@ -198,7 +198,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){
 		
 		<div>
 			<label>Email: </label>
-			<input  type="text" name="email"  value="<?php echo $basic['email'];?>">
+			<input  type="email" name="email"  value="<?php echo $basic['email'];?>">
 			<button class="changeButton2" onclick="update(this)">Change Email</button><span></span><br>
 		</div>	
 		</div>
@@ -290,7 +290,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){
         });
 
 	function deleteAccount(e){
-		$(e).after("<label>Are you sure?</label>");
+		$(e).after("<label id='blackFont'>Are you sure?</label>");
 		$(e).next().after("<button class \"changeButton\" onclick=\"yesDelete(this)\">Yes</button>");
 		$(e).next().next().after("<button class \"changeButton\" onclick=\"noDelete(this)\">No</button>");
 	}
