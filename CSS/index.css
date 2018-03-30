@@ -78,3 +78,7 @@ h1{
 	border-color:rgb(46, 108, 209);
 	color: white;
 }
+
+.button:hover{
+	color: red !important;
+}
