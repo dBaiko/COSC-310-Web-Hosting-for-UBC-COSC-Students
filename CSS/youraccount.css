@@ -63,3 +63,7 @@ input{
 #blackFont{
 	color: black;
 }
+button:hover{
+	background-color:#b7d7e8;
+	color:white;
+}
