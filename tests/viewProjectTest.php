@@ -1,5 +1,5 @@
 <?php
-protected function selectTestData($id){
+/* protected function selectTestData($id){
     $this->getConnection();
     $stm = "SELECT * FROM Project WHERE projectId = ?";
     if($sql = $this->conn->prepare($stm)){
@@ -20,4 +20,4 @@ protected function selectTestData($id){
         $error = $this->conn->errno . ' ' . $this->conn->error;
         die($error);
     }
-}
+} */

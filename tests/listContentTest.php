@@ -25,8 +25,6 @@ class listContentTest extends TestCase{
         parent::__construct();
         $this->contentGetter = new listContent();
         $this->project = new newProject();
-        $this->project->setUserName("TEST USER");
-        echo $this->project->userName;
     }
     
     
@@ -39,22 +37,30 @@ class listContentTest extends TestCase{
         return $this->conn;
     }
     
-    protected function selectTestData($id){
-        $this->getConnection();
-        $stm = "SELECT * FROM Project WHERE projectId = ?";
+    protected function getLastId(){
+        $stm = "SELECT `AUTO_INCREMENT` FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'cswebhosting' AND   TABLE_NAME   = 'Project'";
         if($sql = $this->conn->prepare($stm)){
-            $sql->bind_param($id);
+            $sql->execute();
+            $sql->bind_result($u);
+            $sql->fetch();
+            $sql->close();
+            return $u;
+        }
+    }
+    
+    protected function selectTestData(){
+        $this->getConnection();
+        $stm = "SELECT projectId FROM Project";
+        if($sql = $this->conn->prepare($stm)){
             if($sql->execute()){
-                $pid = $title = $desc =  $url = $date = $type = $logo = $author = null;
-                $sql->bind_param($pid,$title,$desc,$url,$date,$type,$logo,$author);
-                if($sql->fetch()){
-                    $result = array("projectId"=>$pid,"projectTitle"=>$title, "projDesc"=>$desc, "demoUrl"=>$url, "date"=>$date, "projType"=>$type, "logoImage"=>$logo, "author"=>$author);
-                    $sql->close();
-                    return $result;
+                $pid  = null;
+                $sql->bind_result($pid);
+                $result =array();
+                while($sql->fetch()){
+                    array_push($result, $pid);
                 }
-                else{
-                    return null;
-                }
+                $sql->close();
+                return $result;
             }
         }else {
             $error = $this->conn->errno . ' ' . $this->conn->error;
@@ -112,4 +118,255 @@ class listContentTest extends TestCase{
         $this->assertNotNull($this->conn);
         $this->conn->close();
     }
+    
+    public function testGetLastId(){
+        $this->getConnection();
+        $expected = "";
+        $stm = "SELECT `AUTO_INCREMENT` FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'cswebhosting' AND   TABLE_NAME   = 'Project'";
+        if($sql = $this->conn->prepare($stm)){
+            $sql->execute();
+            $sql->bind_result($u);
+            $sql->fetch();
+            $sql->close();
+            $expected = $u;
+        }
+        $actual = $this->getLastId();
+        $this->assertEquals($expected, $actual);
+        $this->conn->close();
+    }
+    
+    public function testSelectTestData(){
+        $this->getConnection();
+        $user = $author = "dillyjb";
+        $n = null;
+        $t = "test";
+        
+        $insertId = $this->project->createNewProject($user, $t, $t, $t, $n, $n, $n, $n, $n, $n, $n, $author);
+        $includesId = false;
+        
+        $ids = $this->selectTestData();
+        
+        foreach ($ids as $id){
+            if($id == $insertId)
+                $includesId = true;
+        }
+        
+        $this->assertTrue($includesId);
+        $this->conn->close();
+        $this->project = null;
+    }
+    
+    public function testDeleteTestData(){
+        $this->getConnection();
+        $this->assertTrue($this->deleteTestData($this->getLastId()-1));
+        $this->conn->close();
+    }
+    
+    //Testing class methods
+    public function testQueryAll(){
+        $this->getConnection();
+        
+        $user = $author = "dillyjb";
+        $n = null;
+        $t = "test";
+        
+        $insertId = $this->project->createNewProject($user, $t, $t, $t, $n, $n, $n, $n, $n, $n, $n, $author);
+        $includesId = false;
+        
+        
+        $actualResult = $this->contentGetter->query_all();
+        while($row = mysqli_fetch_array($actualResult)){
+            if($row['projectId'] == $insertId)
+                $includesId = true;
+        }
+        
+        $this->assertTrue($includesId);
+        $this->deleteTestData($insertId);
+        $this->conn->close();
+        
+        
+    }
+    
+    public function testSortedQueryTypes_Basic(){
+        $this->getConnection();
+        
+        $user = $author = "dillyjb";
+        $n = null;
+        $t = "test";
+        $type = "Games";
+        
+        $insertId = $this->project->createNewProject($user, $t, $t, $type, $n, $n, $n, $n, $n, $n, $n, $author);
+        $includesId = false;
+        
+        
+        
+        $actualResult = $this->contentGetter->sortedQuery_types($type);
+        while($row = mysqli_fetch_array($actualResult)){
+            if($row['projectId'] == $insertId)
+                $includesId = true;
+        }
+        
+        $this->assertTrue($includesId);
+        $this->deleteTestData($insertId);
+        $this->conn->close();
+        
+        
+    }
+    
+    public function testSortedQueryTypes_EmptyStringForType(){
+        $this->getConnection();
+        
+        $user = $author = "dillyjb";
+        $n = null;
+        $t = "test";
+        $type = "";
+        
+        $insertId = $this->project->createNewProject($user, $t, $t, $type, $n, $n, $n, $n, $n, $n, $n, $author);
+        $includesId = false;
+        
+        
+        
+        $actualResult = $this->contentGetter->sortedQuery_types($type);
+        while($row = mysqli_fetch_array($actualResult)){
+            if($row['projectId'] == $insertId)
+                $includesId = true;
+        }
+        
+        $this->assertFalse($includesId);
+        $this->deleteTestData($insertId);
+        $this->conn->close();
+        
+        
+    }
+    
+    public function testSortedQueryTypes_NullForType(){
+        $this->getConnection();
+        
+        $user = $author = "dillyjb";
+        $n = null;
+        $t = "test";
+        $type = "";
+        
+        $insertId = $this->project->createNewProject($user, $t, $t, $type, $n, $n, $n, $n, $n, $n, $n, $author);
+        $includesId = false;
+        
+        
+        
+        $actualResult = $this->contentGetter->sortedQuery_types($type);
+        while($row = mysqli_fetch_array($actualResult)){
+            if($row['projectId'] == $insertId)
+                $includesId = true;
+        }
+        
+        $this->assertFalse($includesId);
+        $this->deleteTestData($insertId);
+        $this->conn->close();
+        
+        
+    }
+    
+    public function testSortedQueryTypes_TypeNotSame(){
+        $this->getConnection();
+        
+        $user = $author = "dillyjb";
+        $n = null;
+        $t = "test";
+        $type = "Games";
+        
+        $insertId = $this->project->createNewProject($user, $t, $t, $type, $n, $n, $n, $n, $n, $n, $n, $author);
+        $includesId = false;
+        
+        
+        
+        $actualResult = $this->contentGetter->sortedQuery_types("Data Science");
+        while($row = mysqli_fetch_array($actualResult)){
+            if($row['projectId'] == $insertId)
+                $includesId = true;
+        }
+        
+        $this->assertFalse($includesId);
+        $this->deleteTestData($insertId);
+        $this->conn->close();
+        
+        
+    }
+    
+    public function testSortedQuerySearch_Basic(){
+        $this->getConnection();
+        
+        $user = $author = "dillyjb";
+        $n = null;
+        $t = "test";
+        $search = "TEST";
+        
+        $insertId = $this->project->createNewProject($user, $search, $t, $t, $n, $n, $n, $n, $n, $n, $n, $author);
+        $includesId = false;
+        
+        
+        
+        $actualResult = $this->contentGetter->sortedQuery_search($search);
+        while($row = mysqli_fetch_array($actualResult)){
+            if($row['projectId'] == $insertId)
+                $includesId = true;
+        }
+        
+        $this->assertTrue($includesId);
+        $this->deleteTestData($insertId);
+        $this->conn->close();
+        
+        
+    }
+    
+    public function testSortedQuerySearch_OneCharacter(){
+        $this->getConnection();
+        
+        $user = $author = "dillyjb";
+        $n = null;
+        $t = "test";
+        $search = "TEST";
+        
+        $insertId = $this->project->createNewProject($user, $search, $t, $t, $n, $n, $n, $n, $n, $n, $n, $author);
+        $includesId = false;
+        
+        $actualResult = $this->contentGetter->sortedQuery_search("t");
+        while($row = mysqli_fetch_array($actualResult)){
+            if($row['projectId'] == $insertId)
+                $includesId = true;
+        }
+        
+        $this->assertTrue($includesId);
+        $this->deleteTestData($insertId);
+        $this->conn->close();
+        
+        
+    }
+    
+    
+    public function testSortedQuerySearch_MoreCharacters(){
+        $this->getConnection();
+        
+        $user = $author = "dillyjb";
+        $n = null;
+        $t = "test";
+        $search = "TEST";
+        
+        $insertId = $this->project->createNewProject($user, $search, $t, $t, $n, $n, $n, $n, $n, $n, $n, $author);
+        $includesId = false;
+        
+        $actualResult = $this->contentGetter->sortedQuery_search("TEST_EXTRA_CHARS");
+        while($row = mysqli_fetch_array($actualResult)){
+            if($row['projectId'] == $insertId)
+                $includesId = true;
+        }
+        
+        $this->assertFalse($includesId);
+        $this->deleteTestData($insertId);
+        $this->conn->close();
+        
+        
+    }
+    
+    
+    
+    
 }

@@ -125,6 +125,7 @@ class newProject
                         return $id;
                     }
                 }
+                return $id;
             } else {
                 return false;
             }
