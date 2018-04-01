@@ -4,7 +4,7 @@
 
 use PHPUnit\Framework\TestCase;
 
-require __DIR__ . '/../php/newProject.php';
+require_once __DIR__ . '/../php/newProjectClass.php';
 
 class newProjectTest extends TestCase{
     private $db_host = 'localhost';
@@ -217,7 +217,7 @@ class newProjectTest extends TestCase{
         $t = "test";
         $n = null;
         
-        $this->newProjectCreator->createNewProject($user, $t, $t, $t, $n, $n, $n, $n, $n, $n);
+        $this->newProjectCreator->createNewProject($user, $t, $t, $t, $n, $n, $n, $n, $n, $n,$n,$user);
         
         $proj = false;
         $pub = false;
