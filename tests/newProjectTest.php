@@ -4,7 +4,7 @@
 
 use PHPUnit\Framework\TestCase;
 
-require __DIR__ . '/../php/newProjectClass.php';
+require_once __DIR__ . '/../php/newProjectClass.php';
 
 class newProjectTest extends TestCase{
     private $db_host = 'localhost';
