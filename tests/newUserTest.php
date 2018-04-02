@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 
-require __DIR__ . '/../php/newUser.php';
+require_once __DIR__ . '/../php/newUser.php';
 
 class newUserTest extends TestCase{
     
