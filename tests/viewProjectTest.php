@@ -164,7 +164,7 @@ class viewProjectTest extends TestCase{
         $this->conn->close();
     }
     
-    
+    //Tests for test class
     public function testGetProjectInfo_Basic(){
         $this->getConnection();
         $user = $author = "dillyjb";
@@ -194,6 +194,17 @@ class viewProjectTest extends TestCase{
         $this->getConnection();
         $null = null;
         $result = $this->projViewer->getProjectInfo($null);
+        
+        $this->assertNull($result);
+        
+        $this->conn->close();
+        $this->project = null;
+    }
+    
+    public function testGetProjectInfo_Invalid(){
+        $this->getConnection();
+        $id = -1;
+        $result = $this->projViewer->getProjectInfo($id);
         
         $this->assertNull($result);
         
