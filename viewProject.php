@@ -54,16 +54,20 @@ class projectVeiwer{
     public function getProjectInfo($projectId){
         if($this->conn != null){
            
-            $stm = "SELECT projectTitle, projDesc, demoUrl, date, projType, logoImage FROM Project WHERE projectId = ?";
+            $stm = "SELECT projectId, projectTitle, projDesc, demoUrl, date, projType, logoImage, author FROM Project WHERE projectId = ?";
             if($sql = $this->conn->prepare($stm)){
                 $sql->bind_param("s", $projectId);
                 if($sql->execute()){
-                    $title = $desc =  $demoUrl = $date = $type = $logo = null;
-                    $sql->bind_result($title, $desc, $demoUrl, $date, $type, $logo);
-                    $sql->fetch();
-                    $resultSet = array("projectTitle"=>$title, "projDesc"=>$desc, "demoUrl"=>$demoUrl, "date"=>$date, "projType"=>$type, "logoImage"=>$logo);
-                    $sql->close();
-                    return $resultSet;
+                    $pid = $title = $desc =  $demoUrl = $date = $type = $logo = $author = null;
+                    $sql->bind_result($pid,$title, $desc, $demoUrl, $date, $type, $logo,$author);
+                    if($sql->fetch()){
+                        $resultSet = array("projectId"=>$pid, "projectTitle"=>$title, "projDesc"=>$desc, "demoUrl"=>$demoUrl, "date"=>$date, "projType"=>$type, "logoImage"=>$logo, "author"=>$author);
+                        $sql->close();
+                        return $resultSet;
+                    }
+                    else{
+                        return null;
+                    }
                 }else {
                     $error = $this->conn->errno . ' ' . $this->conn->error;
                     echo $error;
