@@ -214,10 +214,10 @@ class deleteAccountTest extends TestCase{
         
         $this->deleter->deleteAccount($userName);
         
-        $resultS = $this->selectTestData("student", $userName);
+        $resultP = $this->selectTestData("prof", $userName);
         $resultU = $this->selectTestData("user", $userName);
         
-        $this->assertTrue($resultS == null && $resultU == null);
+        $this->assertTrue($resultP == null && $resultU == null);
         
         $this->conn->close();
         $this->user = null;
