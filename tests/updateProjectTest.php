@@ -7,9 +7,9 @@ use PHPUnit\Framework\TestCase;
 require_once __DIR__ . '/../php/newProjectClass.php';
 
 
-require __DIR__ . '/../viewProject.php';
+require_once __DIR__ . '/../php/updateProject.php';
 
-class viewProjectTest extends TestCase{
+class updateProjectTest extends TestCase{
     private $db_host = 'localhost';
     private $db_name = 'cswebhosting';
     private $db_user = 'cswebhosting';
@@ -19,11 +19,11 @@ class viewProjectTest extends TestCase{
     
     protected $project;
     
-    protected $projViewer;
+    protected $updater;
     
     public function __construct() {
         parent::__construct();
-        $this->projViewer = new projectVeiwer();
+        $this->updater = new projectUpdater();
         $this->project = new newProject();
     }
     
@@ -164,9 +164,10 @@ class viewProjectTest extends TestCase{
         $this->conn->close();
     }
     
-    //Tests for test class
-    public function testGetProjectInfo_Basic(){
+    //Tests for updateProject.php
+    public function testGetAuthor(){
         $this->getConnection();
+        
         $user = $author = "dillyjb";
         $n = null;
         $title = "title";
@@ -177,40 +178,50 @@ class viewProjectTest extends TestCase{
         $logo = null;
         $insertId = $this->project->createNewProject($user, $title, $desc, $type, $link, $n, $n, $n, $n, $n, $date, $author);
         
+        $expected = "dillyjb";
         
-        $expected = array("projectId"=>$insertId,"projectTitle"=>$title, "projDesc"=>$desc, "demoUrl"=>$link, "projType"=>$type, "logoImage"=>$logo, "author"=>$author);
-        
-        $actual = $this->projViewer->getProjectInfo($insertId);
-        unset($actual['date']);
+        $actual = $this->updater->getAuthor($insertId);
         
         $this->assertEquals($expected,$actual);
         
         $this->deleteTestData($insertId);
+        
         $this->conn->close();
-        $this->project = null;
     }
     
-    public function testGetProjectInfo_Null(){
+    public function testBuildContribArray(){
         $this->getConnection();
-        $null = null;
-        $result = $this->projViewer->getProjectInfo($null);
+        
+        $contribs = array("Kanu","noman123");
+        
+        $expected = array("Kanu","noman123");
+        $actual = $this->updater->buildOldContribArray($contribs);
+        
+        $this->assertEquals($expected,$actual);
+        
+        $this->conn->close();
+    }
+    
+    public function testDeleteProject(){
+        $this->getConnection();
+        
+        $user = $author = "dillyjb";
+        $n = null;
+        $title = "title";
+        $desc = "desc";
+        $type = "type";
+        $link = "link";
+        $date = null;
+        $logo = null;
+        $insertId = $this->project->createNewProject($user, $title, $desc, $type, $link, $n, $n, $n, $n, $n, $date, $author);
+        
+        $this->updater->deleteProject($insertId);
+        
+        $result = $this->selectTestData($insertId);
         
         $this->assertNull($result);
         
         $this->conn->close();
-        $this->project = null;
-    }
-    
-    public function testGetProjectInfo_Invalid(){
-        $this->getConnection();
-        $id = -1;
-        $result = $this->projViewer->getProjectInfo($id);
-        
-        $this->assertNull($result);
-        
-        $this->conn->close();
-        $this->project = null;
     }
     
 }
-
