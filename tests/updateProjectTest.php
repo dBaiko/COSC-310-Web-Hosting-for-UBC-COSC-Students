@@ -163,4 +163,65 @@ class updateProjectTest extends TestCase{
         $this->assertTrue($this->deleteTestData($this->getLastId()-1));
         $this->conn->close();
     }
+    
+    //Tests for updateProject.php
+    public function testGetAuthor(){
+        $this->getConnection();
+        
+        $user = $author = "dillyjb";
+        $n = null;
+        $title = "title";
+        $desc = "desc";
+        $type = "type";
+        $link = "link";
+        $date = null;
+        $logo = null;
+        $insertId = $this->project->createNewProject($user, $title, $desc, $type, $link, $n, $n, $n, $n, $n, $date, $author);
+        
+        $expected = "dillyjb";
+        
+        $actual = $this->updater->getAuthor($insertId);
+        
+        $this->assertEquals($expected,$actual);
+        
+        $this->deleteTestData($insertId);
+        
+        $this->conn->close();
+    }
+    
+    public function testBuildContribArray(){
+        $this->getConnection();
+        
+        $contribs = array("Kanu","noman123");
+        
+        $expected = array("Kanu","noman123");
+        $actual = $this->updater->buildOldContribArray($contribs);
+        
+        $this->assertEquals($expected,$actual);
+        
+        $this->conn->close();
+    }
+    
+    public function testDeleteProject(){
+        $this->getConnection();
+        
+        $user = $author = "dillyjb";
+        $n = null;
+        $title = "title";
+        $desc = "desc";
+        $type = "type";
+        $link = "link";
+        $date = null;
+        $logo = null;
+        $insertId = $this->project->createNewProject($user, $title, $desc, $type, $link, $n, $n, $n, $n, $n, $date, $author);
+        
+        $this->updater->deleteProject($insertId);
+        
+        $result = $this->selectTestData($insertId);
+        
+        $this->assertNull($result);
+        
+        $this->conn->close();
+    }
+    
 }
