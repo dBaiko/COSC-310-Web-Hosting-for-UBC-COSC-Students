@@ -6,7 +6,10 @@ use PHPUnit\Framework\TestCase;
 
 require_once __DIR__ . '/../php/newProjectClass.php';
 
-class newProjectTest extends TestCase{
+
+require __DIR__ . '/../viewProject.php';
+
+class viewProjectTest extends TestCase{
     private $db_host = 'localhost';
     private $db_name = 'cswebhosting';
     private $db_user = 'cswebhosting';
@@ -14,11 +17,14 @@ class newProjectTest extends TestCase{
     private $db = null;
     private $conn = null;
     
-    protected $newProjectCreator;
-   
+    protected $project;
+    
+    protected $projViewer;
+    
     public function __construct() {
         parent::__construct();
-        $this->newProjectCreator = new newProject();
+        $this->projViewer = new projectVeiwer();
+        $this->project = new newProject();
     }
     
     
@@ -42,82 +48,27 @@ class newProjectTest extends TestCase{
         }
     }
     
-    protected function insertTestData(){
+    protected function selectTestData($id){
         $this->getConnection();
-        $stm = "INSERT INTO Project (projectTitle, projDesc, projType) VALUES (?,?,?)";
+        $stm = "SELECT * FROM Project WHERE projectId = ?";
         if($sql = $this->conn->prepare($stm)){
-            $title = "testProj";
-            $desc = "testDesc";
-            $type = "testType";
-            $sql->bind_param("sss", $title,$desc,$type);
+            $sql->bind_param("s",$id);
             if($sql->execute()){
-                $id = mysqli_insert_id($this->conn);
-                return $id;
-            }
-            else{
-                return null;
-            }
-        }
-        else{
-            return null;
-        }
-    }
-    
-    protected function selectTestData($type, $id) {
-        $this->getConnection();
-        $id = strval($id);
-        if($type == "project"){
-            $stm = "SELECT projectId FROM Project WHERE projectId = ?";
-            if($sql = $this->conn->prepare($stm)){
-                $sql->bind_param("s",$id);
-                if($sql->execute()){
-                    $sql->bind_result($u);
-                    $sql->fetch();
-                    if($u){
-                        return $u;
-                    }
-                    else{
-                        return null;
-                    }
-                    
+                $pid = $title = $desc =  $url = $date = $type = $logo = $author = null;
+                $sql->bind_result($pid,$title,$desc,$url,$date,$type,$logo,$author);
+                if($sql->fetch()){
+                    $result = array("projectId"=>$pid,"projectTitle"=>$title, "projDesc"=>$desc, "demoUrl"=>$url, "date"=>$date, "projType"=>$type, "logoImage"=>$logo, "author"=>$author);
+                    $sql->close();
+                    return $result;
+                }
+                else{
+                    return null;
                 }
             }
+        }else {
+            $error = $this->conn->errno . ' ' . $this->conn->error;
+            die($error);
         }
-        else if($type == "published"){
-            $stm = "SELECT projectId FROM Published WHERE projectId = ?";
-            if($sql = $this->conn->prepare($stm)){
-                $sql->bind_param("s",$id);
-                if($sql->execute()){
-                    $sql->bind_result($u);
-                    $sql->fetch();
-                    if($u){
-                        return $u;
-                    }
-                    else{
-                        return null;
-                    }
-                    
-                }
-            }
-        }
-        else if($type == "files"){
-            $stm = "SELECT projectId FROM Files WHERE projectId = ?";
-            if($sql = $this->conn->prepare($stm)){
-                $sql->bind_param("s",$id);
-                if($sql->execute()){
-                    $sql->bind_result($u);
-                    $sql->fetch();
-                    if($u){
-                        return $u;
-                    }
-                    else{
-                        return null;
-                    }
-                    
-                }
-            }
-        }
-        
     }
     
     protected function deleteTestData($id){
@@ -187,18 +138,24 @@ class newProjectTest extends TestCase{
         $this->conn->close();
     }
     
-    public function testInsertTestData(){
-        $this->getConnection();
-        $this->assertNotNull($this->insertTestData());
-        $this->conn->close();
-    }
-    
     public function testSelectTestData(){
         $this->getConnection();
-        $expected = $this->getLastId()-1;
-        $actual = $this->selectTestData("project",$this->getLastId()-1);
-        $this->assertEquals($expected, $actual);
+        $user = $author = "dillyjb";
+        $n = null;
+        $title = "title";
+        $desc = "desc";
+        $type = "type";
+        $link = "link";
+        $date = null;
+        
+        $insertId = $this->project->createNewProject($user, $title, $desc, $type, $link, $n, $n, $n, $n, $n, $date, $author);
+        
+        $result = $this->selectTestData($insertId);
+        
+        $this->assertTrue($result['projectId'] == $insertId && $result['projectTitle'] == "title" && $result['projDesc'] == 'desc' && $result['demoUrl'] = "link" && $result['projType'] == "type");
+        
         $this->conn->close();
+        $this->project = null;
     }
     
     public function testDeleteTestData(){
@@ -207,32 +164,53 @@ class newProjectTest extends TestCase{
         $this->conn->close();
     }
     
-    public function testInsertNewProjectBasic(){
+    //Tests for test class
+    public function testGetProjectInfo_Basic(){
         $this->getConnection();
-        $id = $this->getLastId();
-        $id = (int)$id;
-        $expected = $id;
-        
-        $user = "dillyjb";
-        $t = "test";
+        $user = $author = "dillyjb";
         $n = null;
+        $title = "title";
+        $desc = "desc";
+        $type = "type";
+        $link = "link";
+        $date = null;
+        $logo = null;
+        $insertId = $this->project->createNewProject($user, $title, $desc, $type, $link, $n, $n, $n, $n, $n, $date, $author);
         
-        $this->newProjectCreator->createNewProject($user, $t, $t, $t, $n, $n, $n, $n, $n, $n,$n,$user);
         
-        $proj = false;
-        $pub = false;
-        if($this->selectTestData("published", $id) == $expected){
-            $pub = true;
-        }
-        if($this->selectTestData("project", $id) == $expected){
-            $proj = true;
-        }
-        $this->deleteTestData($id);
-        $this->assertTrue($proj && $pub);
+        $expected = array("projectId"=>$insertId,"projectTitle"=>$title, "projDesc"=>$desc, "demoUrl"=>$link, "projType"=>$type, "logoImage"=>$logo, "author"=>$author);
+        
+        $actual = $this->projViewer->getProjectInfo($insertId);
+        unset($actual['date']);
+        
+        $this->assertEquals($expected,$actual);
+        
+        $this->deleteTestData($insertId);
         $this->conn->close();
-        $this->newProjectCreator = null;
+        $this->project = null;
     }
     
+    public function testGetProjectInfo_Null(){
+        $this->getConnection();
+        $null = null;
+        $result = $this->projViewer->getProjectInfo($null);
+        
+        $this->assertNull($result);
+        
+        $this->conn->close();
+        $this->project = null;
+    }
     
+    public function testGetProjectInfo_Invalid(){
+        $this->getConnection();
+        $id = -1;
+        $result = $this->projViewer->getProjectInfo($id);
+        
+        $this->assertNull($result);
+        
+        $this->conn->close();
+        $this->project = null;
+    }
     
 }
+

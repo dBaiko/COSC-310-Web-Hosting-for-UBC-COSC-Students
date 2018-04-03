@@ -197,7 +197,7 @@ if (isset($_SESSION['user'])) {
 			<li class="footerlinks"><a href="Browse.php">Browse</a>
 		
 		</ul>
-		<p>Copyright &copy; 2018 CSPub</p>
+		<p id = 'copy'>Copyright &copy; 2018 CSPub</p>
 	</footer>
 </body>
 </html>

@@ -179,6 +179,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){
 	       "Updated successfully" messages when the user clicks any of the buttons. So keep that in mind when figuring out
 	       spacing and what not.
 	 -->
+	 <div id="background">
 	<fieldset>
 		<legend>Account Info For User: <span id="user"><?php echo $basic['userName']?></span></legend>
 		
@@ -197,7 +198,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){
 		
 		<div>
 			<label>Email: </label>
-			<input  type="text" name="email"  value="<?php echo $basic['email'];?>">
+			<input  type="email" name="email"  value="<?php echo $basic['email'];?>">
 			<button class="changeButton2" onclick="update(this)">Change Email</button><span></span><br>
 		</div>	
 		</div>
@@ -274,7 +275,14 @@ if(isset($_SERVER["REQUEST_METHOD"])){
 		?>
 	
 	</fieldset>
+	</div>
 	</body>
+	<footer>
+		<ul>
+			<li class="footerlinks"><a href="Browse.php">Browse</a></li>
+		</ul>
+		<p id = "copy">Copyright &copy; 2018 CSPub</p>
+	</footer>
 	<script type="text/javascript">
 
 	$("#delete").on("submit",function(e){
@@ -282,7 +290,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){
         });
 
 	function deleteAccount(e){
-		$(e).after("<label>Are you sure?</label>");
+		$(e).after("<label id='blackFont'>Are you sure?</label>");
 		$(e).next().after("<button class \"changeButton\" onclick=\"yesDelete(this)\">Yes</button>");
 		$(e).next().next().after("<button class \"changeButton\" onclick=\"noDelete(this)\">No</button>");
 	}

@@ -43,3 +43,14 @@ footer{
 	margin-top: auto;
 }
 
+#main a {
+	color: #b7d7e8;
+}
+#main a:hover{
+	color: #87bdd8;
+}
+#sub:hover{
+	background-color: #b7d7e8;
+	border-color: #b7d7e8;
+	color: black;
+}

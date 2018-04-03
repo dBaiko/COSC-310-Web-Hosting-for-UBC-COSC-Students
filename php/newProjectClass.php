@@ -4,37 +4,21 @@ class newProject
 {
 
     private $db_host = 'localhost';
-
     private $db_name = 'cswebhosting';
-
     private $db_user = 'cswebhosting';
-
     private $db_pass = 'a9zEkajA';
-
     public $conn = null;
-
     private $db = null;
-
     public $userName = null;
-
     public $title = null;
-
     public $desc = null;
-
     public $link = null;
-
     public $type = null;
-
     public $contribArray = array();
-
     public $fileNames = array();
-
     public $fileTypes = array();
-
     public $files = array();
-
     public $logo = null;
-
     public function __construct()
     {
         $this->conn = mysqli_connect($this->db_host, $this->db_user, $this->db_pass);
@@ -54,7 +38,7 @@ class newProject
         $this->conn = null;
     }
 
-    public function createNewProject($userName, $title, $desc, $type, $link, $contribArray, $fileNames, $fileTypes, $files, $logo, $date,$author)
+    public function createNewProject($userName, $title, $desc, $type, $link, $contribArray, $fileNames, $fileTypes, $files, $logo, $date, $author)
     {
         if ($this->conn != null) {
             if ($userName != null && $title != null && $desc != null && $type != null) {
@@ -77,10 +61,10 @@ class newProject
                 if ($sql = $this->conn->prepare($stm)) {
                     $null = null;
                     if ($date == null) {
-                        $sql->bind_param("ssssbs", $title, $desc, $link, $type, $null,$author);
+                        $sql->bind_param("ssssbs", $title, $desc, $link, $type, $null, $author);
                         $sql->send_long_data(4, $logo);
                     } else {
-                        $sql->bind_param("sssssbs", $title, $desc, $link, $date, $type, $null,$author);
+                        $sql->bind_param("sssssbs", $title, $desc, $link, $date, $type, $null, $author);
                         $sql->send_long_data(5, $logo);
                     }
                     
@@ -141,6 +125,7 @@ class newProject
                         return $id;
                     }
                 }
+                return $id;
             } else {
                 return false;
             }

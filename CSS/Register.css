@@ -41,5 +41,18 @@ footer{
 	width: 100%;
 	clear: both;
 	margin-top: auto;
-	margin-bottom: -10em;
+}
+.central a {
+	color: #b7d7e8;
+}
+.central a:hover{
+	color: #87bdd8;
+}
+.footerlinks a:hover{
+	color:#b7d7e8;
+}
+.button:hover{
+	background-color: #b7d7e8;
+	border-color: #b7d7e8;
+	color: black;
 }

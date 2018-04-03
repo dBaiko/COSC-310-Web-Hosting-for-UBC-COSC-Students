@@ -1,7 +1,9 @@
 @charset "UTF-8";
-
+html{
+	font-family: Helvetica, Arial, Verdana;
+}
 body{
-	background-color: orange;
+	background-color: white;
 	background-size: 100%;
 	margin: 0;
 }
@@ -53,7 +55,7 @@ footer p{
 #right{
 	float: right;
 	width: 50%;
-	background-color: orange;
+	background-color: white;
 	height: 100%;
 	line-height: 100%;
 	vertical-align: middle;
@@ -62,7 +64,7 @@ footer p{
 h2{
 	margin-top: 45.5%;
 	font-size: 3.5em;
-	color:white;
+	color:black;
 }
 h3{
 	font-size: 2em;
@@ -77,4 +79,15 @@ h1{
 	height:3em;
 	border-color:rgb(46, 108, 209);
 	color: white;
+}
+.button:hover{
+	background-color: #b7d7e8;
+	border-color: #b7d7e8;
+	color: black;
+}
+#copy{
+	color: white;
+}
+.footerlinks a:hover{
+	color:#b7d7e8;
 }

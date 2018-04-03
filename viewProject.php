@@ -54,16 +54,20 @@ class projectVeiwer{
     public function getProjectInfo($projectId){
         if($this->conn != null){
            
-            $stm = "SELECT projectTitle, projDesc, demoUrl, date, projType, logoImage FROM Project WHERE projectId = ?";
+            $stm = "SELECT projectId, projectTitle, projDesc, demoUrl, date, projType, logoImage, author FROM Project WHERE projectId = ?";
             if($sql = $this->conn->prepare($stm)){
                 $sql->bind_param("s", $projectId);
                 if($sql->execute()){
-                    $title = $desc =  $demoUrl = $date = $type = $logo = null;
-                    $sql->bind_result($title, $desc, $demoUrl, $date, $type, $logo);
-                    $sql->fetch();
-                    $resultSet = array("projectTitle"=>$title, "projDesc"=>$desc, "demoUrl"=>$demoUrl, "date"=>$date, "projType"=>$type, "logoImage"=>$logo);
-                    $sql->close();
-                    return $resultSet;
+                    $pid = $title = $desc =  $demoUrl = $date = $type = $logo = $author = null;
+                    $sql->bind_result($pid,$title, $desc, $demoUrl, $date, $type, $logo,$author);
+                    if($sql->fetch()){
+                        $resultSet = array("projectId"=>$pid, "projectTitle"=>$title, "projDesc"=>$desc, "demoUrl"=>$demoUrl, "date"=>$date, "projType"=>$type, "logoImage"=>$logo, "author"=>$author);
+                        $sql->close();
+                        return $resultSet;
+                    }
+                    else{
+                        return null;
+                    }
                 }else {
                     $error = $this->conn->errno . ' ' . $this->conn->error;
                     echo $error;
@@ -182,7 +186,7 @@ class projectVeiwer{
                     $sql->bind_result($f, $n);
                     while($sql->fetch()){
                         ?>
-                        <object data="data:application/pdf;base64,<?php echo base64_encode($f) ?>" type="application/pdf"></object><a href = 'php/viewPdf.php?projectId=<?php echo $projectId?>&fileName=<?php echo $n?>' ><button>View</button></a> 
+                        <div class = 'pdf' ><object data="data:application/pdf;base64,<?php echo base64_encode($f) ?>" type="application/pdf"></object><a href = 'php/viewPdf.php?projectId=<?php echo $projectId?>&fileName=<?php echo $n?>' ><button class = 'view'>View</button></a></div> 
                         <?php
                     }
                     $sql->close();
@@ -208,7 +212,9 @@ class projectVeiwer{
 }
 //error_reporting(E_ALL);
 ini_set('display_errors', 1);
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 if(isset($_SESSION['user'])){
     $user = $_SESSION["user"];
 }
@@ -268,7 +274,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){//to prevent code running during testing
     		}
     		if($isAuthor){
 		    ?>
-    		    <a href="editProject.php?projectId=<?php echo $id;?>"><button style="float: right;">Edit this project</button></a>
+    		    <a href="editProject.php?projectId=<?php echo $id;?>"><button style="float: right;" id = 'edit'>Edit this project</button></a>
     		    <?php
     		}
 		}
@@ -338,16 +344,16 @@ if(isset($_SERVER["REQUEST_METHOD"])){//to prevent code running during testing
 		<tr>
 	</table>
 </div>
-	<p id = "copyright"> Copyright &copy; 2018 <?php echo $projInfo['projectTitle']?>  </p>
+	<p id = "copy"> Copyright &copy; 2018 <?php echo $projInfo['projectTitle']?>  </p>
 </div>
 
 
 
 <footer>
 	<ul>
-		<li class = "footerlinks"> <a href = "Browse.php">Browse</a>
+		<li class = "footerlinks"> <a href = "Browse.php" id = 'browse'>Browse</a>
 	</ul>
-	<p> Copyright &copy; 2018 CSPub</p>
+	<p id = "copy"> Copyright &copy; 2018 CSPub</p>
 </footer>
 </body>
 </html>

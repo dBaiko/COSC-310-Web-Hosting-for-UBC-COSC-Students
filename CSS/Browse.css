@@ -13,6 +13,7 @@ body{
 }
 input{
 	width: 50%;
+	font-size: 2em;
 }
 #search h2{
 	font-size: 3em;
@@ -67,7 +68,7 @@ th{
 	overflow: auto;
 }
 .project{
-	background-color:#F2F2F2;	
+	background-color:#b7d7e8;	
 	overflow: auto;
 	border: 1px solid Grey;
 	border-top: 0;
@@ -78,7 +79,7 @@ th{
 }
 
 caption{
-	background-color:#F2F2F2;
+	background-color:#b7d7e8;
 	border: 1px solid Grey;
 	border-bottom: 0;
 	padding: 0.5em 0em 0em 0.5em;
@@ -92,6 +93,33 @@ caption{
 .textright{
 	text-align: right;
 }
+#searchButton{
+	width: 2em;
+	border: none;
+	border-radius: 6px;
+	font-size: 1.75em;
+	display: inline;
+	vertical-align: bottom;
+	height: 1.6em;
+	padding-top:0.3em;
+}
+#searchButton:hover{
+	background-color:#b7d7e8;	
+}
+#reset{
+	border-radius: 6px;
+}
+#resetFont{
+	width: 4em;
+	font-size:1.5em;
+}
+.options{
+	font-size:1em;
+}
 footer{
 	margin-top: 2.5em;
 }
+#reset:hover{
+	background-color:#b7d7e8;
+}
+

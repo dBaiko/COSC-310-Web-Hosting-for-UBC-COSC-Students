@@ -73,4 +73,30 @@ object{
 .extraImg{
 	width: 250px;
 }
+#edit{
+	font-size: 2em;
+	width: 8em;
+	border-radius: 6px;
+	margin-bottom: 0.5em;
+}
+#edit:hover{
+	color: black;
+	background-color: #b7d7e8;
+}
+a:hover{
+	color: #b7d7e8;
+}
+.view{
+	display:block;
+	font-size: 1.25em;
+	border-radius: 6px;
+	margin: auto;
+	padding: 0.5em;
+}
+.view:hover{
+	background-color: #b7d7e8;
+}
+.pdf{
+	float:left;
+	margin-right: 1em;
 }
