@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('America/Los_Angeles');
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 if (session_status() == PHP_SESSION_NONE) {
@@ -178,6 +179,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){
 	       "Updated successfully" messages when the user clicks any of the buttons. So keep that in mind when figuring out
 	       spacing and what not.
 	 -->
+	 <div id="background">
 	<fieldset>
 		<legend>Account Info For User: <span id="user"><?php echo $basic['userName']?></span></legend>
 		
@@ -196,7 +198,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){
 		
 		<div>
 			<label>Email: </label>
-			<input  type="text" name="email"  value="<?php echo $basic['email'];?>">
+			<input  type="email" name="email"  value="<?php echo $basic['email'];?>">
 			<button class="changeButton2" onclick="update(this)">Change Email</button><span></span><br>
 		</div>	
 		</div>
@@ -205,11 +207,11 @@ if(isset($_SERVER["REQUEST_METHOD"])){
 		<div class = "input1">
 		<div>	
 			<label>Old Password: </label>
-			<input class="" type="password" id="oldPass" name="oldPass" onchange="checkPass()"><span></span><br>
+			<input class="" type="password" id="oldPass" name="oldPass" onfocusout="checkPass()"><span></span><br>
 			<label>New Password: </label>
 			<input class="" type="password" id="password" name="password" onchange="checkPassMatch()"><br>
 			<label>Password Confirm: </label>
-			<input class="" type="password" id="passConf" name="passConf" onchange="checkPassMatch()">
+			<input class="" type="password" id="passConf" name="passConf" oninput="checkPassMatch()">
 			<button class="changeButton2" onclick="changePassword(this)">Change Password</button><span id="passWarn"></span><br>
 		</div>
 		</div>
@@ -247,7 +249,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){
 		<div>
 			<label>Faculty: </label>
     		<input class="" type="text" name="faculty"  value="<?php echo $prof['faculty'];?>">
-    		<button class="changeButton2" onclick="update(this)">Change Student Number</button><span></span><br>
+    		<button class="changeButton2" onclick="update(this)">Change Faculty</button><span></span><br>
 		</div>
 		
 		<div>
@@ -273,7 +275,14 @@ if(isset($_SERVER["REQUEST_METHOD"])){
 		?>
 	
 	</fieldset>
+	</div>
 	</body>
+	<footer>
+		<ul>
+			<li class="footerlinks"><a href="Browse.php">Browse</a></li>
+		</ul>
+		<p id = "copy">Copyright &copy; 2018 CSPub</p>
+	</footer>
 	<script type="text/javascript">
 
 	$("#delete").on("submit",function(e){
@@ -281,7 +290,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){
         });
 
 	function deleteAccount(e){
-		$(e).after("<label>Are you sure?</label>");
+		$(e).after("<label id='blackFont'>Are you sure?</label>");
 		$(e).next().after("<button class \"changeButton\" onclick=\"yesDelete(this)\">Yes</button>");
 		$(e).next().next().after("<button class \"changeButton\" onclick=\"noDelete(this)\">No</button>");
 	}
@@ -325,7 +334,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){
 				$("#password").val("");
 				$("#passConf").val("");
 				$("#oldPass").val("");
-				
+				$("#passWarn").html("");
 			}
 			else{
 

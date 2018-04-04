@@ -5,93 +5,12 @@ if (isset($_SESSION['user'])) {
     $user = $_SESSION['user'];
 }
 ?>
-<?php
-include 'php/all_projects.php';
-?>
+
 
 <?php
 
-class listContent
-{
+require 'php/listContentClass.php';
 
-    public function displayContent($param1, $param2, $param3, $param4, $param5, $param6,$param7)
-    {
-        echo "<a href=\"viewProject.php?projectId=$param6\" style=\"\"><table class=\"project\" id=\"website\">" . "<caption>" . $param1 . "</caption>" . "<thead>" . "<tr>" . "<th> By: " . $param7 . "</th>" . "<th class=\"textright\">" . $param3 . "</th>" . "</tr>" . "</thead>" . "<tbody>" . "<tr>" . "<td colspan=\"2\"><img src=\"data:image/png;base64,".base64_encode($param5)."\"name=\"web\"class=\"images\" alt=\"logo here\" />" . "<p>" . $param4 . "</p></td>" . "</tr>" . "</tbody>" . "<tfoot>
-    <tr>
-    <td colspan=\"2\">
-    <p id=\"copyright\">Copyright &copy; " . $param1 . "</p>
-    </td>
-    </tr>
-    </tfoot>
-    </table></a>";
-    }
-
-    public function query_all()
-    {
-        include 'php/all_projects.php';
-        if ($conn->connect_error) {
-            die("Connection failed:" . $conn->connect_error);
-        }
-
-        $sql = "SELECT p.projectId, p.projectTitle, pub.userName, p.date, p.projDesc, p.logoImage, p.author FROM Project AS p, Published AS pub WHERE p.projectId = pub.projectId GROUP BY pub.projectId ORDER BY p.date DESC"; 
-
-        
-        $result = mysqli_query($conn, $sql);
-        return $result;
-    }
-
-    public function sortedQuery_time($time)
-    {
-        include 'php/all_projects.php';
-        if ($conn->connect_error) {
-            die("Connection failed:" . $conn->connect_error);
-        }
-        if ($time == "Newest") {
-
-            $sql = "SELECT p.projectId, p.projectTitle, pub.userName, p.date, p.projDesc, p.logoImage, p.author FROM Project AS p, Published AS pub WHERE p.projectId = pub.projectId GROUP BY pub.projectId ORDER BY p.date DESC";
-            
-
-            $result = mysqli_query($conn, $sql);
-            return $result;
-        }
-        if ($time == "Oldest") {
-
-            $sql = "SELECT p.projectId, p.projectTitle, pub.userName, p.date, p.projDesc, p.logoImage, p.author FROM Project AS p, Published AS pub WHERE p.projectId = pub.projectId GROUP BY pub.projectId ORDER BY p.date ASC";
-            
-
-            $result = mysqli_query($conn, $sql);
-            return $result;
-        }
-    }
-
-    public function sortedQuery_types($type)
-    {
-        include 'php/all_projects.php';
-        if ($conn->connect_error) {
-            die("Connection failed:" . $conn->connect_error);
-        }
-
-        $sql = $sql = "SELECT p.projectId, p.projectTitle, pub.userName, p.date, p.projDesc, p.logoImage, p.author FROM Project AS p, Published AS pub WHERE p.projectId = pub.projectId AND p.projType = \"$type\" GROUP BY pub.projectId ORDER BY p.date DESC";
-        
-
-        $result = mysqli_query($conn, $sql);
-        return $result;
-    }
-
-    public function sortedQuery_search($search)
-    {
-        include 'php/all_projects.php';
-        if ($conn->connect_error) {
-            die("Connection failed:" . $conn->connect_error);
-        }
-
-        $sql = $sql = "SELECT * FROM Project AS p, Published AS pub WHERE p.projectId = pub.projectId AND p.projectTitle LIKE \"%$search%\" GROUP BY pub.projectId ORDER BY p.date DESC";
-        
-
-        $result = mysqli_query($conn, $sql);
-        return $result;
-    }
-}
 ?>
 
 <!DOCTYPE html>
@@ -111,13 +30,14 @@ class listContent
 			<form method="get" action="Browse.php" id="searchbar">
 				<input type="text" name="search" placeholder="Search Projects"
 					id="userSearch" />
+				<input type= 'submit' value = '&#128269' id = 'searchButton'/>
 			</form>
 		</div>
 		<div id="background">
 			<div id="filters">
 				<div id="time">
 					<form method="get" action="Browse.php" name="sort_Time">
-						<select name="Times" onchange='this.form.submit()'>
+						<select name="Times" onchange='this.form.submit()' class = "options">
 							<option disabled selected>Filter projects by time</option>
 							<option value="Newest">Newest to oldest</option>
 							<option value="Oldest">Oldest to Newest</option>
@@ -126,7 +46,7 @@ class listContent
 				</div>
 				<div id="type">
 					<form method="get" action="Browse.php" name="sort_Time">
-						<select name="Types" onchange='this.form.submit()'>
+						<select name="Types" onchange='this.form.submit()' class = "options">
 							<option disabled selected>Filter projects by type</option>
 							<option value="Web Development">Web Development</option>
 							<option value="Mobile Application">Mobile Application</option>
@@ -147,7 +67,7 @@ class listContent
 					</form>
 				</div>
 			</div>
-				<button><a href="Browse.php">Reset</a></button>
+				<button id = 'reset'><a href="Browse.php" id = "resetFont">Reset</a></button>
 			<div id="dummyProject" style="width: 80%;">
 				<h2>Projects</h2>
 				<?php
@@ -159,6 +79,9 @@ class listContent
         $resultCheck = mysqli_num_rows($result);
         
         if ($resultCheck == 0) {
+            ?>
+            <link rel="stylesheet" type="text/css" href="CSS/footer2.css">
+            <?php 
             echo "<em>No projects available</em>";
         } elseif ($resultCheck > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
@@ -205,7 +128,12 @@ class listContent
     } else
         $result = $contentGet->query_all();
     $resultCheck = mysqli_num_rows($result);
-    if ($resultCheck > 0) {
+    if ($resultCheck == 0) {
+        echo "<em>No projects matched your search</em>";
+        ?>
+            <link rel="stylesheet" type="text/css" href="CSS/footer2.css">
+            <?php 
+    } elseif ($resultCheck > 0) {
         while ($row = mysqli_fetch_assoc($result)) {
 
             $contentGet->displayContent($row['projectTitle'], $row['userName'],   date('Y-m-d', strtotime($row['date'])), $row['projDesc'], $row['logoImage'], $row['projectId'], $row['author']);
@@ -221,7 +149,7 @@ class listContent
 		<ul>
 			<li class="footerlinks"><a href="Browse.php">Browse</a></li>
 		</ul>
-		<p>Copyright &copy; 2018 CSPub</p>
+		<p id = "copy">Copyright &copy; 2018 CSPub</p>
 	</footer>
 
 </body>

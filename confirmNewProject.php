@@ -18,8 +18,25 @@ if($sql = $conn->prepare($stm)){
     $sql->bind_result($u);
     $sql->fetch();
     ?>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Congratulations!</title>
+<link rel="stylesheet" type="text/css" href="CSS/Default.css">
+<link rel="stylesheet" type="text/css" href="CSS/Browse.css">
+<script type="text/javascript" src="Javascript/Browse.js"></script>
+</head>
+<body>
+	<?php include "header.php"?>
+	<div id="main">
     <h1>Congratulations <?php echo $u?>! Your new project has been uploaded</h1>
-    <a href="Browse.php">Browse.php</a>
+    <h1><a href="viewProject.php?projectId=<?php echo $_SESSION['projectId']?>">View</a></h1>
+    </div>
+	<?php unset($_SESSION['projectId']);?>
+</body>
+</html>
+    
     <?php
 } else {
     $error = $conn->errno . ' ' . $conn->error;

@@ -1,1 +1,17 @@
 @charset "UTF-8";
+.changeButton{
+	font-size: 2em;
+	width: 8em;
+	border-radius: 6px;
+	margin-top: 0.5em;
+}
+input {
+    font-size: 1.5em;
+}
+.oldpics{
+	margin-top:0em;
+	font-size: 1.5em;
+	padding: 0.2em;
+	display: inline;
+	vertical-align: top;
+}

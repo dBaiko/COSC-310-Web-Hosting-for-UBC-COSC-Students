@@ -56,9 +56,26 @@ class projectUpdater{
         }
     }
     
+    public function getAuthor($projectId){
+        $stm = "SELECT author FROM Project WHERE projectId = ?";
+        if($sql = $this->conn->prepare($stm)){
+            $sql->bind_param("s",$projectId);
+            if($sql->execute()){
+                $author = null;
+                $sql->bind_result($author);
+                $sql->fetch();
+                $sql->close();
+                return $author;
+            }
+        } else {
+            $error = $this->conn->errno . ' ' . $this->conn->error;
+            die( $error);
+        }
+    }
+    
     public function buildOldFileArrays($files, $projectId){
         $oldFiles = array();
-        foreach($files as $x => $fileName){
+        foreach($files as $fileName){
             $stm = "SELECT fileName, file FROM Files WHERE fileName = ? AND projectId = ?";
                 if($sql = $this->conn->prepare($stm)){
                     $sql->bind_param("ss",$fileName, $projectId);
@@ -135,7 +152,7 @@ class projectUpdater{
         $tmp = $tmp = substr($fileName, strrpos($fileName, "."));
         $fileType = substr($tmp, 1);
         $null = null;
-        $stm = "INSERT INTO FILES (projectId, fileName, file, fileType) VALUES (?,?,?,?)";
+        $stm = "INSERT INTO Files (projectId, fileName, file, fileType) VALUES (?,?,?,?)";
         if($sql = $this->conn->prepare($stm)){
             $sql->bind_param("ssbs",$projectId,$fileName,$null,$fileType);
             $sql->send_long_data(2, $file);
@@ -156,7 +173,9 @@ class projectUpdater{
 }
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 if(isset($_SERVER["REQUEST_METHOD"])){
     require 'newProjectClass.php';
     
@@ -165,6 +184,8 @@ if(isset($_SERVER["REQUEST_METHOD"])){
     
     $updater = new projectUpdater();
     $newProjectCreator = new newProject();
+    
+    $author = $updater->getAuthor($id);
     
     $newContribs = array();
     if(isset($_POST['contributor'])){
@@ -180,28 +201,21 @@ if(isset($_SERVER["REQUEST_METHOD"])){
         $allContributors = $newContribs;
     }
     
-    $allFiles = null;
     
-    $newPdfFiles = array();
     if($_FILES['pdfs'] != null){
-        $newPdfFiles = $_FILES['pdfs'];
+        $newProjectCreator->buildFileArrays($_FILES['pdfs']);
     }
     
-    $newPicFiles = array();
     if($_FILES['pics'] != null){
-        $newPdfFiles = $_FILES['pics'];
+        $newProjectCreator->buildFileArrays($_FILES['pics']);
     }
     
-    $newFiles = array_merge($newPdfFiles, $newPicFiles);
     
     $oldFiles = NULL;
     if(isset($_POST['hiddenFileNames'])){
         $oldFiles = $updater->buildOldFileArrays($_POST['hiddenFileNames'],$id);
-        $allFiles = $updater->joinFileArrays($oldFiles, $newFiles);
     }
-    else{
-        $allFiles = $newFiles;
-    }
+    
     
     
     $logo = $updater->getLogo($id);
@@ -228,7 +242,6 @@ if(isset($_SERVER["REQUEST_METHOD"])){
     
     $newProjectCreator->buildContribArray($allContributors);
     
-    $newProjectCreator->buildFileArrays($allFiles);
     
     
     $logoFile = $_FILES['logo']['tmp_name'];
@@ -245,7 +258,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){
         
     }
     
-    if($pid = $newProjectCreator->createNewProject($newProjectCreator->userName, $newProjectCreator->title, $newProjectCreator->desc, $newProjectCreator->type, $newProjectCreator->link, $newProjectCreator->contribArray, $newProjectCreator->fileNames, $newProjectCreator->fileTypes, $newProjectCreator->files, $newProjectCreator->logo, $_POST['date'])){
+    if($pid = $newProjectCreator->createNewProject($newProjectCreator->userName, $newProjectCreator->title, $newProjectCreator->desc, $newProjectCreator->type, $newProjectCreator->link, $newProjectCreator->contribArray, $newProjectCreator->fileNames, $newProjectCreator->fileTypes, $newProjectCreator->files, $newProjectCreator->logo, $_POST['date'], $author)){
         
         if($oldFiles != null){
             foreach ($oldFiles as $v){
@@ -256,17 +269,14 @@ if(isset($_SERVER["REQUEST_METHOD"])){
         $updater = null;
         $newProjectCreator = null;
         ?>
-          <meta http-equiv="refresh" content="0; URL='../viewProject.php?projectId=<?php echo $pid;?>'" />
+       <meta http-equiv="refresh" content="0; URL='../viewProject.php?projectId=<?php echo $pid;?>'" />
             <?php
         }
         else{
            ?>
-           <meta http-equiv="refresh" content="0; URL='../Browse.php'" />
+        <meta http-equiv="refresh" content="0; URL='../Browse.php'" />
            <?php 
         }
     
     
 }
-
-
-
