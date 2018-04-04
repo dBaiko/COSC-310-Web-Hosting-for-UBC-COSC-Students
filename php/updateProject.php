@@ -75,7 +75,7 @@ class projectUpdater{
     
     public function buildOldFileArrays($files, $projectId){
         $oldFiles = array();
-        foreach($files as $x => $fileName){
+        foreach($files as $fileName){
             $stm = "SELECT fileName, file FROM Files WHERE fileName = ? AND projectId = ?";
                 if($sql = $this->conn->prepare($stm)){
                     $sql->bind_param("ss",$fileName, $projectId);
@@ -212,7 +212,9 @@ if(isset($_SERVER["REQUEST_METHOD"])){
     
     
     $oldFiles = NULL;
-    $oldFiles = $updater->buildOldFileArrays($_POST['hiddenFileNames'],$id);
+    if(isset($_POST['hiddenFileNames'])){
+        $oldFiles = $updater->buildOldFileArrays($_POST['hiddenFileNames'],$id);
+    }
     
     
     
@@ -267,7 +269,7 @@ if(isset($_SERVER["REQUEST_METHOD"])){
         $updater = null;
         $newProjectCreator = null;
         ?>
-         <meta http-equiv="refresh" content="0; URL='../viewProject.php?projectId=<?php echo $pid;?>'" />
+       <meta http-equiv="refresh" content="0; URL='../viewProject.php?projectId=<?php echo $pid;?>'" />
             <?php
         }
         else{
