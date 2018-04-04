@@ -131,7 +131,7 @@ class projectInfo
     public function getAuthor($projectId)
     {
         if ($this->conn != null) {
-            $stm = "SELECT userName FROM Published WHERE projectId = ? LIMIT 1";
+            $stm = "SELECT author FROM Project WHERE projectId = ?";
             if ($sql = $this->conn->prepare($stm)) {
                 $sql->bind_param("s", $projectId);
                 if ($sql->execute()) {
@@ -344,15 +344,16 @@ if (isset($_SERVER["REQUEST_METHOD"])) {
 					<label>Contributors:</label><br>
     						<?php
         $con = $project->getContribInfo($id);
-        array_shift($con);
         if (sizeof($con) > 0) {
             foreach ($con as $x) {
+                if($x != $project->getAuthor($id)){
                 ?>
     						        <input type="hidden" value="<?php echo $x;?>"
 						name="oldContribs[]"> <input type="text" value="<?php echo $x;?>"
 						disabled="disabled" />
 					<button type="button" onclick="removeC(this)">X</button>
     						        <?php
+            }
             }
             ?>
     						    <br> <label>Any other contributors?</label> <input
