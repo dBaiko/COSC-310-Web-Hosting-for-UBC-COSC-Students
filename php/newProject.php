@@ -50,10 +50,11 @@ if(isset($_SERVER["REQUEST_METHOD"])){
             $newProjectCreator->logo = file_get_contents("../Images/default.png");
         }
         
-        if($newProjectCreator->createNewProject($newProjectCreator->userName, $newProjectCreator->title, $newProjectCreator->desc, $newProjectCreator->type, $newProjectCreator->link, $newProjectCreator->contribArray, $newProjectCreator->fileNames, $newProjectCreator->fileTypes, $newProjectCreator->files, $newProjectCreator->logo, null,$_SESSION['user'])){
-            $newProjectCreator = null;    
+        if($id = $newProjectCreator->createNewProject($newProjectCreator->userName, $newProjectCreator->title, $newProjectCreator->desc, $newProjectCreator->type, $newProjectCreator->link, $newProjectCreator->contribArray, $newProjectCreator->fileNames, $newProjectCreator->fileTypes, $newProjectCreator->files, $newProjectCreator->logo, null,$_SESSION['user'])){
+            $newProjectCreator = null;
+            $_SESSION['projectId'] = $id;
             ?>
-            <meta http-equiv="refresh" content="0; URL='../Browse.php'" />
+            <meta http-equiv="refresh" content="0; URL='../confirmNewProject.php'" />
             <?php
         }
         else{

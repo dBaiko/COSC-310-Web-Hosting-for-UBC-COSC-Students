@@ -234,20 +234,20 @@ if(isset($_SERVER["REQUEST_METHOD"])){//to prevent code running during testing
                echo $projViewer->getLargestId();
                 $projViewer = null;
                 ?>
-        		<meta http-equiv="refresh" content="0; URL='Browse.php'" />
+        		<!-- <meta http-equiv="refresh" content="0; URL='Browse.php'" /> -->
         		<?php
             }
         }else{
             $projViewer = null;
             ?>
-        	<meta http-equiv="refresh" content="0; URL='Browse.php'" />
+        	<!-- <meta http-equiv="refresh" content="0; URL='Browse.php'" /> -->
         	<?php
         }
     }
     else{
         $projViewer = null;
         ?>
-        <meta http-equiv="refresh" content="0; URL='Browse.php'" />
+        <!-- <meta http-equiv="refresh" content="0; URL='Browse.php'" /> -->
         <?php
     }
     
