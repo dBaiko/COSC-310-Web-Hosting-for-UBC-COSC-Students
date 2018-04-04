@@ -41,6 +41,7 @@ footer{
 	width: 100%;
 	clear: both;
 	margin-top: auto;
+	margin-bottom: -10em;
 }
 .central a {
 	color: #b7d7e8;
